@@ -9,7 +9,7 @@ import DetailRec from '@/components/DetailRec.vue';
 
 <template>
     <div class="w-[1060px] flex flex-col">
-        <DetailTitle>Interstellar</DetailTitle>
+        <DetailTitle />
         <div class="flex ">
             <DetailInfo />
 
