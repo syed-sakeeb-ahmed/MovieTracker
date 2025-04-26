@@ -11,10 +11,10 @@ import DetailRec from '@/components/DetailRec.vue';
     <div class="w-[1060px] flex flex-col">
         <DetailTitle>Interstellar</DetailTitle>
         <div class="flex ">
-            <DetailInfo />
+            <DetailInfo class="pr-[3px]"/>
 
-            <div class="score-container bg-green-500 w-full">
-                <DetailScore />
+            <div class="score-container bg-white w-full pl-[5px] border-l-1 border-l-[#bebebe]">
+                <DetailScore class="pb-[16px]"/>
                 <DetailEssay />
                 <DetailCast />
                 <DetailRec />
