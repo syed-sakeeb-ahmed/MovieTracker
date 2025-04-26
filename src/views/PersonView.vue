@@ -9,14 +9,12 @@ import DetailRec from '@/components/DetailRec.vue';
 
 <template>
     <div class="w-[1060px] flex flex-col">
-        <DetailTitle />
+        <DetailTitle>Leonardo Dicaprio </DetailTitle>
         <div class="flex ">
-            <DetailInfo />
+            <DetailInfo class="pr-[3px]"/>
 
-            <div class="score-container bg-green-500 w-full">
-                <DetailScore />
+            <div class="score-container bg-white w-full pl-[5px] border-l-1 border-l-[#bebebe]">
                 <DetailEssay />
-                <DetailCast />
                 <DetailRec />
             </div>
         </div>

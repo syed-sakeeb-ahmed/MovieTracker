@@ -16,9 +16,11 @@ const redColor = reactive({
 </script>
 
 <template>
-        <div class="h-[71px] flex" :class="grayClass">
-            <div class="w-[50px] h-[71px] bg-slate-300"></div>
-            <div class="flex flex-col">
+        <div class="h-[71px] flex border-b-[#e5e5e5] border-b-[1px]" :class="grayClass">
+            <div class="w-[50px] h-[71px] p-[3px]">
+                <img src="../assets/cover_image.webp" alt="Movie Recommention Image">
+            </div>
+            <div class="flex flex-col ml-[3px]">
                 <div class="text-[11px]" :style="redColor">Cooper</div>
                 <div class="text-[9px]">Matthew McConaughey</div>
             </div>
