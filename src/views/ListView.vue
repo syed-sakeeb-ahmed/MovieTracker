@@ -7,7 +7,7 @@ import ListData from '@/components/ListData.vue';
 
 <template>
     <div class="w-[1060px] bg-yellow-300">
-            gg
+        gg
     </div>
     <Search />
     <ListCol />

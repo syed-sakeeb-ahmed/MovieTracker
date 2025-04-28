@@ -1,10 +1,11 @@
 <script setup>
 import Navbar from '@/components/Navbar.vue'
 import Footer from '@/components/Footer.vue'
+import { menuToggle } from './store';
 </script>
 
 <template>
-  <div class="flex flex-col items-center">
+  <div @click="menuToggle.isOpen = false" class="flex flex-col items-center">
     <Navbar />
     <RouterView />
     <Footer />
