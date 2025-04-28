@@ -1,12 +1,13 @@
 <script setup>
 
-import { ref, Suspense } from 'vue';
+import { ref, Suspense, defineAsyncComponent } from 'vue';
 import { menuToggle } from '@/store';
 import ASGenre from './ASGenre.vue';
 
 const isAdvancedSearchOpen = ref(false);
 const selectedOption = ref(null);
 const isCustomRange = ref(false)
+
 
 const toggleAdvancedSearch = () => {
     console.log("Toggled Advanced Search")
@@ -79,10 +80,9 @@ const displayMenu = (menuToOpen) => {
                     </div>
                 </div>
             </div>
-            <Suspense>
+            
                 <ASGenre />
 
-            </Suspense>
 
             <button>Cast</button>
             <button>Sort by</button>

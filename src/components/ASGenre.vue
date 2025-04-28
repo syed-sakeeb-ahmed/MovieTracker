@@ -2,8 +2,13 @@
 import { ref, watch } from 'vue';
 import { getMatchedGenreTitlesArray, getGenreTitleArray, removeNumberFromArray, getIndexFromArray } from '@/utilites/jsonUtilities';
 
-console.log("Calling API")
-const genreTitleArray = await getGenreTitleArray()
+let genreTitleArray = null
+const setGenreTitleArray = async () => {
+    genreTitleArray = await getGenreTitleArray()
+}
+setGenreTitleArray()
+
+
 
 const isMenuOpen = ref(false)
 const currentQuery = ref('')
@@ -39,6 +44,7 @@ watch(currentQuery, async (newQuery, oldQuery) => {
     queryResults.value = regexResults
     console.log(queryResults.value)
 });
+
 
 
 </script>
