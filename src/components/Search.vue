@@ -3,6 +3,7 @@
 import { ref, Suspense, defineAsyncComponent } from 'vue';
 import { menuToggle } from '@/store';
 import ASGenre from './ASGenre.vue';
+import ASCast from './ASCast.vue';
 
 const isAdvancedSearchOpen = ref(false);
 const selectedOption = ref(null);
@@ -84,7 +85,7 @@ const displayMenu = (menuToOpen) => {
                 <ASGenre />
 
 
-            <button>Cast</button>
+                <ASCast/>
             <button>Sort by</button>
             <button>Votes</button>
             <button>Original Language</button>

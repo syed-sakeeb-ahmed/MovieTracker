@@ -1,10 +1,10 @@
 <script setup>
 import { ref, watch } from 'vue';
-import { getMatchedGenreTitlesArray, getGenreTitleArray, removeNumberFromArray, getIndexFromArray } from '@/utilites/jsonUtilities';
+import { getMatchedGenreTitlesArray, getGenreObjArray, removeNumberFromArray, getIndexFromArray, objectExistsInArray, removeObjectFromArray } from '@/utilites/jsonUtilities';
 
-let genreTitleArray = null
+let genreObjectArray = null
 const setGenreTitleArray = async () => {
-    genreTitleArray = await getGenreTitleArray()
+    genreObjectArray = await getGenreObjArray()
 }
 setGenreTitleArray()
 
@@ -21,28 +21,26 @@ const toggleGenreMenu = () => {
     isMenuOpen.value = !isMenuOpen.value
 }
 
-const toggleQueryToSelectedArray = (genreName) => {
-    const genreIndex = getIndexFromArray(genreName, genreTitleArray)
-    if (selectedQueryResults.value.includes(genreIndex)) {
-        removeQueryFromSelectedArray(genreName)
+const toggleQueryToSelectedArray = (genreObj) => {
+    if (objectExistsInArray(genreObj.id, selectedQueryResults.value)) {
+        selectedQueryResults.value = removeObjectFromArray(genreObj.id, selectedQueryResults.value)
     }
     else {
-        selectedQueryResults.value.push(genreIndex)
-
+        selectedQueryResults.value.push(genreObj)
     }
 }
 
 const removeQueryFromSelectedArray = (genreName) => {
-    const genreIndex = getIndexFromArray(genreName, genreTitleArray)
+    const genreIndex = getIndexFromArray(genreName, genreObjectArray)
     const newSelectedArr = removeNumberFromArray(genreIndex, selectedQueryResults.value)
     selectedQueryResults.value = newSelectedArr
 }
 
 watch(currentQuery, async (newQuery, oldQuery) => {
-    const regexResults = await getMatchedGenreTitlesArray(newQuery, genreTitleArray)
+    const regexResults = await getMatchedGenreTitlesArray(newQuery, genreObjectArray)
     //console.log(newQuery,regexResults)
     queryResults.value = regexResults
-    console.log(queryResults.value)
+    //console.log(queryResults.value)
 });
 
 
@@ -56,18 +54,17 @@ watch(currentQuery, async (newQuery, oldQuery) => {
             <input v-model="currentQuery" type="text" name="include" id="include" placeholder="Search">
             <div class="bg-amber-400">
                 <ul>
-                    <li @click="removeQueryFromSelectedArray(genreTitleArray[item])"
-                        v-for="(item, index) in selectedQueryResults" :key="index">
-                        {{ genreTitleArray[item] }}
+                    <li @click="toggleQueryToSelectedArray(item)"
+                        v-for="item in selectedQueryResults" :key="item.id">
+                        {{ item.name }}
                     </li>
                 </ul>
             </div>
             <div v-if="currentQuery !== ''">
 
                 <ul>
-                    <li @click="toggleQueryToSelectedArray(item, genreTitleArray)" v-for="(item, index) in queryResults"
-                        :key="index">
-                        {{ item }}
+                    <li @click="toggleQueryToSelectedArray(item)" v-for="(item) in queryResults" :key="item.id">
+                        {{ item.name }}
                     </li>
                 </ul>
             </div>
