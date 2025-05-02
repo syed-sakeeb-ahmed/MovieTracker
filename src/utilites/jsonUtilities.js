@@ -1,7 +1,7 @@
 
 export const SECRET = import.meta.env.VITE_KEY
 
-const sortOptionsArr = ["original_title.asc", "original_title.desc", "popularity.asc", "popularity.desc", "revenue.asc", "revenue.desc", "primary_release_date.asc", "title.asc", "title.desc", "primary_release_date.desc", "vote_average.asc", "vote_average.desc", "vote_count.asc", "vote_count.desc"]
+export const sortOptionsArr = ["original_title.asc", "original_title.desc", "popularity.asc", "popularity.desc", "revenue.asc", "revenue.desc", "primary_release_date.asc", "title.asc", "title.desc", "primary_release_date.desc", "vote_average.asc", "vote_average.desc", "vote_count.asc", "vote_count.desc"]
 
 
 export async function getGenreDetailJSON() {
@@ -130,4 +130,15 @@ export async function getGenreDetailJSON() {
         }
     }
     return false
+  }
+
+
+  export function buildQuery(queryObject)
+  {
+    let query = "https://api.themoviedb.org/3/discover/movie?"
+    for (const [key, value] of Object.entries(queryObject)) {
+        query += `${key}=${value}&`
+      }
+      query = query.slice(0,-1);
+      return query;
   }

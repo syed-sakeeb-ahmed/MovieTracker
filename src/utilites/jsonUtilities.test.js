@@ -1,5 +1,5 @@
 // helpers.spec.js
-import { getFirstTenCastNamesAndIdsFromQuery, getGenreDetailJSON, getIndexFromArray, getMatchedGenreTitlesArray, removeNumberFromArray, removeObjectFromArray, objectExistsInArray, getGenreObjArray } from './jsonUtilities'
+import { getFirstTenCastNamesAndIdsFromQuery, getGenreDetailJSON, getIndexFromArray, getMatchedGenreTitlesArray, removeNumberFromArray, removeObjectFromArray, objectExistsInArray, getGenreObjArray, buildQuery } from './jsonUtilities'
 import { describe, test, expect } from 'vitest'
 
 describe('GenreDetailsSuite', async () => {
@@ -188,10 +188,6 @@ describe('GenreDetailsSuite', async () => {
 
 
 
-
-
-
-
   test('Remove object from array', () => {
     const arr = [{id: 1, name: 'Masha'}, {id: 2, name: 'Lewis'}]
     expect(removeObjectFromArray(2, arr)).toEqual([{id: 1, name: 'Masha'}])
@@ -203,6 +199,18 @@ describe('GenreDetailsSuite', async () => {
     const arr = [{id: 1, name: 'Masha'}, {id: 2, name: 'Lewis'}]
     expect(objectExistsInArray(2, arr)).toEqual(true)
     expect(objectExistsInArray(3, arr)).toEqual(false)
+  })
+
+  test('Create query from  query object', () => {
+    const queryObject = {
+      include_adult: false,
+    include_video: false,
+    language: 'en-US',
+    page: 1,
+    sort_by: 'popularity.desc'
+    }
+
+    expect(buildQuery(queryObject)).toEqual("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc")
   })
 
 })

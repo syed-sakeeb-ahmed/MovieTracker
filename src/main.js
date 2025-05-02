@@ -9,6 +9,11 @@ import './index.css'
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
 
+import PrimeVue from 'primevue/config';
+import Slider from 'primevue/slider';
+import Aura from '@primeuix/themes/aura';
+
+
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -19,6 +24,13 @@ import { faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons'
 library.add([faMagnifyingGlass, faPlus])
 
 const app = createApp(App)
+app.use(PrimeVue, {
+    theme: {
+        preset: Aura
+    }
+});
+app.component('Slider', Slider);
+
 app.use(router)
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.mount('#app')

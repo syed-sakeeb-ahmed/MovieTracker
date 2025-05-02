@@ -4,10 +4,13 @@ import { ref, Suspense, defineAsyncComponent } from 'vue';
 import { menuToggle } from '@/store';
 import ASGenre from './ASGenre.vue';
 import ASCast from './ASCast.vue';
+import ASSort from './ASSort.vue';
+import ASRelease from './ASRelease.vue'
+import ASScore from './ASScore.vue'
+import ASLanguage from './ASLanguage.vue';
 
-const isAdvancedSearchOpen = ref(false);
+const isAdvancedSearchOpen = ref(true);
 const selectedOption = ref(null);
-const isCustomRange = ref(false)
 
 
 const toggleAdvancedSearch = () => {
@@ -63,32 +66,15 @@ const displayMenu = (menuToOpen) => {
             </button>
         </div>
         <div class="flex flex-col" v-if="isAdvancedSearchOpen">
-            <div>
-                <button>Release Date</button>
-                <div>
-                    <div>
-                        <input v-model="isCustomRange" type="checkbox" name="isCustomRange" id="isCustomRange">
-                    </div>
-                    <div v-if="!isCustomRange" class="flex">
-                        Specific Year
-                        <input type="date" name="date" id="date">
-                    </div>
-                    <div v-if="isCustomRange" class="flex">
-                        Custom range
-                        <input type="date" name="from" id="from">
-                        to
-                        <input type="date" name="until" id="until">
-                    </div>
-                </div>
-            </div>
             
+                <ASRelease />
                 <ASGenre />
 
 
                 <ASCast/>
-            <button>Sort by</button>
-            <button>Votes</button>
-            <button>Original Language</button>
+                <ASSort />
+                <ASScore />
+            <ASLanguage />
         </div>
     </div>
 </template>
