@@ -179,13 +179,37 @@ export function createGenreObjectArrayFromTitleArray(inputArr, genreObjArr) {
     return outputArr;
 }
 
+export function createGenreDict(genreJSON)
+{
+    const outputObj = {
+
+    }
+    for (const genre of genreJSON.genres)
+    {
+        const jsonID = genre.id
+        const name = genre.name
+        outputObj[jsonID] = name
+    }   
+
+    return outputObj
+}
+
+export function createGenreObjectsFromIDList(idList, genreDict)
+{
+    const outputArr = []
+    for (const id of idList)
+    {
+        const newObj = {id: id, name: genreDict[id]}
+        outputArr.push(newObj)
+    }
+    return outputArr
+}
 
 export async function getCastObjFromQueryString(str) {
     /*
         get an id array from the string
         then just query each id one by one 
     */
-
     const idArr = getArrayFromQueryString(str);
     const outputArr = [];
     for (const id of idArr) {

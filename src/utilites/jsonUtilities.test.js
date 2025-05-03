@@ -13,6 +13,8 @@ import {
     getInclusionModeFromQueryString,
     createGenreObjectArrayFromTitleArray,
     getCastObjFromQueryString,
+    createGenreDict,
+    createGenreObjectsFromIDList
 } from "./jsonUtilities";
 import { describe, test, expect } from "vitest";
 
@@ -367,4 +369,40 @@ describe("GenreDetailsSuite", async () => {
       const inputStr = '10297,1813,3895,83002'
       expect(getCastObjFromQueryString(inputStr)).resolves.toEqual(expectedArr)
     });
+
+
+    test('Create genreDict from genreJSON', async () => {
+      const genreJSON = await getGenreDetailJSON()
+      const expectedObj = {
+        '12': 'Adventure',
+        '14': 'Fantasy',
+        '16': 'Animation',
+        '18': 'Drama',
+        '27': 'Horror',
+        '28': 'Action',
+        '35': 'Comedy',
+        '36': 'History',
+        '37': 'Western',
+        '53': 'Thriller',
+        '80': 'Crime',
+        '99': 'Documentary',
+        '878': 'Science Fiction',
+        '9648': 'Mystery',
+        '10402': 'Music',
+        '10749': 'Romance',
+        '10751': 'Family',
+        '10752': 'War',
+        '10770': 'TV Movie'
+      }
+      expect(createGenreDict(genreJSON)).toEqual(expectedObj)
+    })
+
+
+    test('Create array of genreObjects from idList', async () => {
+      const genreJSON = await getGenreDetailJSON()
+      const genreDict = createGenreDict(genreJSON)
+      const idList = [28, 12, 35, 10751]
+      const expected = [{id: 28, name: 'Action'}, {id: 12, name: 'Adventure'}, {id: 35, name: 'Comedy'}, {id: 10751, name: 'Family'}]
+      expect(createGenreObjectsFromIDList(idList, genreDict)).toEqual(expected)
+    })
 });

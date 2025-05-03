@@ -1,30 +1,35 @@
 <script setup>
 import { ref, watch } from 'vue';
-import { getMatchedGenreTitlesArray, getGenreObjArray, removeNumberFromArray, getIndexFromArray, objectExistsInArray, removeObjectFromArray, getArrayFromQueryString, createGenreObjectArrayFromTitleArray } from '@/utilites/jsonUtilities';
+import { getMatchedGenreTitlesArray, getGenreObjArray, removeNumberFromArray, getIndexFromArray, objectExistsInArray, removeObjectFromArray, getGenreDetailJSON, createGenreDict, getArrayFromQueryString, createGenreObjectArrayFromTitleArray, createGenreObjectsFromIDList } from '@/utilites/jsonUtilities';
 import { useRoute } from 'vue-router';
 
 let genreObjectArray = null
-const setGenreTitleArray = async () => {
-    genreObjectArray = await getGenreObjArray()
-}
-const setupComponent = async () => {
-    await setGenreTitleArray()
-    if (route.query.genres !== undefined) {
-        const queryArr = getArrayFromQueryString(route.query.genres)
-        const genreObjArrayFromURL = createGenreObjectArrayFromTitleArray(queryArr, genreObjectArray)
-        console.log(genreObjArrayFromURL)
 
-        selectedQueryResults.value = genreObjArrayFromURL
+const setGenreTitleArray = async () => {
+    const temp = await getGenreDetailJSON()
+    genreObjectArray = temp
+}
+setGenreTitleArray()
+
+const route = useRoute()
+
+const getDataFromURL = async () => {
+    if (route.query.with_genres !== undefined) {
+        const genreJSON = await getGenreDetailJSON()
+      const genreDict = createGenreDict(genreJSON)
+      const idList = getArrayFromQueryString(route.query.with_genres)
+      const selectedGenreObjectsFromURL = createGenreObjectsFromIDList(idList, genreDict)
+    selectedQueryResults.value = selectedGenreObjectsFromURL
     }
 }
-setupComponent()
+getDataFromURL()
 
 const isMenuOpen = ref(false)
 const currentQuery = ref('')
 const queryResults = ref([])
 const selectedQueryResults = ref([])
 const SECRET = import.meta.env.VITE_KEY
-const route = useRoute()
+
 
 
 const toggleGenreMenu = () => {
@@ -41,7 +46,7 @@ const toggleQueryToSelectedArray = (genreObj) => {
 }
 
 watch(currentQuery, async (newQuery, oldQuery) => {
-    const regexResults = await getMatchedGenreTitlesArray(newQuery, genreObjectArray)
+    const regexResults = await getMatchedGenreTitlesArray(newQuery, genreObjectArray.value)
     //console.log(newQuery,regexResults)
     queryResults.value = regexResults
     //console.log(queryResults.value)
