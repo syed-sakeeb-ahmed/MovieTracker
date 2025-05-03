@@ -1,20 +1,30 @@
 <script setup>
 import { ref, watch } from 'vue';
-import { getMatchedGenreTitlesArray, getGenreObjArray, removeNumberFromArray, getIndexFromArray, objectExistsInArray, removeObjectFromArray } from '@/utilites/jsonUtilities';
+import { getMatchedGenreTitlesArray, getGenreObjArray, removeNumberFromArray, getIndexFromArray, objectExistsInArray, removeObjectFromArray, getArrayFromQueryString, createGenreObjectArrayFromTitleArray } from '@/utilites/jsonUtilities';
+import { useRoute } from 'vue-router';
 
 let genreObjectArray = null
 const setGenreTitleArray = async () => {
     genreObjectArray = await getGenreObjArray()
 }
-setGenreTitleArray()
+const setupComponent = async () => {
+    await setGenreTitleArray()
+    if (route.query.genres !== undefined) {
+        const queryArr = getArrayFromQueryString(route.query.genres)
+        const genreObjArrayFromURL = createGenreObjectArrayFromTitleArray(queryArr, genreObjectArray)
+        console.log(genreObjArrayFromURL)
 
-
+        selectedQueryResults.value = genreObjArrayFromURL
+    }
+}
+setupComponent()
 
 const isMenuOpen = ref(false)
 const currentQuery = ref('')
 const queryResults = ref([])
 const selectedQueryResults = ref([])
 const SECRET = import.meta.env.VITE_KEY
+const route = useRoute()
 
 
 const toggleGenreMenu = () => {
@@ -28,12 +38,6 @@ const toggleQueryToSelectedArray = (genreObj) => {
     else {
         selectedQueryResults.value.push(genreObj)
     }
-}
-
-const removeQueryFromSelectedArray = (genreName) => {
-    const genreIndex = getIndexFromArray(genreName, genreObjectArray)
-    const newSelectedArr = removeNumberFromArray(genreIndex, selectedQueryResults.value)
-    selectedQueryResults.value = newSelectedArr
 }
 
 watch(currentQuery, async (newQuery, oldQuery) => {
@@ -54,8 +58,7 @@ watch(currentQuery, async (newQuery, oldQuery) => {
             <input v-model="currentQuery" type="text" name="include" id="include" placeholder="Search">
             <div class="bg-amber-400">
                 <ul>
-                    <li @click="toggleQueryToSelectedArray(item)"
-                        v-for="item in selectedQueryResults" :key="item.id">
+                    <li @click="toggleQueryToSelectedArray(item)" v-for="item in selectedQueryResults" :key="item.id">
                         {{ item.name }}
                     </li>
                 </ul>

@@ -142,3 +142,49 @@ export async function getGenreDetailJSON() {
       query = query.slice(0,-1);
       return query;
   }
+
+  export function getArrayFromQueryString(str)
+  {
+    if (str.includes("%2C"))
+    {
+        return str.split('%2C')
+    }
+    else if (str.includes("%7C"))
+    {
+        return str.split('%7C')
+    }
+    else
+    {
+        return str.split()
+    }
+  }
+
+  export function getInclusionModeFromQueryString(str)
+  {
+    if (str.includes('%2C'))
+    {
+        return 'AND'
+    }
+    else if (str.includes('%7C'))
+    {
+        return 'OR'
+    }
+    return 'AND'
+  }
+
+  export function createGenreObjectArrayFromTitleArray(inputArr, genreObjArr)
+  {
+    const outputArr = []
+    for (let i = 0; i < inputArr.length; i++)
+    {
+        for (let j = 0; j < genreObjArr.length; j++)
+        {
+            if (inputArr[i] === genreObjArr[j].name)
+            {
+                outputArr.push(genreObjArr[j])
+                break
+            }
+        }
+    }
+    return outputArr
+  }

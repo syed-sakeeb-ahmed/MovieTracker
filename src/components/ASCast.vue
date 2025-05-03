@@ -2,6 +2,7 @@
 import { ref, watch, } from 'vue';
 import { getFirstTenCastNamesAndIdsFromQuery, objectExistsInArray, removeNumberFromArray, removeObjectFromArray, SECRET } from '@/utilites/jsonUtilities';
 import { queryObject } from '@/store';
+import { useRoute, useRouter } from 'vue-router';
 
 const isMenuOpen = ref(false)
 const castInputValue = ref('')

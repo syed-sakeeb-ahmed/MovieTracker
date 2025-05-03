@@ -11,3 +11,7 @@ export const queryObject = reactive({
     language: 'en-US',
     sort_by: 'popularity.desc'
 })
+
+export const modifiedQueryObject = reactive({
+    count: 0
+})

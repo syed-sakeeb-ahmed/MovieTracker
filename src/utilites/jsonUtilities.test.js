@@ -1,5 +1,5 @@
 // helpers.spec.js
-import { getFirstTenCastNamesAndIdsFromQuery, getGenreDetailJSON, getIndexFromArray, getMatchedGenreTitlesArray, removeNumberFromArray, removeObjectFromArray, objectExistsInArray, getGenreObjArray, buildQuery } from './jsonUtilities'
+import { getFirstTenCastNamesAndIdsFromQuery, getGenreDetailJSON, getIndexFromArray, getMatchedGenreTitlesArray, removeNumberFromArray, removeObjectFromArray, objectExistsInArray, getGenreObjArray, buildQuery, getArrayFromQueryString, getInclusionModeFromQueryString, createGenreObjectArrayFromTitleArray } from './jsonUtilities'
 import { describe, test, expect } from 'vitest'
 
 describe('GenreDetailsSuite', async () => {
@@ -211,6 +211,120 @@ describe('GenreDetailsSuite', async () => {
     }
 
     expect(buildQuery(queryObject)).toEqual("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc")
+  })
+
+  test('Get array from genre query string', () => {
+    const str1 = "Action%2CAdventure%2CComedy"
+    const str2 = "Action%7CAdventure%7CComedy"
+    const str3 = "Action"
+
+    expect(getArrayFromQueryString(str1)).toEqual(['Action', 'Adventure', 'Comedy'])
+    expect(getArrayFromQueryString(str2)).toEqual(['Action', 'Adventure', 'Comedy'])
+    expect(getArrayFromQueryString(str3)).toEqual(['Action'])
+  })
+
+  test('Get inclusion mode from genre query string', () => {
+    const str1 = "Action%2CAdventure%2CComedy"
+    const str2 = "Action%7CAdventure%7CComedy"
+    const str3 = "Action"
+
+    expect(getInclusionModeFromQueryString(str1)).toEqual('AND')
+    expect(getInclusionModeFromQueryString(str2)).toEqual('OR')
+    expect(getInclusionModeFromQueryString(str3)).toEqual('AND')
+  })
+
+  test('Get genreObjArr from genreTitleArr', () => {
+    const genreTitleArr = ['Action', 'Adventure', 'Comedy']
+    const genreObjArr = [
+        {
+          "id": 28,
+          "name": "Action"
+        },
+        {
+          "id": 12,
+          "name": "Adventure"
+        },
+        {
+          "id": 16,
+          "name": "Animation"
+        },
+        {
+          "id": 35,
+          "name": "Comedy"
+        },
+        {
+          "id": 80,
+          "name": "Crime"
+        },
+        {
+          "id": 99,
+          "name": "Documentary"
+        },
+        {
+          "id": 18,
+          "name": "Drama"
+        },
+        {
+          "id": 10751,
+          "name": "Family"
+        },
+        {
+          "id": 14,
+          "name": "Fantasy"
+        },
+        {
+          "id": 36,
+          "name": "History"
+        },
+        {
+          "id": 27,
+          "name": "Horror"
+        },
+        {
+          "id": 10402,
+          "name": "Music"
+        },
+        {
+          "id": 9648,
+          "name": "Mystery"
+        },
+        {
+          "id": 10749,
+          "name": "Romance"
+        },
+        {
+          "id": 878,
+          "name": "Science Fiction"
+        },
+        {
+          "id": 10770,
+          "name": "TV Movie"
+        },
+        {
+          "id": 53,
+          "name": "Thriller"
+        },
+        {
+          "id": 10752,
+          "name": "War"
+        },
+        {
+          "id": 37,
+          "name": "Western"
+        }
+      ]
+    
+
+    expect(createGenreObjectArrayFromTitleArray(genreTitleArr, genreObjArr)).toEqual([{
+      "id": 28,
+      "name": "Action"
+    },{
+      "id": 12,
+      "name": "Adventure"
+    },{
+      "id": 35,
+      "name": "Comedy"
+    }])
   })
 
 })

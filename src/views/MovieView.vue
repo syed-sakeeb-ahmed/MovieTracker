@@ -6,17 +6,6 @@ import DetailEssay from '@/components/DetailEssay.vue';
 import DetailCast from '@/components/DetailCast.vue';
 import DetailRec from '@/components/DetailRec.vue';
 
-import { queryObject } from '@/store';
-import { watch } from 'vue';
-
-const query = buildQuery(queryObject)
-
-watch(queryObject, () => {
-    console.log("Query object changed: " + queryObject)
-})
-
-
-
 </script>
 
 <template>
