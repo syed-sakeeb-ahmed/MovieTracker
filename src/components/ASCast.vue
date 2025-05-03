@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch, } from 'vue';
-import { getFirstTenCastNamesAndIdsFromQuery, objectExistsInArray, removeNumberFromArray, removeObjectFromArray, SECRET } from '@/utilites/jsonUtilities';
+import { getCastObjFromQueryString, getFirstTenCastNamesAndIdsFromQuery, objectExistsInArray, removeNumberFromArray, removeObjectFromArray, SECRET } from '@/utilites/jsonUtilities';
 import { queryObject } from '@/store';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -8,6 +8,22 @@ const isMenuOpen = ref(false)
 const castInputValue = ref('')
 const castQueryResults = ref({})
 const selectedCastList = ref([])
+
+const route = useRoute()
+
+const getParamsFromQueryString = async () => {
+    if (route.query.with_cast !== undefined) {
+        /*
+            getCastObjs
+            set that shit to selectedCastList
+        */
+        const castObjArrFromURL = await getCastObjFromQueryString(route.query.with_cast)
+        selectedCastList.value = (castObjArrFromURL)
+    }
+}
+
+getParamsFromQueryString()
+
 
 const toggleIsMenuOpen = () => {
     //console.log("Toggled")
@@ -24,6 +40,8 @@ const toggleAddToQuery = (castObj) => {
     }
 }
 
+
+
 watch(castInputValue, async (newInputValue, oldInputValue) => {
     castQueryResults.value = await getFirstTenCastNamesAndIdsFromQuery(newInputValue)
 })
@@ -37,7 +55,7 @@ watch(castInputValue, async (newInputValue, oldInputValue) => {
             <input v-model="castInputValue" type="text" name="cast" id="cast" placeholder="Search">
             <div class="bg-pink-500" v-if="selectedCastList.length > 0">
                 <ul>
-                    <li @click="toggleAddToQuery(item)"  v-for="item in selectedCastList" :key="item.id">
+                    <li @click="toggleAddToQuery(item)" v-for="item in selectedCastList" :key="item.id">
                         {{ item.name }}
                     </li>
                 </ul>
