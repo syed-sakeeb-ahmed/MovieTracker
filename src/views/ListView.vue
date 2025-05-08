@@ -85,7 +85,7 @@ watch(queryObject, () => {
 <template>
     <div>
         <div class="w-[1060px] bg-yellow-300">
-            gg
+            New update published
         </div>
         <div class="bg-red-500">{{ helloWorld }}</div>
         <button @click="fetchNextPage" class="bg-amber-500">Next Page</button>
