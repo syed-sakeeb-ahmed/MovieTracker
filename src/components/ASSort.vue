@@ -5,7 +5,7 @@ import { sortOptionsArr } from '@/utilites/jsonUtilities';
 
 <template>
     <div>
-        <select>
+        <select name="sort" id="sort">
             <option value="">Sort by</option>
             <option :selected="item === 'popularity.desc' ? true : false" v-for="item,index in sortOptionsArr" :key="index" value="item">
                 {{ item }}

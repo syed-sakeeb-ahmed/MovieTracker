@@ -9,6 +9,7 @@ import { buildQuery, SECRET } from '@/utilites/jsonUtilities';
 import { useRoute, useRouter } from 'vue-router'
 
 const queryResults = ref(null)
+const helloWorld = ref(null)
 
 const getQueryJSON = async (queryObject) => {
     const queryString = buildQuery(queryObject)
@@ -60,6 +61,17 @@ const fetchPreviousPage = () => {
     getQueryJSON(queryObject)
 }
 
+const fetchHelloWorld = async () => {
+    const options = {
+        method: 'GET',
+    };
+    const hello = await fetch("http://localhost:8080/api/hello", options)
+        .then(res => res.json())
+        .catch(err => { throw new Error("Failed to fetch discover information" + err) });
+    helloWorld.value = hello.name
+}
+
+fetchHelloWorld()
 
 
 watch(queryObject, () => {
@@ -75,6 +87,7 @@ watch(queryObject, () => {
         <div class="w-[1060px] bg-yellow-300">
             gg
         </div>
+        <div class="bg-red-500">{{ helloWorld }}</div>
         <button @click="fetchNextPage" class="bg-amber-500">Next Page</button>
         <button v-if="queryResults !== null && queryResults.page !== 1" @click="fetchPreviousPage"
             class="bg-amber-500">Prev

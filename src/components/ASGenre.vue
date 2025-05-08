@@ -7,7 +7,7 @@ let genreObjectArray = null
 
 const setGenreTitleArray = async () => {
     const temp = await getGenreDetailJSON()
-    genreObjectArray = temp
+    genreObjectArray = temp.genres
 }
 setGenreTitleArray()
 
@@ -46,7 +46,7 @@ const toggleQueryToSelectedArray = (genreObj) => {
 }
 
 watch(currentQuery, async (newQuery, oldQuery) => {
-    const regexResults = await getMatchedGenreTitlesArray(newQuery, genreObjectArray.value)
+    const regexResults = await getMatchedGenreTitlesArray(newQuery, genreObjectArray)
     //console.log(newQuery,regexResults)
     queryResults.value = regexResults
     //console.log(queryResults.value)
