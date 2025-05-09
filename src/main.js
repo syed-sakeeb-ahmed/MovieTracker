@@ -11,6 +11,13 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 
 import PrimeVue from 'primevue/config';
 import Slider from 'primevue/slider';
+import Tabs from 'primevue/tabs';
+import TabList from 'primevue/tablist';
+import Tab from 'primevue/tab';
+import TabPanels from 'primevue/tabpanels';
+import TabPanel from 'primevue/tabpanel';
+import DatePicker from 'primevue/datepicker';
+
 import Aura from '@primeuix/themes/aura';
 
 
@@ -30,6 +37,13 @@ app.use(PrimeVue, {
     }
 });
 app.component('Slider', Slider);
+app.component('Tabs', Tabs);
+app.component('TabList', TabList);
+app.component('Tab', Tab);
+app.component('TabPanels', TabPanels);
+app.component('TabPanel', TabPanel);
+app.component('DatePicker', DatePicker);
+
 
 app.use(router)
 app.component('font-awesome-icon', FontAwesomeIcon)
