@@ -11,20 +11,31 @@ const toggleIsOpen = () => {
 const ignoreElRef = useTemplateRef('ignoreEl')
 
 const onClickOutsideHandler = [
-  (ev) => {
-    console.log(ev)
-    isOpen.value = false
-  },
-  { ignore: [ignoreElRef] },
+    (ev) => {
+        console.log(ev)
+        isOpen.value = false
+    },
+    { ignore: [ignoreElRef] },
 ]
+
+const op = ref();
+const toggle = (event) => {
+    op.value.toggle(event);
+}
 
 const isCustomRange = ref(false)
 </script>
 
 <template>
     <div>
-        <button ref="ignoreEl" @click="toggleIsOpen">Release Date</button>
-        <div v-if="isOpen" v-on-click-outside="onClickOutsideHandler">
+        <Button class="flex rounded-[20px] p-[10px] w-[215px] items-center border-red-500 border-[2px]" ref="ignoreEl"
+            @click="toggle">
+            <span>Release Date</span>
+            <img :style="{ pointerEvents: 'none', marginLeft: 'auto' }" class="w-[15px] h-[15px]"
+                src="../assets/Dropdown_Arrow.svg" alt="Dropdown Arrow">
+        </button>
+
+        <Popover ref="op">
             <Tabs value="0">
                 <TabList>
                     <Tab value="0">Specific Year</Tab>
@@ -46,7 +57,8 @@ const isCustomRange = ref(false)
                     </TabPanel>
                 </TabPanels>
             </Tabs>
-        </div>
+        </Popover>
+
 
     </div>
 </template>

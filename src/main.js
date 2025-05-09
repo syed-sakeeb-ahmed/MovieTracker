@@ -17,6 +17,9 @@ import Tab from 'primevue/tab';
 import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
 import DatePicker from 'primevue/datepicker';
+import Popover from 'primevue/popover';
+import Button from "primevue/button"
+
 
 import Aura from '@primeuix/themes/aura';
 
@@ -43,6 +46,12 @@ app.component('Tab', Tab);
 app.component('TabPanels', TabPanels);
 app.component('TabPanel', TabPanel);
 app.component('DatePicker', DatePicker);
+app.component('Popover', Popover);
+app.component('Button', Button);
+
+
+
+
 
 
 app.use(router)
