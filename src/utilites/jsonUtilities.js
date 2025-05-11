@@ -25,6 +25,184 @@ export const sortOptionsArr = [
     "vote_count.desc",
 ];
 
+export const sortOptions = [
+    { name: "Score Ascending", value: "vote_average.asc" },
+    { name: "Score Descending", value: "vote_average.desc" },
+    { name: "Votes Ascending", value: "vote_count.asc" },
+    { name: "Votes Descending", value: "vote_count.desc" },
+    { name: "Popularity Ascending", value: "popularity.asc" },
+    { name: "Popularity Descending", value: "popularity.desc" },
+    { name: "Release Date Ascending", value: "primary_release_date.asc" },
+    { name: "Release Date Descending", value: "primary_release_date.desc" },
+    { name: "Revenue Ascending", value: "revenue.asc" },
+    { name: "Revenue Descending", value: "revenue.desc" },
+    { name: "Title Ascending", value: "title.asc" },
+    { name: "Title Descending", value: "title.desc" },
+    { name: "Original Title Ascending", value: "original_title.asc" },
+    { name: "Original Title Descending", value: "original_title.desc" },
+];
+
+export const genres = [
+    {
+      "id": 28,
+      "name": "Action"
+    },
+    {
+      "id": 12,
+      "name": "Adventure"
+    },
+    {
+      "id": 16,
+      "name": "Animation"
+    },
+    {
+      "id": 35,
+      "name": "Comedy"
+    },
+    {
+      "id": 80,
+      "name": "Crime"
+    },
+    {
+      "id": 99,
+      "name": "Documentary"
+    },
+    {
+      "id": 18,
+      "name": "Drama"
+    },
+    {
+      "id": 10751,
+      "name": "Family"
+    },
+    {
+      "id": 14,
+      "name": "Fantasy"
+    },
+    {
+      "id": 36,
+      "name": "History"
+    },
+    {
+      "id": 27,
+      "name": "Horror"
+    },
+    {
+      "id": 10402,
+      "name": "Music"
+    },
+    {
+      "id": 9648,
+      "name": "Mystery"
+    },
+    {
+      "id": 10749,
+      "name": "Romance"
+    },
+    {
+      "id": 878,
+      "name": "Science Fiction"
+    },
+    {
+      "id": 10770,
+      "name": "TV Movie"
+    },
+    {
+      "id": 53,
+      "name": "Thriller"
+    },
+    {
+      "id": 10752,
+      "name": "War"
+    },
+    {
+      "id": 37,
+      "name": "Western"
+    }
+  ]
+
+  export const genresDict = {
+    28: {
+      "id": 28,
+      "name": "Action"
+    },
+    12: {
+      "id": 12,
+      "name": "Adventure"
+    },
+    16: {
+      "id": 16,
+      "name": "Animation"
+    },
+    35: {
+      "id": 35,
+      "name": "Comedy"
+    },
+    80: {
+      "id": 80,
+      "name": "Crime"
+    },
+    99: {
+      "id": 99,
+      "name": "Documentary"
+    },
+    18: {
+      "id": 18,
+      "name": "Drama"
+    },
+    10751: {
+      "id": 10751,
+      "name": "Family"
+    },
+    14: {
+      "id": 14,
+      "name": "Fantasy"
+    },
+    36: {
+      "id": 36,
+      "name": "History"
+    },
+    27: {
+      "id": 27,
+      "name": "Horror"
+    },
+    10402: {
+      "id": 10402,
+      "name": "Music"
+    },
+    9648: {
+      "id": 9648,
+      "name": "Mystery"
+    },
+    10749: {
+      "id": 10749,
+      "name": "Romance"
+    },
+    878: {
+      "id": 878,
+      "name": "Science Fiction"
+    },
+    10770: {
+      "id": 10770,
+      "name": "TV Movie"
+    },
+    53: {
+      "id": 53,
+      "name": "Thriller"
+    },
+    10752: {
+      "id": 10752,
+      "name": "War"
+    },
+    37: {
+      "id": 37,
+      "name": "Western"
+    }
+}
+
+
+  
+
 export async function getGenreDetailJSON() {
     const options = {
         method: "GET",
@@ -179,30 +357,24 @@ export function createGenreObjectArrayFromTitleArray(inputArr, genreObjArr) {
     return outputArr;
 }
 
-export function createGenreDict(genreJSON)
-{
-    const outputObj = {
-
+export function createGenreDict(genreJSON) {
+    const outputObj = {};
+    for (const genre of genreJSON.genres) {
+        const jsonID = genre.id;
+        const name = genre.name;
+        outputObj[jsonID] = name;
     }
-    for (const genre of genreJSON.genres)
-    {
-        const jsonID = genre.id
-        const name = genre.name
-        outputObj[jsonID] = name
-    }   
 
-    return outputObj
+    return outputObj;
 }
 
-export function createGenreObjectsFromIDList(idList, genreDict)
-{
-    const outputArr = []
-    for (const id of idList)
-    {
-        const newObj = {id: id, name: genreDict[id]}
-        outputArr.push(newObj)
+export function createGenreObjectsFromIDList(idList, genreDict) {
+    const outputArr = [];
+    for (const id of idList) {
+        const newObj = { id: id, name: genreDict[id] };
+        outputArr.push(newObj);
     }
-    return outputArr
+    return outputArr;
 }
 
 export async function getCastObjFromQueryString(str) {
@@ -219,8 +391,8 @@ export async function getCastObjFromQueryString(str) {
         )
             .then((res) => res.json())
             .catch((err) => console.error(err));
-            outputArr.push({id: id, name: castObj.name})
+        outputArr.push({ id: id, name: castObj.name });
     }
-    console.log(outputArr)
-    return outputArr
+    console.log(outputArr);
+    return outputArr;
 }

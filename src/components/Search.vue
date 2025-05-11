@@ -1,6 +1,9 @@
 <script setup>
 
-import { ref, Suspense, defineAsyncComponent } from 'vue';
+import { ref, reactive,watch, Suspense, defineAsyncComponent } from 'vue';
+
+import { Form } from '@primevue/forms';
+
 import { menuToggle } from '@/store';
 import ASGenre from './ASGenre.vue';
 import ASCast from './ASCast.vue';
@@ -8,6 +11,8 @@ import ASSort from './ASSort.vue';
 import ASRelease from './ASRelease.vue'
 import ASScore from './ASScore.vue'
 import ASLanguage from './ASLanguage.vue';
+
+import {useRoute} from 'vue-router'
 
 const isAdvancedSearchOpen = ref(true);
 const selectedOption = ref(null);
@@ -17,6 +22,40 @@ const toggleAdvancedSearch = () => {
     console.log("Toggled Advanced Search")
     isAdvancedSearchOpen.value = !isAdvancedSearchOpen.value;
 }
+
+const route = useRoute()
+    console.log(route.query.sorhted_by, route.query.shit, route.query.pop)
+
+const initialValues = reactive({
+    releaseDate: route.query.rd,
+    releaseDateMin: route['query']['primary_release_date.gte'],
+    releaseDateMax: route['query']['primary_release_date.lte'],
+    scoreMin: route['query']['vote_average.gte'],
+    scoreMax: route['query']['vote_average.lte'],
+    genre: {id: 12, name: 'Adventure'},
+    cast: route.query.with_cast,
+    sort: route.query.sort_by,
+    language: route.query.with_original_language,
+});
+
+const resolver = ({ values }) => {
+    const errors = {};
+
+    if (!values.username) {
+        errors.username = [{ message: 'Username is required.' }];
+    }
+
+    return {
+        values, // (Optional) Used to pass current form values to submit event.
+        errors
+    };
+};
+
+const onFormSubmit = ({ valid }) => {
+    if (valid) {
+        console.log("gamer")
+    }
+};
 
 const displayMenu = (menuToOpen) => {
     const options = {
@@ -36,6 +75,7 @@ const displayMenu = (menuToOpen) => {
     menuToggle.isOpen = true
 
 }
+
 </script>
 
 <template>
@@ -65,16 +105,20 @@ const displayMenu = (menuToOpen) => {
                 I'm Feeling Lucky
             </button>
         </div>
+        
         <div class="flex flex-col" v-if="isAdvancedSearchOpen">
-            
-                <ASRelease />
-                <ASGenre />
-
-
-                <ASCast/>
-                <ASSort />
-                <ASScore />
+            <Form v-slot="$form" :initialValues :resolver @submit="onFormSubmit" class="flex flex-col gap-4 w-full sm:w-56">
+                <!-- <InputNumber name="username" type="text" placeholder="Username" class="w-full sm:w-56" /> -->
+                <Fieldset legend="Form States" class="h-80 overflow-auto">
+                <pre class="whitespace-pre-wrap">{{ $form }}</pre>
+            </Fieldset>
+            <ASRelease />
+            <ASScore />
+            <ASGenre />
+            <ASCast/>
+            <ASSort />
             <ASLanguage />
+            </Form>
         </div>
     </div>
 </template>

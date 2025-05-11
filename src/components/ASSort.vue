@@ -1,15 +1,16 @@
 <script setup>
-import { sortOptionsArr } from '@/utilites/jsonUtilities';
-//console.log(sortOptionsArr)
+import { sortOptions } from '@/utilites/jsonUtilities';
+import { ref, watch } from 'vue';
+
+const selectedSortOption = ref('')
+
+watch(selectedSortOption, () => {
+    console.log(selectedSortOption.value)
+})
 </script>
 
 <template>
     <div>
-        <select name="sort" id="sort">
-            <option value="">Sort by</option>
-            <option :selected="item === 'popularity.desc' ? true : false" v-for="item,index in sortOptionsArr" :key="index" value="item">
-                {{ item }}
-            </option>
-        </select>
+        <Select v-model="selectedSortOption" :options="sortOptions" optionValue="value" optionLabel="name" placeholder="Sort by" class="w-full md:w-56" />
     </div>
 </template>

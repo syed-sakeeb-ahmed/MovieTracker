@@ -5,11 +5,41 @@ import ListData from '@/components/ListData.vue';
 
 import { modifiedQueryObject, queryObject } from '@/store';
 import { watch, ref } from 'vue';
-import { buildQuery, SECRET } from '@/utilites/jsonUtilities';
+import { buildQuery, genresDict, SECRET } from '@/utilites/jsonUtilities';
 import { useRoute, useRouter } from 'vue-router'
 
 const queryResults = ref(null)
 const helloWorld = ref(null)
+
+const route = useRoute()
+
+const getGenresFromURL = (genreQueryString) => {
+    const jsonArr = "[" + genreQueryString + "]"
+    const arr = JSON.parse(jsonArr)
+    const outputArr = []
+    for (const item of arr) {
+        outputArr.push(genresDict[item])
+    }
+    return outputArr
+}
+
+const getCastFromURL = (castQueryString) => {
+    const splitArr = castQueryString.split(',')
+    const outputArr = []
+    for (const item of splitArr) {
+        const localArr = item.split(':')
+        const localObj = {id: localArr[0], name: localArr[1]}
+        outputArr.push(localObj)
+    }
+    return outputArr
+}
+
+//Setup query object on load
+queryObject.language = (route.query.with_original_language) ? route.query.with_original_language : 'en-US'
+queryObject.sort_by = (route.query.sort_by) ? route.query.sort_by : 'popularity.desc'
+queryObject.with_genres = (route.query.with_genres) ? getGenresFromURL(route.query.with_genres) : []
+queryObject.with_cast = (route.query.with_cast) ? getCastFromURL(route.query.with_cast) : []
+queryObject.releaseDateTab = (route.query.release_date_tab) ? route.query.release_date_tab : '0'
 
 const getQueryJSON = async (queryObject) => {
     const queryString = buildQuery(queryObject)
@@ -38,8 +68,8 @@ const getQueryJSON = async (queryObject) => {
         sort_by: null
     }
     
-    // const route = useRoute()
-    // console.log(route.query.sorhted_by, route.query.shit, route.query.pop)
+     //const route = useRoute()
+    //console.log(route.query.sorhted_by, route.query.shit, route.query.pop)
     // route.
 
 
