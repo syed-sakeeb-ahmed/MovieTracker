@@ -7,7 +7,7 @@ import { useRoute, useRouter } from 'vue-router';
 const isMenuOpen = ref(false)
 const castInputValue = ref('')
 const castQueryResults = ref([])
-const selectedCastList = ref([])
+const selectedCastList = ref(queryObject.with_cast)
 
 const route = useRoute()
 

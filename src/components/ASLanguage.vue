@@ -1,35 +1,29 @@
 <script setup>
 
-import { ref } from 'vue';
-import { SECRET } from '@/utilites/jsonUtilities';
+import { ref, watch } from 'vue';
+import { SECRET, languages } from '@/utilites/jsonUtilities';
+import {queryObject} from "@/store"
 
-const languageList = ref(null)
 
-const getLanguages =  async () => {
-    const options = {
-  method: 'GET',
-  headers: {
-    accept: 'application/json',
-    Authorization: 'Bearer ' + SECRET
-  }
-};
+const languageList = ref(languages)
+const selectedLanguage = ref('en')
+console.log(JSON.stringify(queryObject.language))
 
-languageList.value = await fetch('https://api.themoviedb.org/3/configuration/languages', options)
-  .then(res => res.json())
-  .catch(err => {throw new Error("Something went wrong while fetching languages from TMDB" + err)});
-}
+//English is at index 172
+// let count = 0
+// for (const obj of languages) {
+//   console.log(obj.english_name, count)
+//   count++
+// }
 
-getLanguages()
+watch(selectedLanguage, () => {
+  console.log(selectedLanguage.value)
+})
 
 </script>
 
 <template>
     <div>
-        <select name="languages" id="languages">
-
-            <option :selected="item.english_name === 'English' ? true : false" v-for="item in languageList" :key="item.iso_639_1">
-                {{ item.english_name }}
-            </option>
-        </select>
+      <Select v-model="selectedLanguage" :options="languageList" optionValue="iso_639_1" optionLabel="english_name" placeholder="Original Language" class="w-full md:w-56" />
     </div>
 </template>

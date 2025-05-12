@@ -1,7 +1,8 @@
 <script setup>
 
 import { ref, reactive,watch, Suspense, defineAsyncComponent } from 'vue';
-
+import {createReleaseDateQuery, createScoreQuery, createGenreQuery, createCastQuery, createSortQuery, primaryLanguageQuery} from "@/utilites/jsonUtilities"
+import {queryObject} from '@/store'
 import { Form } from '@primevue/forms';
 
 import { menuToggle } from '@/store';
@@ -76,6 +77,25 @@ const displayMenu = (menuToOpen) => {
 
 }
 
+const createQuery = (queryObject) => {
+    let queryString = ""
+    
+    queryString += createReleaseDateQuery(queryObject)
+    queryString += createScoreQuery(queryObject)
+    queryString += createGenreQuery(queryObject)
+    queryString += createCastQuery(queryObject)
+    queryString += createSortQuery(queryObject)
+    queryString += primaryLanguageQuery(queryObject)
+    
+    queryString = queryString.substring(0, queryString.length - 1);
+    return queryString
+}
+
+const logQuery = () => {
+    console.log(createQuery(queryObject))
+    console.log(queryObject.with_genres)
+}
+
 </script>
 
 <template>
@@ -97,7 +117,7 @@ const displayMenu = (menuToOpen) => {
 
         </div>
         <div class="flex mt-3">
-            <button
+            <button @click="logQuery"
                 class="bg-[#f3f3f3] w-[142px] h-[34px] pl-[16px] pr-[16px] m-[4px] rounded-[5px] mr-1 text-md text-[15px]">
                 Search
             </button>
@@ -107,18 +127,18 @@ const displayMenu = (menuToOpen) => {
         </div>
         
         <div class="flex flex-col" v-if="isAdvancedSearchOpen">
-            <Form v-slot="$form" :initialValues :resolver @submit="onFormSubmit" class="flex flex-col gap-4 w-full sm:w-56">
+            <!-- <Form v-slot="$form" :initialValues :resolver @submit="onFormSubmit" class="flex flex-col gap-4 w-full sm:w-56"> -->
                 <!-- <InputNumber name="username" type="text" placeholder="Username" class="w-full sm:w-56" /> -->
-                <Fieldset legend="Form States" class="h-80 overflow-auto">
-                <pre class="whitespace-pre-wrap">{{ $form }}</pre>
-            </Fieldset>
+                <!-- <Fieldset legend="Form States" class="h-80 overflow-auto">
+                <pre class="whitespace-pre-wrap">{{ $form }}</pre> -->
+            <!-- </Fieldset> -->
             <ASRelease />
             <ASScore />
             <ASGenre />
             <ASCast/>
             <ASSort />
             <ASLanguage />
-            </Form>
+            <!-- </Form> -->
         </div>
     </div>
 </template>

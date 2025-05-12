@@ -9,6 +9,10 @@ const toggle = (event) => {
     op.value.toggle(event);
 }
 
+watch(value, () => {
+    queryObject.releaseDateTab = value.value
+})
+
 
 </script>
 
