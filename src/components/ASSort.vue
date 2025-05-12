@@ -12,6 +12,6 @@ watch(selectedSortOption, () => {
 
 <template>
     <div>
-        <Select v-model="selectedSortOption" :options="sortOptions" optionValue="value" optionLabel="name" placeholder="Sort by" class="w-full md:w-56" />
+        <Select @value-change="$emit('value-changed', selectedSortOption)" v-model="selectedSortOption" :options="sortOptions" optionValue="value" optionLabel="name" placeholder="Sort by" class="w-full md:w-56" />
     </div>
 </template>

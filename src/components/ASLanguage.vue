@@ -24,6 +24,6 @@ watch(selectedLanguage, () => {
 
 <template>
     <div>
-      <Select v-model="selectedLanguage" :options="languageList" optionValue="iso_639_1" optionLabel="english_name" placeholder="Original Language" class="w-full md:w-56" />
+      <Select @value-change="$emit('value-changed', selectedLanguage)" v-model="selectedLanguage" :options="languageList" optionValue="iso_639_1" optionLabel="english_name" placeholder="Original Language" class="w-full md:w-56" />
     </div>
 </template>

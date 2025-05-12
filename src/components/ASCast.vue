@@ -45,6 +45,6 @@ const search = async (e) => {
 
 <template>
     <div class="bg-green-500 w-[215px]">
-        <AutoComplete placeholder="Select Cast" multiple fluid v-model="selectedCastList" optionLabel="name" :suggestions="castQueryResults" @complete="search" />
+        <AutoComplete @value-change="$emit('value-changed', selectedCastList)" placeholder="Select Cast" multiple fluid v-model="selectedCastList" optionLabel="name" :suggestions="castQueryResults" @complete="search" />
     </div>
 </template>

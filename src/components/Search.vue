@@ -2,6 +2,7 @@
 
 import { ref, reactive,watch, Suspense, defineAsyncComponent } from 'vue';
 import {createReleaseDateQuery, createScoreQuery, createGenreQuery, createCastQuery, createSortQuery, primaryLanguageQuery} from "@/utilites/jsonUtilities"
+import { buildQuery, genresDict, languages, SECRET } from '@/utilites/jsonUtilities';
 import {queryObject} from '@/store'
 import { Form } from '@primevue/forms';
 
@@ -77,6 +78,51 @@ const displayMenu = (menuToOpen) => {
 
 }
 
+
+const getGenresFromURL = (genreQueryString) => {
+    const jsonArr = "[" + genreQueryString + "]"
+    const arr = JSON.parse(jsonArr)
+    const outputArr = []
+    for (const item of arr) {
+        outputArr.push(genresDict[item])
+    }
+    return outputArr
+}
+
+const getCastFromURL = (castQueryString) => {
+    const splitArr = castQueryString.split(',')
+    const outputArr = []
+    for (const item of splitArr) {
+        const localArr = item.split(':')
+        const localObj = {id: localArr[0], name: localArr[1]}
+        outputArr.push(localObj)
+    }
+    return outputArr
+}
+
+//Setup query object on load
+queryObject.language = (route.query.with_original_language) ? route.query.with_original_language : 'en'
+queryObject.sort_by = (route.query.sort_by) ? route.query.sort_by : 'popularity.desc'
+queryObject.with_genres = (route.query.with_genres) ? getGenresFromURL(route.query.with_genres) : []
+queryObject.with_cast = (route.query.with_cast) ? getCastFromURL(route.query.with_cast) : []
+
+//Release Date tab
+queryObject.releaseDateTab = (route.query.release_date_tab) ? route.query.release_date_tab : '0'
+queryObject.releaseDate = (route.query.release_date) ? route.query.release_date : null // has Date object need to convert to yyyy-mm-dd value
+queryObject.releaseDateMin = (route.query.release_date_min) ? route.query.release_date_min : null // has Date object need to convert to yyyy-mm-dd value
+queryObject.releaseDateMax = (route.query.release_date_max) ? route.query.release_date_max : null // has Date object need to convert to yyyy-mm-dd value
+
+
+//Scores and votes
+queryObject.score = {min: null, max: null}
+queryObject.vote = {min: null, max: null}
+
+queryObject.score.min = (route.query.score_min) ? route.query.score_min : null
+queryObject.score.max = (route.query.score_max) ? route.query.score_max : null
+queryObject.vote.min = (route.query.vote_min) ? route.query.vote_min : null
+queryObject.vote.max = (route.query.vote_max) ? route.query.vote_max : null
+
+
 const createQuery = (queryObject) => {
     let queryString = ""
     
@@ -94,6 +140,65 @@ const createQuery = (queryObject) => {
 const logQuery = () => {
     console.log(createQuery(queryObject))
     console.log(queryObject.with_genres)
+}
+
+watch(queryObject, () => {
+    console.log(queryObject)
+})
+
+//Emit callbacks
+const changeGenre = (arg) => {
+    queryObject.with_genres = arg
+}
+
+const changeReleaseDate = (arg) => {
+    queryObject.releaseDate = arg
+}
+
+const changeReleaseDateMin = (arg) => {
+    queryObject.releaseDateMin = arg
+}
+
+const changeReleaseDateMax = (arg) => {
+    queryObject.releaseDateMax = arg
+}
+
+const changeReleaseDateTab = (arg) => {
+    //console.log("Huh?" + arg)
+    queryObject.releaseDateTab = arg
+}
+
+const changeScoreMin = (arg) => {
+    //console.log("Score Min Val: " + arg)
+    queryObject.score.min = arg
+}
+
+const changeScoreMax = (arg) => {
+    //console.log("Score Max Val: " + arg)
+    queryObject.score.max = arg
+}
+
+const changeVoteMin = (arg) => {
+    //console.log("Vote Min Val: " + arg)
+    queryObject.vote.min = arg
+}
+
+const changeVoteMax = (arg) => {
+    //console.log("Vote Max Val: " + arg)
+    queryObject.vote.max = arg
+}
+
+const changeCast = (arg) => {
+    //console.log("Cast val: " + arg)
+    queryObject.with_cast = arg
+}
+
+const changeSort = (arg) => {
+    queryObject.sort_by = arg
+}
+
+const changeLanguage = (arg) => {
+    queryObject.language = arg
 }
 
 </script>
@@ -132,12 +237,19 @@ const logQuery = () => {
                 <!-- <Fieldset legend="Form States" class="h-80 overflow-auto">
                 <pre class="whitespace-pre-wrap">{{ $form }}</pre> -->
             <!-- </Fieldset> -->
-            <ASRelease />
-            <ASScore />
-            <ASGenre />
-            <ASCast/>
-            <ASSort />
-            <ASLanguage />
+            <ASRelease @value-changed-rd="changeReleaseDate" @value-changed-min="changeReleaseDateMin" @value-changed-max="changeReleaseDateMax"
+            @value-changed-tab="changeReleaseDateTab"
+            />
+            <ASScore 
+            @score-min-change="changeScoreMin"
+            @score-max-change="changeScoreMax"
+            @vote-min-change="changeVoteMin"
+            @vote-max-change="changeVoteMax"
+            />
+            <ASGenre @value-changed="changeGenre"/>
+            <ASCast @value-changed="changeCast"/>
+            <ASSort @value-changed="changeSort"/>
+            <ASLanguage @value-changed="changeLanguage"/>
             <!-- </Form> -->
         </div>
     </div>

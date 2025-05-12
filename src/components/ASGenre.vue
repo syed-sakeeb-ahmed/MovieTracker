@@ -35,7 +35,7 @@ const selectedQueryResults = ref([])
 watch(selectedArray, async (newQuery, oldQuery) => {
     for (const val of selectedArray.value)
 {
-    console.log(val)
+    //console.log(val)
 }
     
 });
@@ -45,13 +45,15 @@ const op = ref();
 const toggle = (event) => {
     op.value.toggle(event);
 }
-
+const log = () => {
+console.log("Hug")
+}
 </script>
 
 <template>
     <div>
         
-            <MultiSelect v-model="selectedArray" :options="genres" fluid optionLabel="name" filter placeholder="Select Genres"
+            <MultiSelect @value-change="$emit('value-changed', selectedArray)" v-model="selectedArray" :options="genres" fluid optionLabel="name" filter placeholder="Select Genres"
             :maxSelectedLabels="3" class="w-full md:w-80" />
     </div>
 </template>

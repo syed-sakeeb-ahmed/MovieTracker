@@ -3,16 +3,23 @@ import { ref, watch } from 'vue';
 import { queryObject } from '@/store';
 
 
-const value = ref(queryObject.releaseDateTab)
+const val = ref(queryObject.releaseDateTab)
+const releaseDate = ref(queryObject.releaseDate)
+const releaseDateMin = ref(queryObject.releaseDateMin)
+const releaseDateMax = ref(queryObject.releaseDateMax)
+
 const op = ref();
 const toggle = (event) => {
     op.value.toggle(event);
 }
 
-watch(value, () => {
-    queryObject.releaseDateTab = value.value
-})
+const emit = defineEmits(['value-changed-tab', 'value-changed-min', 'value-changed-max', 'value-changed-rd'])
 
+const changeValue = (arg) => {
+    //value.value = arg
+    //console.log("foo" + arg)
+    emit('value-changed-tab', arg)
+}
 
 </script>
 
@@ -24,23 +31,23 @@ watch(value, () => {
         </Button>
 
         <Popover ref="op">
-            <Tabs v-model:value="value">
+            <Tabs @update:value="changeValue" :value="val">
                 <TabList>
                     <Tab value="0">Specific Year</Tab>
                     <Tab value="1">Custom Range</Tab>
                 </TabList>
                 <TabPanels>
                     <TabPanel value="0">
-                        <DatePicker v-model="queryObject.releaseDate" showIcon fluid iconDisplay="input" />
+                        <DatePicker @value-change="$emit('value-changed-rd', releaseDate)" v-model="releaseDate" showIcon fluid iconDisplay="input" />
                     </TabPanel>
                     <TabPanel value="1" class="flex flex-col justify-between">
                         <div>
                             <span>From</span>
-                            <DatePicker v-model="queryObject.releaseDateMin" showIcon fluid iconDisplay="input"/>
+                            <DatePicker @value-change="$emit('value-changed-min', releaseDateMin)" v-model="releaseDateMin" showIcon fluid iconDisplay="input"/>
                         </div>
                         <div>
                             <span>To</span>
-                            <DatePicker v-model="queryObject.releaseDateMax" showIcon fluid iconDisplay="input"/>
+                            <DatePicker @value-change="$emit('value-changed-max', releaseDateMax)" v-model="releaseDateMax" showIcon fluid iconDisplay="input"/>
                         </div>
                     </TabPanel>
                 </TabPanels>
