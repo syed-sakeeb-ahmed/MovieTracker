@@ -123,6 +123,7 @@ queryObject.vote.min = (route.query.vote_min) ? route.query.vote_min : null
 queryObject.vote.max = (route.query.vote_max) ? route.query.vote_max : null
 
 
+//Create query for internal use
 const createQuery = (queryObject) => {
     let queryString = ""
     
@@ -152,15 +153,15 @@ const changeGenre = (arg) => {
 }
 
 const changeReleaseDate = (arg) => {
-    queryObject.releaseDate = arg
+    queryObject.releaseDate = arg.toISOString().slice(0,10)
 }
 
 const changeReleaseDateMin = (arg) => {
-    queryObject.releaseDateMin = arg
+    queryObject.releaseDateMin = arg.toISOString().slice(0,10)
 }
 
 const changeReleaseDateMax = (arg) => {
-    queryObject.releaseDateMax = arg
+    queryObject.releaseDateMax = arg.toISOString().slice(0,10)
 }
 
 const changeReleaseDateTab = (arg) => {

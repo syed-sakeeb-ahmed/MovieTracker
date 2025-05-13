@@ -20,7 +20,16 @@ import {
     createGenreQuery,
     createCastQuery,
     createSortQuery,
-    primaryLanguageQuery
+    primaryLanguageQuery,
+    createTMDBReleaseDateQuery,
+    createTMDBScoreQuery,
+    createTMDBGenreQuery,
+    createTMDBSortQuery,
+    createTMDBLanguageQuery,
+    createTMDBCastQuery,
+    createTMDBPrimaryLanguageQuery,
+    createTMDBQuery,
+    createTMDBPageQuery
 } from "./jsonUtilities";
 import { describe, test, expect } from "vitest";
 
@@ -414,7 +423,7 @@ describe("GenreDetailsSuite", async () => {
 
     test('Check correct release query', () => {
         const queryObject = {}
-        queryObject.releaseDateTab = 0
+        queryObject.releaseDateTab = '0'
 
         //Release date 1995-12-17 first tab
         queryObject.releaseDate = new Date("1995-12-17T03:24:00")
@@ -425,7 +434,7 @@ describe("GenreDetailsSuite", async () => {
         expect(createReleaseDateQuery(queryObject)).toEqual('release_date_tab=0&')
 
         //Release date min null and second tab and release date max 1995-12-17
-        queryObject.releaseDateTab = 1
+        queryObject.releaseDateTab = '1'
         queryObject.releaseDateMax = new Date("1995-12-17T03:24:00")
         expect(createReleaseDateQuery(queryObject)).toEqual('release_date_tab=1&release_date_max=1995-12-17&')
     })
@@ -500,5 +509,112 @@ describe("GenreDetailsSuite", async () => {
 
         expect(primaryLanguageQuery(queryObject)).toEqual("with_original_language=ja&")
 
+    })
+
+
+    test('Check TMDB releaseDateQuery', () => {
+        let releaseDateTab = '0'
+        const releaseDate = '2025-03-28'
+        let releaseDateMin = undefined
+        let releaseDateMax = undefined
+
+        expect(createTMDBReleaseDateQuery(releaseDateTab, releaseDate, releaseDateMin, releaseDateMax)).toEqual(`primary_release_date.gte=${releaseDate}&primary_release_date.lte=${releaseDate}&`)
+
+        releaseDateMin = '2025-03-21'
+        releaseDateMax = '2025-01-21'
+
+        expect(createTMDBReleaseDateQuery(releaseDateTab, releaseDate, releaseDateMin, releaseDateMax)).toEqual(`primary_release_date.gte=${releaseDate}&primary_release_date.lte=${releaseDate}&`)
+
+
+        releaseDateTab = '1'
+        expect(createTMDBReleaseDateQuery(releaseDateTab, releaseDate, releaseDateMin, releaseDateMax)).toEqual(`primary_release_date.gte=${releaseDateMin}&primary_release_date.lte=${releaseDateMax}&`)
+
+
+    })
+
+    test('Check TMDB scoreQuery', () => {
+        let scoreMin = 3
+        let scoreMax = 7
+        let voteMin = 3
+        let voteMax = 12
+
+        expect(createTMDBScoreQuery(scoreMin,scoreMax, undefined, undefined)).toEqual(`vote_average.gte=3&vote_average.lte=7&`)
+        
+        expect(createTMDBScoreQuery(scoreMin,scoreMax, voteMin, undefined)).toEqual(`vote_average.gte=3&vote_average.lte=7&vote_count.gte=3&`)
+
+
+    })
+
+    test('Check TMDB genreQuery', () => {
+        let idList = [{id: 1, name: 'Action'}, {id: 2, name: 'Adventure'}]
+
+        expect(createTMDBGenreQuery(idList)).toEqual(`with_genres=1,2&`)
+
+    })
+
+    test('Check TMDB castQuery', () => {
+        let idList = [{id: 1, name: 'Adam'}, {id: 2, name: 'Eve'}]
+
+        expect(createTMDBCastQuery(idList)).toEqual(`with_cast=1,2&`)
+
+    })
+
+    test('Check TMDB sortQuery', () => {
+        let sortOption = 'popularity.asc'
+
+        expect(createTMDBSortQuery(sortOption)).toEqual(`sort_by=${sortOption}&`)
+
+    })
+
+    test('Check TMDB primary language query', () => {
+        let languageOption = 'ja'
+
+        expect(createTMDBPrimaryLanguageQuery(languageOption)).toEqual(`with_original_language=${languageOption}&`)
+
+    })
+
+
+    test('Check TMDB Page query', () => {
+        expect(createTMDBPageQuery(3)).toEqual(`page=3&`)
+    })
+
+    test('TMDB query generator', () => {
+        const queryObject = {
+            "include_adult": false,
+            "include_video": false,
+            "page": 1,
+            "language": "ja",
+            "sort_by": "vote_count.asc",
+            "with_genres": [
+                {
+                    "id": 16,
+                    "name": "Animation"
+                },
+                {
+                    "id": 12,
+                    "name": "Adventure"
+                }
+            ],
+            "with_cast": [
+                {
+                    "id": 10297,
+                    "name": "Matthew McConaughey"
+                }
+            ],
+            "releaseDateTab": "0",
+            "releaseDate": "2015-12-01",
+            "releaseDateMin": null,
+            "releaseDateMax": null,
+            "score": {
+                "min": 2,
+                "max": 5
+            },
+            "vote": {
+                "min": null,
+                "max": null
+            }
+        }
+
+        expect(createTMDBQuery(queryObject)).toEqual(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&primary_release_date.gte=${queryObject.releaseDate}&primary_release_date.lte=${queryObject.releaseDate}&vote_average.gte=${queryObject.score.min}&vote_average.lte=${queryObject.score.max}&with_genres=${queryObject.with_genres[0].id},${queryObject.with_genres[1].id}&with_cast=${queryObject.with_cast[0].id}&sort_by=${queryObject.sort_by}&with_original_language=${queryObject.language}&page=${queryObject.page}`)
     })
 });

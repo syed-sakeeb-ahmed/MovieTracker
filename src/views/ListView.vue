@@ -16,7 +16,7 @@ const router = useRouter()
 
 
 
-
+console.log(route.query)
 
 
 

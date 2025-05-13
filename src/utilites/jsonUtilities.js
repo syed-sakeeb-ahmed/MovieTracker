@@ -1334,15 +1334,19 @@ export async function getCastObjFromQueryString(str) {
 
 export const createReleaseDateQuery = (queryObject) => {
     let queryString = "";
+    console.log(typeof queryObject.releaseDateTab);
     //Handle release dates
-    if (queryObject.releaseDateTab === 0) {
+    if (queryObject.releaseDateTab === "0" && queryObject.releaseDate) {
         queryString += "release_date_tab=0&";
         if (queryObject.releaseDate !== null) {
             queryString += `release_date=${queryObject.releaseDate
                 .toISOString()
                 .slice(0, 10)}&`;
         }
-    } else if (queryObject.releaseDateTab === 1) {
+    } else if (
+        queryObject.releaseDateTab === "1" &&
+        (queryObject.releaseDateMin || queryObject.releaseDateMax)
+    ) {
         queryString += "release_date_tab=1&";
         if (queryObject.releaseDateMin) {
             queryString += `release_date_min=${queryObject.releaseDateMin
@@ -1380,46 +1384,181 @@ export const createGenreQuery = (queryObject) => {
     let queryString = "";
     //[{id: 21, name: 'Action'}] this is the format in queryobject
     if (queryObject.with_genres.length > 0) {
-        queryString += 'with_genres='
+        queryString += "with_genres=";
         for (const item of queryObject.with_genres) {
-            queryString += `${item.id},`
+            queryString += `${item.id},`;
         }
         queryString = queryString.substring(0, queryString.length - 1);
-        queryString += "&"
+        queryString += "&";
     }
-    return queryString
+    return queryString;
 };
 
 export const createCastQuery = (queryObject) => {
-    let queryString = ""
+    let queryString = "";
     //Format is [{id: 21, name: Matthew McConaughey}] in query object
     if (queryObject.with_cast.length > 0) {
-        queryString += "with_cast="
+        queryString += "with_cast=";
         for (const item of queryObject.with_cast) {
-            queryString += `${item.id}:${item.name},`
+            queryString += `${item.id}:${item.name},`;
         }
         queryString = queryString.substring(0, queryString.length - 1);
-        queryString += '&'
+        queryString += "&";
     }
-    return queryString
-}
+    return queryString;
+};
 
 export const createSortQuery = (queryObject) => {
-    let stringQuery = ""
+    let stringQuery = "";
     if (queryObject.sort_by !== null) {
-        stringQuery += "sort_by="
-        stringQuery += queryObject.sort_by
-        stringQuery += "&"
+        stringQuery += "sort_by=";
+        stringQuery += queryObject.sort_by;
+        stringQuery += "&";
     }
-    return stringQuery
-}
+    return stringQuery;
+};
 
 export const primaryLanguageQuery = (queryObject) => {
-    let stringQuery = ""
+    let stringQuery = "";
     if (queryObject.language !== null) {
-        stringQuery += "with_original_language="
-        stringQuery += queryObject.language
-        stringQuery += "&"
+        stringQuery += "with_original_language=";
+        stringQuery += queryObject.language;
+        stringQuery += "&";
     }
-    return stringQuery
+    return stringQuery;
+};
+
+export const createTMDBReleaseDateQuery = (
+    releaseDateTab,
+    releaseDate,
+    releaseDateMin,
+    releaseDateMax
+) => {
+    //All params are strings
+
+    let queryString = "";
+
+    if (releaseDateTab === "0") {
+        if (releaseDate) {
+            queryString += `primary_release_date.gte=${releaseDate}&primary_release_date.lte=${releaseDate}&`;
+        }
+    } else if (releaseDateTab === "1") {
+        if (releaseDateMin) {
+            queryString += `primary_release_date.gte=${releaseDateMin}&`;
+        }
+        if (releaseDateMax) {
+            queryString += `primary_release_date.lte=${releaseDateMax}&`;
+        }
+    }
+    return queryString;
+};
+
+export const createTMDBScoreQuery = (scoreMin, scoreMax, voteMin, voteMax) => {
+    //Input is in either string or num format
+    let queryString = "";
+    if (scoreMin) {
+        queryString += `vote_average.gte=${scoreMin}&`;
+    }
+    if (scoreMax) {
+        queryString += `vote_average.lte=${scoreMax}&`;
+    }
+    if (voteMin) {
+        queryString += `vote_count.gte=${voteMin}&`;
+    }
+    if (voteMax) {
+        queryString += `vote_count.lte=${voteMax}&`;
+    }
+
+    return queryString;
+};
+
+export const createTMDBGenreQuery = (idList) => {
+    //idList format: [{id: 21, name: Action}, {id: 32, name: Adventure}, ...]
+    let queryString = "";
+
+    if (idList.length > 0) {
+        queryString += "with_genres=";
+        for (const item of idList) {
+            queryString += `${item.id},`;
+        }
+        queryString = queryString.substring(0, queryString.length - 1);
+        queryString += "&";
+    }
+
+    //Id list is in this format 12,32,13,22
+    return queryString;
+};
+
+export const createTMDBCastQuery = (castIDList) => {
+    //castIDList format: [{id: 21, name: Adam}, {id: 32, name: Eve}, ...]
+    let queryString = "";
+
+    if (castIDList.length > 0) {
+        queryString += "with_cast="
+        for (const item of castIDList) {
+            queryString += `${item.id},`;
+        }
+        queryString = queryString.substring(0, queryString.length - 1);
+        queryString += "&";
+    }
+
+    return queryString;
+};
+
+export const createTMDBSortQuery = (sortOption) => {
+    let queryString = `sort_by=popularity.desc&`;
+
+    if (sortOption) {
+        queryString = `sort_by=${sortOption}&`;
+    }
+
+    return queryString;
+};
+
+export const createTMDBPrimaryLanguageQuery = (languageOption) => {
+    return `with_original_language=${languageOption}&`;
+};
+
+export const createTMDBPageQuery = (pageNum) => {
+    return `page=${pageNum}&`
 }
+
+export const createTMDBQuery = (queryObject) => {
+    let queryString = `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&`;
+
+    //Release Date Query
+    queryString += createTMDBReleaseDateQuery(
+        queryObject.releaseDateTab,
+        queryObject.releaseDate,
+        queryObject.releaseDateMin,
+        queryObject.releaseDateMax
+    );
+
+    //Score Query
+    queryString += createTMDBScoreQuery(
+        queryObject.score.min,
+        queryObject.score.max,
+        queryObject.vote.min,
+        queryObject.vote.max
+    );
+
+    //Genre Query
+    queryString += createTMDBGenreQuery(queryObject.with_genres);
+
+    //Cast Query
+    queryString += createTMDBCastQuery(queryObject.with_cast);
+
+    //Sort Query
+    queryString += createTMDBSortQuery(queryObject.sort_by)
+
+    //Primary Language Query
+    queryString += createTMDBPrimaryLanguageQuery(queryObject.language)
+
+    //Page Query
+    queryString += createTMDBPageQuery(queryObject.page)
+
+    queryString = queryString.substring(0, queryString.length - 1)
+
+
+    return queryString
+};
