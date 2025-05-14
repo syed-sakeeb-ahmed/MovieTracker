@@ -1,8 +1,8 @@
 <script setup>
 
 import { ref, reactive,watch, Suspense, defineAsyncComponent } from 'vue';
-import {createReleaseDateQuery, createScoreQuery, createGenreQuery, createCastQuery, createSortQuery, primaryLanguageQuery} from "@/utilites/jsonUtilities"
-import { buildQuery, genresDict, languages, SECRET } from '@/utilites/jsonUtilities';
+import {createInternalQueryAndPush, createReleaseDateQuery, createScoreQuery, createGenreQuery, createCastQuery, createSortQuery} from "@/utilites/jsonUtilities"
+import { buildQuery, genresDict, languages, SECRET, createInternalQuery } from '@/utilites/jsonUtilities';
 import {queryObject} from '@/store'
 import { Form } from '@primevue/forms';
 
@@ -14,7 +14,7 @@ import ASRelease from './ASRelease.vue'
 import ASScore from './ASScore.vue'
 import ASLanguage from './ASLanguage.vue';
 
-import {useRoute} from 'vue-router'
+import {useRouter, useRoute} from 'vue-router'
 
 const isAdvancedSearchOpen = ref(true);
 const selectedOption = ref(null);
@@ -26,7 +26,8 @@ const toggleAdvancedSearch = () => {
 }
 
 const route = useRoute()
-    console.log(route.query.sorhted_by, route.query.shit, route.query.pop)
+    //console.log(route.query.sorhted_by, route.query.shit, route.query.pop)
+const router = useRouter()
 
 const initialValues = reactive({
     releaseDate: route.query.rd,
@@ -123,23 +124,18 @@ queryObject.vote.min = (route.query.vote_min) ? route.query.vote_min : null
 queryObject.vote.max = (route.query.vote_max) ? route.query.vote_max : null
 
 
-//Create query for internal use
-const createQuery = (queryObject) => {
-    let queryString = ""
-    
-    queryString += createReleaseDateQuery(queryObject)
-    queryString += createScoreQuery(queryObject)
-    queryString += createGenreQuery(queryObject)
-    queryString += createCastQuery(queryObject)
-    queryString += createSortQuery(queryObject)
-    queryString += primaryLanguageQuery(queryObject)
-    
-    queryString = queryString.substring(0, queryString.length - 1);
-    return queryString
+//Page value
+queryObject.page = (route.query.page) ? Number(route.query.page) : 1
+
+const onSearchClick = () => {
+    queryObject.page = 1
+    queryObject.searchCount += 1
+    createInternalQueryAndPush(router, queryObject)
 }
 
+
 const logQuery = () => {
-    console.log(createQuery(queryObject))
+    console.log(createInternalQuery(queryObject))
     console.log(queryObject.with_genres)
 }
 
@@ -223,7 +219,7 @@ const changeLanguage = (arg) => {
 
         </div>
         <div class="flex mt-3">
-            <button @click="logQuery"
+            <button @click="onSearchClick"
                 class="bg-[#f3f3f3] w-[142px] h-[34px] pl-[16px] pr-[16px] m-[4px] rounded-[5px] mr-1 text-md text-[15px]">
                 Search
             </button>

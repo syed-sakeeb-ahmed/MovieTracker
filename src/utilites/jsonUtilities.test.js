@@ -29,7 +29,9 @@ import {
     createTMDBCastQuery,
     createTMDBPrimaryLanguageQuery,
     createTMDBQuery,
-    createTMDBPageQuery
+    createPageQuery,
+    createInternalQuery,
+    originalLanguageQuery
 } from "./jsonUtilities";
 import { describe, test, expect } from "vitest";
 
@@ -426,7 +428,7 @@ describe("GenreDetailsSuite", async () => {
         queryObject.releaseDateTab = '0'
 
         //Release date 1995-12-17 first tab
-        queryObject.releaseDate = new Date("1995-12-17T03:24:00")
+        queryObject.releaseDate = new Date("1995-12-17T03:24:00").toISOString().slice(0,10)
         expect(createReleaseDateQuery(queryObject)).toEqual('release_date_tab=0&release_date=1995-12-17&')
         
         //Release date null and first tab
@@ -435,7 +437,7 @@ describe("GenreDetailsSuite", async () => {
 
         //Release date min null and second tab and release date max 1995-12-17
         queryObject.releaseDateTab = '1'
-        queryObject.releaseDateMax = new Date("1995-12-17T03:24:00")
+        queryObject.releaseDateMax = new Date("1995-12-17T03:24:00").toISOString.slice(0,10)
         expect(createReleaseDateQuery(queryObject)).toEqual('release_date_tab=1&release_date_max=1995-12-17&')
     })
 
@@ -507,7 +509,7 @@ describe("GenreDetailsSuite", async () => {
         const queryObject = {}
         queryObject.language = "ja"
 
-        expect(primaryLanguageQuery(queryObject)).toEqual("with_original_language=ja&")
+        expect(originalLanguageQuery(queryObject)).toEqual("with_original_language=ja&")
 
     })
 
@@ -575,7 +577,7 @@ describe("GenreDetailsSuite", async () => {
 
 
     test('Check TMDB Page query', () => {
-        expect(createTMDBPageQuery(3)).toEqual(`page=3&`)
+        expect(createPageQuery(3)).toEqual(`page=3&`)
     })
 
     test('TMDB query generator', () => {
@@ -616,5 +618,48 @@ describe("GenreDetailsSuite", async () => {
         }
 
         expect(createTMDBQuery(queryObject)).toEqual(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&primary_release_date.gte=${queryObject.releaseDate}&primary_release_date.lte=${queryObject.releaseDate}&vote_average.gte=${queryObject.score.min}&vote_average.lte=${queryObject.score.max}&with_genres=${queryObject.with_genres[0].id},${queryObject.with_genres[1].id}&with_cast=${queryObject.with_cast[0].id}&sort_by=${queryObject.sort_by}&with_original_language=${queryObject.language}&page=${queryObject.page}`)
+    })
+
+
+
+
+    test('Internal query generator', () => {
+        const queryObject = {
+            "include_adult": false,
+            "include_video": false,
+            "page": 1,
+            "language": "ja",
+            "sort_by": "vote_count.asc",
+            "with_genres": [
+                {
+                    "id": 16,
+                    "name": "Animation"
+                },
+                {
+                    "id": 12,
+                    "name": "Adventure"
+                }
+            ],
+            "with_cast": [
+                {
+                    "id": 10297,
+                    "name": "Matthew McConaughey"
+                }
+            ],
+            "releaseDateTab": "0",
+            "releaseDate": "2015-12-01",
+            "releaseDateMin": null,
+            "releaseDateMax": null,
+            "score": {
+                "min": 2,
+                "max": 5
+            },
+            "vote": {
+                "min": null,
+                "max": null
+            }
+        }
+
+        expect(createInternalQuery(queryObject)).toEqual(`?release_date_tab=0&release_date=${queryObject.releaseDate}&score_min=${queryObject.score.min}&score_max=${queryObject.score.max}&with_genres=${queryObject.with_genres[0].id},${queryObject.with_genres[1].id}&with_cast=${queryObject.with_cast[0].id}:${queryObject.with_cast[0].name}&sort_by=${queryObject.sort_by}&with_original_language=${queryObject.language}`)
     })
 });

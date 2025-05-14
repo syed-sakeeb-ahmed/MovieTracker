@@ -1,4 +1,4 @@
-import { reactive } from "vue";
+import { ref, reactive } from "vue";
 
 export const menuToggle = reactive({
     isOpen: false
@@ -8,6 +8,7 @@ export const queryObject = reactive({
     include_adult: false,
     include_video: false,
     page: 1,
+    searchCount: 0,
     language: 'en-US',
     sort_by: 'popularity.desc'
 })

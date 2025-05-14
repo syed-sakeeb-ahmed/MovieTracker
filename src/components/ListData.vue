@@ -1,20 +1,57 @@
 <script setup>
 
-import { ref, reactive, watch, computed } from 'vue'
+import { ref, reactive, watch, computed, watchEffect } from 'vue'
+import {createTMDBQuery, SECRET} from '@/utilites/jsonUtilities'
 
-const props = defineProps(['queryResults', 'cumulativeEntries'])
+import { queryObject } from '@/store'
 
-if (props.queryResults !== null) console.log(props.queryResults.results.length)
+const { page, searchCount } = defineProps(['page', 'searchCount'])
 
 
+const queryResults = ref(null)
+
+watch([() => page, () => searchCount], async () => {
+    const queryString = createTMDBQuery(queryObject)
+
+    const options = {
+        method: 'GET',
+        headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer ' + SECRET
+        }
+    };
+
+    queryResults.value = await fetch(queryString, options)
+        .then(res => res.json())
+        .catch(err => { throw new Error("Failed to fetch discover information" + err) });
+
+
+}, {immediate: true})
+
+// watch(queryObject.page, async () => {
+//     const queryString = createTMDBQuery(queryObject)
+
+//     const options = {
+//         method: 'GET',
+//         headers: {
+//             accept: 'application/json',
+//             Authorization: 'Bearer ' + SECRET
+//         }
+//     };
+
+//     queryResults.value = await fetch(queryString, options)
+//         .then(res => res.json())
+//         .catch(err => { throw new Error("Failed to fetch discover information" + err) });
+
+// })
 </script>
 
 <template>
-    <div v-if="props.queryResults !== null">
+    <div v-if="queryResults !== null">
 
-        <div v-for="item,index in props.queryResults.results" :key="item.id"  class="w-[1060px] flex justify-center">
+        <div v-for="item,index in queryResults.results" :key="item.id"  class="w-[1060px] flex justify-center">
             <div class=" w-[75px] h-[94px] flex items-center justify-center">
-                {{ index + ((props.queryResults.page - 1) * 20) + 1 }}
+                {{ index + ((queryResults.page - 1) * 20) + 1 }}
             </div>
             <div class=" w-[645px] h-[94px] flex pt-[12px] pb-[12px]">
                 <div class="w-[50px] h-[70px] bg-slate-300 ml-[12px] mr-[8px]">

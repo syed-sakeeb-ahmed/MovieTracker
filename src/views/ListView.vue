@@ -5,7 +5,7 @@ import ListData from '@/components/ListData.vue';
 
 import { modifiedQueryObject, queryObject } from '@/store';
 import { watch, ref } from 'vue';
-import { buildQuery, genresDict, languages, SECRET } from '@/utilites/jsonUtilities';
+import { createInternalQueryAndPush, buildQuery, createTMDBReleaseDateQuery, genresDict, languages, SECRET } from '@/utilites/jsonUtilities';
 import { useRoute, useRouter } from 'vue-router'
 
 const queryResults = ref(null)
@@ -14,10 +14,7 @@ const helloWorld = ref(null)
 const route = useRoute()
 const router = useRouter()
 
-
-
-console.log(route.query)
-
+const url = ref('myURL')
 
 
 
@@ -62,13 +59,17 @@ const getQueryJSON = async (queryObject) => {
 getQueryJSON(queryObject);
 
 const fetchNextPage = () => {
-    queryObject.page = queryObject.page + 1
-    getQueryJSON(queryObject)
+    if (queryObject.page < 500) {
+        queryObject.page = queryObject.page + 1
+        createInternalQueryAndPush(router, queryObject)
+    }
 }
 
 const fetchPreviousPage = () => {
-    queryObject.page = queryObject.page - 1
-    getQueryJSON(queryObject)
+    if (queryObject.page > 1) {
+        queryObject.page -= 1
+        createInternalQueryAndPush(router, queryObject)
+    }
 }
 
 const fetchHelloWorld = async () => {
@@ -84,9 +85,16 @@ const fetchHelloWorld = async () => {
 fetchHelloWorld()
 
 
+
+
 watch(queryObject, () => {
     console.log("Query object changed: " + queryObject)
 })
+
+const handleSearch = () => {
+    console.log("Search has been clicked!!!")
+    url.value = "newURL"
+}
 
 
 </script>
@@ -99,12 +107,12 @@ watch(queryObject, () => {
         </div>
         <div class="bg-red-500">{{ helloWorld }}</div>
         <button @click="fetchNextPage" class="bg-amber-500">Next Page</button>
-        <button v-if="queryResults !== null && queryResults.page !== 1" @click="fetchPreviousPage"
+        <button v-if="queryObject.page > 1" @click="fetchPreviousPage"
             class="bg-amber-500">Prev
             Page</button>
-        <Search />
+        <Search @search-clicked="handleSearch"/>
         <ListCol />
-        <ListData :query-results="queryResults" />
+        <ListData :page="queryObject.page" :search-count="queryObject.searchCount"/>
 
     </div>
 

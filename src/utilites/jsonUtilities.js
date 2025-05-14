@@ -1334,14 +1334,12 @@ export async function getCastObjFromQueryString(str) {
 
 export const createReleaseDateQuery = (queryObject) => {
     let queryString = "";
-    console.log(typeof queryObject.releaseDateTab);
+
     //Handle release dates
     if (queryObject.releaseDateTab === "0" && queryObject.releaseDate) {
         queryString += "release_date_tab=0&";
-        if (queryObject.releaseDate !== null) {
-            queryString += `release_date=${queryObject.releaseDate
-                .toISOString()
-                .slice(0, 10)}&`;
+        if (queryObject.releaseDate) {
+            queryString += `release_date=${queryObject.releaseDate}&`;
         }
     } else if (
         queryObject.releaseDateTab === "1" &&
@@ -1349,14 +1347,10 @@ export const createReleaseDateQuery = (queryObject) => {
     ) {
         queryString += "release_date_tab=1&";
         if (queryObject.releaseDateMin) {
-            queryString += `release_date_min=${queryObject.releaseDateMin
-                .toISOString()
-                .slice(0, 10)}&`;
+            queryString += `release_date_min=${queryObject.releaseDateMin}&`;
         }
         if (queryObject.releaseDateMax) {
-            queryString += `release_date_max=${queryObject.releaseDateMax
-                .toISOString()
-                .slice(0, 10)}&`;
+            queryString += `release_date_max=${queryObject.releaseDateMax}&`;
         }
     }
 
@@ -1365,16 +1359,16 @@ export const createReleaseDateQuery = (queryObject) => {
 
 export const createScoreQuery = (queryObject) => {
     let queryString = "";
-    if (queryObject.score.min !== null) {
+    if (queryObject.score.min) {
         queryString += `score_min=${queryObject.score.min}&`;
     }
-    if (queryObject.score.max !== null) {
+    if (queryObject.score.max) {
         queryString += `score_max=${queryObject.score.max}&`;
     }
-    if (queryObject.vote.min !== null) {
+    if (queryObject.vote.min) {
         queryString += `vote_min=${queryObject.vote.min}&`;
     }
-    if (queryObject.vote.max !== null) {
+    if (queryObject.vote.max) {
         queryString += `vote_max=${queryObject.vote.max}&`;
     }
     return queryString;
@@ -1382,7 +1376,7 @@ export const createScoreQuery = (queryObject) => {
 
 export const createGenreQuery = (queryObject) => {
     let queryString = "";
-    //[{id: 21, name: 'Action'}] this is the format in queryobject
+    //[{id: 21, name: 'Action'}, {id: 21, name: 'Adventure'}, ...] this is the format in queryobject
     if (queryObject.with_genres.length > 0) {
         queryString += "with_genres=";
         for (const item of queryObject.with_genres) {
@@ -1410,7 +1404,7 @@ export const createCastQuery = (queryObject) => {
 
 export const createSortQuery = (queryObject) => {
     let stringQuery = "";
-    if (queryObject.sort_by !== null) {
+    if (queryObject.sort_by) {
         stringQuery += "sort_by=";
         stringQuery += queryObject.sort_by;
         stringQuery += "&";
@@ -1418,7 +1412,7 @@ export const createSortQuery = (queryObject) => {
     return stringQuery;
 };
 
-export const primaryLanguageQuery = (queryObject) => {
+export const originalLanguageQuery = (queryObject) => {
     let stringQuery = "";
     if (queryObject.language !== null) {
         stringQuery += "with_original_language=";
@@ -1519,7 +1513,7 @@ export const createTMDBPrimaryLanguageQuery = (languageOption) => {
     return `with_original_language=${languageOption}&`;
 };
 
-export const createTMDBPageQuery = (pageNum) => {
+export const createPageQuery = (pageNum) => {
     return `page=${pageNum}&`
 }
 
@@ -1555,10 +1549,32 @@ export const createTMDBQuery = (queryObject) => {
     queryString += createTMDBPrimaryLanguageQuery(queryObject.language)
 
     //Page Query
-    queryString += createTMDBPageQuery(queryObject.page)
+    queryString += createPageQuery(queryObject.page)
 
     queryString = queryString.substring(0, queryString.length - 1)
 
 
     return queryString
 };
+
+
+//Create query for internal use
+export const createInternalQuery = (queryObject) => {
+    let queryString = "/list/?"
+    
+    queryString += createReleaseDateQuery(queryObject)
+    queryString += createScoreQuery(queryObject)
+    queryString += createGenreQuery(queryObject)
+    queryString += createCastQuery(queryObject)
+    queryString += createSortQuery(queryObject)
+    queryString += originalLanguageQuery(queryObject)
+    queryString += createPageQuery(queryObject.page)
+    
+    queryString = queryString.substring(0, queryString.length - 1);
+    return queryString
+}
+
+export const createInternalQueryAndPush = (router, queryObject) => {
+    const internalQueryString = createInternalQuery(queryObject)
+    router.push(internalQueryString)
+}
