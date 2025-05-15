@@ -214,6 +214,16 @@ const changeLanguage = (arg) => {
     queryObject.language = arg
 }
 
+const searchValue = ref("ff")
+
+const clearSearchInput = () => {
+    searchValue.value = ""
+}
+
+watch(searchValue, () => {
+    console.log(searchValue.value)
+})
+
 </script>
 
 <template>
@@ -221,16 +231,19 @@ const changeLanguage = (arg) => {
         <Accordion v-model:value="active">
             <AccordionPanel value="0">
         <AccordionHeader asChild>
-            <div class="flex border-2 rounded-full border-solid border-black p-3 w-[582px] h-[46px] pt-[5px] pb-[5px]">
+            <div class="flex border-[2px] rounded-full border-solid border-[#ebebeb] p-3 w-[582px] h-[46px] pt-[5px] pb-[5px] hover:shadow-[0_0_3px_rgba(0,0,0,0.25)]">
             <div class="flex items-center">
                 <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
             </div>
 
             <input class="
-            focus:outline-none w-full indent-2" type="search" id="search" name="search">
+            focus:outline-none w-full indent-2" type="text" id="search" name="search" v-model="searchValue">
+            <div class="border-r-[1px] border-[#777777] flex items-center mr-[10px]" v-if="searchValue !== ''">
+                <div class="pi pi-times mr-[10px] cursor-pointer text-[#777777]" @click="clearSearchInput"></div>
+            </div>
             <div class="w-[32px] h-[32px]">
                 <button @click="toggleAdvancedSearch"
-                    class="bg-red-500 rounded-full flex items-center justify-center h-[32px] w-[32px]">
+                    class="cursor-pointer bg-red-500 rounded-full flex items-center justify-center h-[32px] w-[32px]">
                     <font-awesome-icon :icon="['fas', 'plus']" class=" text-white" />
                 </button>
             </div>

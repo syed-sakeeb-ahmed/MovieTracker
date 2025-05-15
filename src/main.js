@@ -30,6 +30,9 @@ import Accordion from 'primevue/accordion';
 import AccordionPanel from 'primevue/accordionpanel';
 import AccordionHeader from 'primevue/accordionheader';
 import AccordionContent from 'primevue/accordioncontent';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
+import InputText from 'primevue/inputtext';
 
 
 
@@ -92,6 +95,9 @@ app.component("Accordion", Accordion)
 app.component("AccordionHeader", AccordionHeader)
 app.component("AccordionPanel", AccordionPanel)
 app.component("AccordionContent", AccordionContent)
+app.component("IconField", IconField)
+app.component("InputIcon", InputIcon)
+app.component("InputText", InputText)
 
 
 
