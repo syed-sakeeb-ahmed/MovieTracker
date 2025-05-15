@@ -15,9 +15,14 @@ const toggle = (event) => {
 }
 
 //Value is null when <InputText> is empty
-watch(score, () => {
-    //console.log(score.min)
-    // console.log(typeof score.min.value)
+watch([() => queryObject.score.max, () => queryObject.score.min], () => {
+    score.min = queryObject.score.min
+    score.max = queryObject.score.max
+})
+
+watch([() => queryObject.vote.max, () => queryObject.vote.min], () => {
+    vote.min = queryObject.vote.min
+    vote.max = queryObject.vote.max
 })
 
 

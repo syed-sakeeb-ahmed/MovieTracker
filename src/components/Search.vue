@@ -101,7 +101,26 @@ const getCastFromURL = (castQueryString) => {
     return outputArr
 }
 
-//Setup query object on load
+
+
+const onSearchClick = () => {
+    queryObject.page = 1
+    queryObject.searchCount += 1
+    createInternalQueryAndPush(router, queryObject)
+}
+
+
+const logQuery = () => {
+    console.log(createInternalQuery(queryObject))
+    console.log(queryObject.with_genres)
+}
+
+watch(queryObject, () => {
+    console.log(queryObject)
+})
+
+watch(() => route.fullPath, () => {
+    //Setup query object on load
 queryObject.language = (route.query.with_original_language) ? route.query.with_original_language : 'en'
 queryObject.sort_by = (route.query.sort_by) ? route.query.sort_by : 'popularity.desc'
 queryObject.with_genres = (route.query.with_genres) ? getGenresFromURL(route.query.with_genres) : []
@@ -124,24 +143,12 @@ queryObject.vote.min = (route.query.vote_min) ? route.query.vote_min : null
 queryObject.vote.max = (route.query.vote_max) ? route.query.vote_max : null
 
 
-//Page value
+//Page value and Search Count
 queryObject.page = (route.query.page) ? Number(route.query.page) : 1
-
-const onSearchClick = () => {
-    queryObject.page = 1
-    queryObject.searchCount += 1
-    createInternalQueryAndPush(router, queryObject)
-}
+queryObject.searchCount = (route.query.search_count) ? Number(route.query.search_count) : 0
 
 
-const logQuery = () => {
-    console.log(createInternalQuery(queryObject))
-    console.log(queryObject.with_genres)
-}
-
-watch(queryObject, () => {
-    console.log(queryObject)
-})
+}, {immediate: true})
 
 //Emit callbacks
 const changeGenre = (arg) => {
@@ -202,7 +209,17 @@ const changeLanguage = (arg) => {
 
 <template>
     <div class="flex flex-col justify-center items-center">
-
+        <Accordion value="0">
+            <AccordionPanel value="0">
+        <AccordionHeader>Header I</AccordionHeader>
+        <AccordionContent>
+            <p class="m-0">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+        </AccordionContent>
+    </AccordionPanel>
+        </Accordion>
         <div class="flex border-2 rounded-full border-solid border-black p-3 w-[582px] h-[46px] pt-[5px] pb-[5px]">
             <div class="flex items-center">
                 <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
@@ -218,15 +235,7 @@ const changeLanguage = (arg) => {
             </div>
 
         </div>
-        <div class="flex mt-3">
-            <button @click="onSearchClick"
-                class="bg-[#f3f3f3] w-[142px] h-[34px] pl-[16px] pr-[16px] m-[4px] rounded-[5px] mr-1 text-md text-[15px]">
-                Search
-            </button>
-            <button class="bg-[#f3f3f3] w-[142px] h-[34px] pl-[16px] pr-[16px] m-[4px] rounded-[5px] ml-1 text-[15px]">
-                I'm Feeling Lucky
-            </button>
-        </div>
+        
         
         <div class="flex flex-col" v-if="isAdvancedSearchOpen">
             <!-- <Form v-slot="$form" :initialValues :resolver @submit="onFormSubmit" class="flex flex-col gap-4 w-full sm:w-56"> -->
@@ -248,6 +257,16 @@ const changeLanguage = (arg) => {
             <ASSort @value-changed="changeSort"/>
             <ASLanguage @value-changed="changeLanguage"/>
             <!-- </Form> -->
+        </div>
+
+        <div class="flex mt-3">
+            <button @click="onSearchClick"
+                class="bg-[#f3f3f3] w-[142px] h-[34px] pl-[16px] pr-[16px] m-[4px] rounded-[5px] mr-1 text-md text-[15px]">
+                Search
+            </button>
+            <button class="bg-[#f3f3f3] w-[142px] h-[34px] pl-[16px] pr-[16px] m-[4px] rounded-[5px] ml-1 text-[15px]">
+                I'm Feeling Lucky
+            </button>
         </div>
     </div>
 </template>

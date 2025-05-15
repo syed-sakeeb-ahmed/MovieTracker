@@ -13,6 +13,22 @@ const toggle = (event) => {
     op.value.toggle(event);
 }
 
+watch(() => queryObject.releaseDateTab, () => {
+    val.value = queryObject.releaseDateTab
+})
+
+watch(() => queryObject.releaseDate, () => {
+    releaseDate.value = queryObject.releaseDate
+})
+
+watch(() => queryObject.releaseDateMin, () => {
+    releaseDateMin.value = queryObject.releaseDateMin
+})
+
+watch(() => queryObject.releaseDateMax, () => {
+    releaseDateMax.value = queryObject.releaseDateMax
+})
+
 const emit = defineEmits(['value-changed-tab', 'value-changed-min', 'value-changed-max', 'value-changed-rd'])
 
 const changeValue = (arg) => {

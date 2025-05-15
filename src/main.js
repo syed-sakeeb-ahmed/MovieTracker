@@ -26,6 +26,11 @@ import Select from 'primevue/select';
 import InputNumber from 'primevue/inputnumber';
 import Fieldset from 'primevue/fieldset';
 
+import Accordion from 'primevue/accordion';
+import AccordionPanel from 'primevue/accordionpanel';
+import AccordionHeader from 'primevue/accordionheader';
+import AccordionContent from 'primevue/accordioncontent';
+
 
 
 
@@ -83,6 +88,10 @@ app.component('AutoComplete', AutoComplete);
 app.component('Select', Select);
 app.component('InputNumber', InputNumber);
 app.component("Fieldset", Fieldset)
+app.component("Accordion", Accordion)
+app.component("AccordionHeader", AccordionHeader)
+app.component("AccordionPanel", AccordionPanel)
+app.component("AccordionContent", AccordionContent)
 
 
 

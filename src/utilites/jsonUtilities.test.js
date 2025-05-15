@@ -627,6 +627,7 @@ describe("GenreDetailsSuite", async () => {
         const queryObject = {
             "include_adult": false,
             "include_video": false,
+            "searchCount": 1,
             "page": 1,
             "language": "ja",
             "sort_by": "vote_count.asc",
@@ -660,6 +661,6 @@ describe("GenreDetailsSuite", async () => {
             }
         }
 
-        expect(createInternalQuery(queryObject)).toEqual(`?release_date_tab=0&release_date=${queryObject.releaseDate}&score_min=${queryObject.score.min}&score_max=${queryObject.score.max}&with_genres=${queryObject.with_genres[0].id},${queryObject.with_genres[1].id}&with_cast=${queryObject.with_cast[0].id}:${queryObject.with_cast[0].name}&sort_by=${queryObject.sort_by}&with_original_language=${queryObject.language}`)
+        expect(createInternalQuery(queryObject)).toEqual(`/list/?release_date_tab=0&release_date=${queryObject.releaseDate}&score_min=${queryObject.score.min}&score_max=${queryObject.score.max}&with_genres=${queryObject.with_genres[0].id},${queryObject.with_genres[1].id}&with_cast=${queryObject.with_cast[0].id}:${queryObject.with_cast[0].name}&sort_by=${queryObject.sort_by}&with_original_language=${queryObject.language}&page=${queryObject.page}&search_count=${queryObject.searchCount}`)
     })
 });

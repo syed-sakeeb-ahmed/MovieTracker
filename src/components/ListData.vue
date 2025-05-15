@@ -6,6 +6,7 @@ import {createTMDBQuery, SECRET} from '@/utilites/jsonUtilities'
 import { queryObject } from '@/store'
 
 const { page, searchCount } = defineProps(['page', 'searchCount'])
+const emit = defineEmits(['loadedQuery'])
 
 
 const queryResults = ref(null)
@@ -25,6 +26,7 @@ watch([() => page, () => searchCount], async () => {
         .then(res => res.json())
         .catch(err => { throw new Error("Failed to fetch discover information" + err) });
 
+    emit('loadedQuery', queryResults.value.total_pages)
 
 }, {immediate: true})
 

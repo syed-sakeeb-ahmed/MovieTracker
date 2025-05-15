@@ -5,49 +5,14 @@ import { useRoute } from 'vue-router';
 import { FormField } from '@primevue/forms';
 import {queryObject} from '@/store'
 
-
-let genreObjectArray = ref(genres)
-
-
-const setGenreTitleArray = async () => {
-    const temp = await getGenreDetailJSON()
-    genreObjectArray = temp.genres
-}
-//setGenreTitleArray()
-
-const route = useRoute()
 const selectedArray = ref(queryObject.with_genres)
 
-const getDataFromURL = async () => {
-    if (route.query.with_genres !== undefined) {
-        const genreJSON = await getGenreDetailJSON()
-      const genreDict = createGenreDict(genreJSON)
-      const idList = getArrayFromQueryString(route.query.with_genres)
-      const selectedGenreObjectsFromURL = createGenreObjectsFromIDList(idList, genreDict)
-    selectedQueryResults.value = selectedGenreObjectsFromURL
-    }
-}
-//getDataFromURL()
 
-const selectedQueryResults = ref([])
-
-
-watch(selectedArray, async (newQuery, oldQuery) => {
-    for (const val of selectedArray.value)
-{
-    //console.log(val)
-}
+watch(() => queryObject.with_genres, () => {
+    selectedArray.value = queryObject.with_genres
     
 });
 
-//Items for popover
-const op = ref();
-const toggle = (event) => {
-    op.value.toggle(event);
-}
-const log = () => {
-console.log("Hug")
-}
 </script>
 
 <template>

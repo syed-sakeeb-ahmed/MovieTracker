@@ -16,8 +16,8 @@ console.log(JSON.stringify(queryObject.language))
 //   count++
 // }
 
-watch(selectedLanguage, () => {
-  console.log(selectedLanguage.value)
+watch(() => queryObject.language , () => {
+  selectedLanguage.value = queryObject.language
 })
 
 </script>

@@ -5,8 +5,8 @@ import { ref, watch } from 'vue';
 
 const selectedSortOption = ref(queryObject.sort_by)
 
-watch(selectedSortOption, () => {
-    console.log(selectedSortOption.value)
+watch(() => queryObject.sort_by, () => {
+    selectedSortOption.value = queryObject.sort_by
 })
 </script>
 

@@ -1422,6 +1422,10 @@ export const originalLanguageQuery = (queryObject) => {
     return stringQuery;
 };
 
+export const createSearchCountQuery = (queryObject) => {
+    return `search_count=${queryObject.searchCount}&`
+}
+
 export const createTMDBReleaseDateQuery = (
     releaseDateTab,
     releaseDate,
@@ -1569,6 +1573,7 @@ export const createInternalQuery = (queryObject) => {
     queryString += createSortQuery(queryObject)
     queryString += originalLanguageQuery(queryObject)
     queryString += createPageQuery(queryObject.page)
+    queryString += createSearchCountQuery(queryObject)
     
     queryString = queryString.substring(0, queryString.length - 1);
     return queryString
