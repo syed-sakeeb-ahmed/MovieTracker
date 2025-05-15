@@ -1,6 +1,6 @@
 <script setup>
 
-import { ref, reactive,watch, Suspense, defineAsyncComponent } from 'vue';
+import { ref, reactive,watch, Suspense, defineAsyncComponent, useTemplateRef, onMounted } from 'vue';
 import {createInternalQueryAndPush, createReleaseDateQuery, createScoreQuery, createGenreQuery, createCastQuery, createSortQuery} from "@/utilites/jsonUtilities"
 import { buildQuery, genresDict, languages, SECRET, createInternalQuery } from '@/utilites/jsonUtilities';
 import {queryObject} from '@/store'
@@ -16,13 +16,22 @@ import ASLanguage from './ASLanguage.vue';
 
 import {useRouter, useRoute} from 'vue-router'
 
+
+
 const isAdvancedSearchOpen = ref(true);
 const selectedOption = ref(null);
+const active = ref('0')
+const sortWidth = ref()
 
 
 const toggleAdvancedSearch = () => {
     console.log("Toggled Advanced Search")
-    isAdvancedSearchOpen.value = !isAdvancedSearchOpen.value;
+    if (active.value === '0') {
+        active.value = null
+    }
+    else if (!active.value) {
+        active.value = '0'
+    }
 }
 
 const route = useRoute()
@@ -209,18 +218,10 @@ const changeLanguage = (arg) => {
 
 <template>
     <div class="flex flex-col justify-center items-center">
-        <Accordion value="0">
+        <Accordion v-model:value="active">
             <AccordionPanel value="0">
-        <AccordionHeader>Header I</AccordionHeader>
-        <AccordionContent>
-            <p class="m-0">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-        </AccordionContent>
-    </AccordionPanel>
-        </Accordion>
-        <div class="flex border-2 rounded-full border-solid border-black p-3 w-[582px] h-[46px] pt-[5px] pb-[5px]">
+        <AccordionHeader asChild>
+            <div class="flex border-2 rounded-full border-solid border-black p-3 w-[582px] h-[46px] pt-[5px] pb-[5px]">
             <div class="flex items-center">
                 <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
             </div>
@@ -235,9 +236,9 @@ const changeLanguage = (arg) => {
             </div>
 
         </div>
-        
-        
-        <div class="flex flex-col" v-if="isAdvancedSearchOpen">
+        </AccordionHeader>
+        <AccordionContent>
+            <div class="flex flex-col gap-[10px] h-[350px] mt-[20px]">
             <!-- <Form v-slot="$form" :initialValues :resolver @submit="onFormSubmit" class="flex flex-col gap-4 w-full sm:w-56"> -->
                 <!-- <InputNumber name="username" type="text" placeholder="Username" class="w-full sm:w-56" /> -->
                 <!-- <Fieldset legend="Form States" class="h-80 overflow-auto">
@@ -252,12 +253,20 @@ const changeLanguage = (arg) => {
             @vote-min-change="changeVoteMin"
             @vote-max-change="changeVoteMax"
             />
+            
             <ASGenre @value-changed="changeGenre"/>
             <ASCast @value-changed="changeCast"/>
             <ASSort @value-changed="changeSort"/>
             <ASLanguage @value-changed="changeLanguage"/>
             <!-- </Form> -->
         </div>
+        </AccordionContent>
+    </AccordionPanel>
+        </Accordion>
+       
+        
+        
+        
 
         <div class="flex mt-3">
             <button @click="onSearchClick"

@@ -29,10 +29,10 @@ watch([() => queryObject.vote.max, () => queryObject.vote.min], () => {
 </script>
 
 <template>
-    <div>
+    <div class="w-full">
 
 
-        <Button variant="outlined" @click="toggle">
+        <Button class="w-full" variant="outlined" @click="toggle">
             Score
         </Button>
 
