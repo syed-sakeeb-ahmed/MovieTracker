@@ -1,6 +1,6 @@
 <script setup>
 
-import { ref, reactive,watch, Suspense, defineAsyncComponent, useTemplateRef, onMounted } from 'vue';
+import { computed, ref, reactive,watch, Suspense, defineAsyncComponent, useTemplateRef, onMounted } from 'vue';
 import {createInternalQueryAndPush, createReleaseDateQuery, createScoreQuery, createGenreQuery, createCastQuery, createSortQuery} from "@/utilites/jsonUtilities"
 import { buildQuery, genresDict, languages, SECRET, createInternalQuery } from '@/utilites/jsonUtilities';
 import {queryObject} from '@/store'
@@ -13,6 +13,7 @@ import ASSort from './ASSort.vue';
 import ASRelease from './ASRelease.vue'
 import ASScore from './ASScore.vue'
 import ASLanguage from './ASLanguage.vue';
+import { onClickOutside } from '@vueuse/core'
 
 import {useRouter, useRoute} from 'vue-router'
 
@@ -31,6 +32,8 @@ const toggleAdvancedSearch = () => {
     }
     else if (!active.value) {
         active.value = '0'
+        searchValue.value = ""
+        searchItems.value = []
     }
 }
 
@@ -214,15 +217,83 @@ const changeLanguage = (arg) => {
     queryObject.language = arg
 }
 
-const searchValue = ref("ff")
+const searchValue = ref("")
+const searchItems = ref([])
 
 const clearSearchInput = () => {
     searchValue.value = ""
 }
 
-watch(searchValue, () => {
-    console.log(searchValue.value)
+const suggestionsIsDisplayed = ref(false)
+
+watch(searchItems, () => {
+    if (searchItems.value.length > 0) {
+        suggestionsIsDisplayed.value = true
+    }
+    else {
+        suggestionsIsDisplayed.value = false 
+    }
 })
+
+watch(searchValue, async () => {
+    console.log(searchValue.value)
+    if (searchValue.value.length === 0) {
+        searchItems.value = []
+    }
+    if (searchValue.value.length > 0) {
+        searchItems.value = await searchQueryTMDB(searchValue.value)
+    }
+})
+
+const searchQueryTMDB = async (searchString) => {
+    const options = {
+        method: 'GET',
+        headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer ' + SECRET
+        }
+    };
+
+    const query = `https://api.themoviedb.org/3/search/movie?query=${searchString}&include_adult=false&language=en-US&page=1`
+
+
+    const searchQueryResults = await fetch(query, options)
+        .then(res => res.json())
+        .catch(err => { throw new Error("Failed to fetch discover information" + err) });
+    return searchQueryResults.results.slice(0, 10)
+}
+
+const searchRef = useTemplateRef('searchBar')
+const searchHeight = ref(null)
+const searchWidth = ref(null)
+
+onMounted(() => {
+    //console.log("This is searchRef height: " + searchRef.value.offsetHeight)
+    searchHeight.value = searchRef.value.offsetHeight
+    searchWidth.value = searchRef.value.offsetWidth
+})
+
+const normalSearchStyle = reactive({
+    borderRadius: '100px',
+})
+
+const suggestionsSearchStyle = reactive({
+    borderRadius: '25px 25px 0px 0px',
+})
+
+const myInput = useTemplateRef('myInput')
+onClickOutside(myInput, () => {searchItems.value = []})
+
+const inputLookupOnFocus = async () => {
+    if (searchValue.value.length > 0) {
+        searchItems.value = await searchQueryTMDB(searchValue.value)
+    }
+}
+
+const searchClass = computed(() => ({
+    searchBarEnabled: active.value === null,
+    searchBarDisabled: active.value === '0'
+}))
 
 </script>
 
@@ -231,24 +302,47 @@ watch(searchValue, () => {
         <Accordion v-model:value="active">
             <AccordionPanel value="0">
         <AccordionHeader asChild>
-            <div class="flex border-[2px] rounded-full border-solid border-[#ebebeb] p-3 w-[582px] h-[46px] pt-[5px] pb-[5px] hover:shadow-[0_0_3px_rgba(0,0,0,0.25)]">
+            <div ref="searchBar" class="flex border-[2px] border-solid border-[#ebebeb] pl-[12px] pr-[12px] w-[582px] h-[46px] pt-[5px] pb-[5px]" :style="[(suggestionsIsDisplayed) ? suggestionsSearchStyle : normalSearchStyle]" :class="searchClass">
             <div class="flex items-center">
                 <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
             </div>
 
-            <input class="
-            focus:outline-none w-full indent-2" type="text" id="search" name="search" v-model="searchValue">
+            <input autocomplete="off" :disabled="(active === '0') ? true : false" @focus="inputLookupOnFocus" ref="myInput" class="
+            focus:outline-none w-full indent-[8px]" type="text" id="search" name="search" v-model="searchValue">
+            <!-- <AutoComplete
+            class="w-full"
+            fluid
+            optionLabel="title"
+            v-model="searchValue" :suggestions="searchItems" @complete="onSearchComplete"/>
+             -->
             <div class="border-r-[1px] border-[#777777] flex items-center mr-[10px]" v-if="searchValue !== ''">
-                <div class="pi pi-times mr-[10px] cursor-pointer text-[#777777]" @click="clearSearchInput"></div>
+                <div class="pi pi-times ml-[10px] mr-[10px] cursor-pointer text-[#777777]" @click="clearSearchInput"></div>
             </div>
             <div class="w-[32px] h-[32px]">
                 <button @click="toggleAdvancedSearch"
                     class="cursor-pointer bg-red-500 rounded-full flex items-center justify-center h-[32px] w-[32px]">
-                    <font-awesome-icon :icon="['fas', 'plus']" class=" text-white" />
+                    <font-awesome-icon v-if="active === null" :icon="['fas', 'plus']" class=" text-white" />
+                    <div class="pi pi-minus text-white" v-else></div>
                 </button>
             </div>
-
         </div>
+        <div v-if="suggestionsIsDisplayed" class="flex flex-col bg-white border-[#ebebeb] border-[1px] absolute z-20" :style="{marginTop: searchHeight + 'px', width: searchWidth + 'px'}">
+            <ul>
+                <li class="hover:bg-[#ebebeb] flex pt-[10px] pb-[10px]" v-for="item, index in searchItems" :key=index>
+                    <div class="flex items-center ml-[12px]">
+                <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
+            </div>
+            <div :style="{webkitUserSelect: 'none', cursor: 'default'}" class="ml-[8px]">
+                    {{item.title }}
+                    {{ (item.release_date) ? '(' + item.release_date.slice(0,4) + ')' : '*Undated*'}}
+            </div>
+                </li>
+            </ul>
+            <div class=" flex justify-center mt-[15px] mb-[15px]">
+                <Button class="mr-[10px]" variant="outlined" label="Search"/>
+                <Button class="ml-[10px]" variant="outlined" label="I'm Feeling Lucky"/>
+            </div>
+            </div>
         </AccordionHeader>
         <AccordionContent>
             <div class="flex flex-col gap-[10px] h-[350px] mt-[20px]">
@@ -281,14 +375,9 @@ watch(searchValue, () => {
         
         
 
-        <div class="flex mt-3">
-            <button @click="onSearchClick"
-                class="bg-[#f3f3f3] w-[142px] h-[34px] pl-[16px] pr-[16px] m-[4px] rounded-[5px] mr-1 text-md text-[15px]">
-                Search
-            </button>
-            <button class="bg-[#f3f3f3] w-[142px] h-[34px] pl-[16px] pr-[16px] m-[4px] rounded-[5px] ml-1 text-[15px]">
-                I'm Feeling Lucky
-            </button>
+        <div v-if="!suggestionsIsDisplayed" class="flex mt-[10px]" >
+            <Button variant="outlined" @click="onSearchClick" label="Search" /> 
+                <Button variant="outlined" label="I'm Feeling Lucky" /> 
         </div>
     </div>
 </template>
