@@ -1565,6 +1565,13 @@ export const createTMDBQuery = (queryObject) => {
 //Create query for internal use
 export const createInternalQuery = (queryObject) => {
     let queryString = "/list/?"
+
+    if (queryObject.searchMode === 'basic') {
+        queryString += `search=${queryObject.searchToken}&`
+        queryString += `mode=${queryObject.searchMode}&`
+        queryString += `page=${queryObject.page}`
+        return queryString
+    }
     
     queryString += createReleaseDateQuery(queryObject)
     queryString += createScoreQuery(queryObject)
@@ -1574,6 +1581,8 @@ export const createInternalQuery = (queryObject) => {
     queryString += originalLanguageQuery(queryObject)
     queryString += createPageQuery(queryObject.page)
     queryString += createSearchCountQuery(queryObject)
+    queryString += `mode=${queryObject.searchMode}&`
+    queryString += `search=${queryObject.searchToken}&`
     
     queryString = queryString.substring(0, queryString.length - 1);
     return queryString
@@ -1582,4 +1591,10 @@ export const createInternalQuery = (queryObject) => {
 export const createInternalQueryAndPush = (router, queryObject) => {
     const internalQueryString = createInternalQuery(queryObject)
     router.push(internalQueryString)
+}
+
+export const 
+createTMDBSearchQuery = (searchToken, page) => {
+    const queryString = `https://api.themoviedb.org/3/search/movie?query=${searchToken}&include_adult=false&language=en-US&page=${page}`
+    return queryString
 }

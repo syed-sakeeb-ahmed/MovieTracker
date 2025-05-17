@@ -31,7 +31,8 @@ import {
     createTMDBQuery,
     createPageQuery,
     createInternalQuery,
-    originalLanguageQuery
+    originalLanguageQuery,
+    createTMDBSearchQuery
 } from "./jsonUtilities";
 import { describe, test, expect } from "vitest";
 
@@ -662,5 +663,55 @@ describe("GenreDetailsSuite", async () => {
         }
 
         expect(createInternalQuery(queryObject)).toEqual(`/list/?release_date_tab=0&release_date=${queryObject.releaseDate}&score_min=${queryObject.score.min}&score_max=${queryObject.score.max}&with_genres=${queryObject.with_genres[0].id},${queryObject.with_genres[1].id}&with_cast=${queryObject.with_cast[0].id}:${queryObject.with_cast[0].name}&sort_by=${queryObject.sort_by}&with_original_language=${queryObject.language}&page=${queryObject.page}&search_count=${queryObject.searchCount}`)
+
+
+        queryObject.searchMode = 'basic'
+        queryObject.searchToken = 'Titanic'
+
+        expect(createInternalQuery(queryObject)).toEqual(`/list/?search=${queryObject.searchToken}&mode=${queryObject.searchMode}&page=${queryObject.page}`)
+    })
+
+
+    test("Create search query string", () => {
+        const queryObject = {
+            "include_adult": false,
+            "include_video": false,
+            "searchCount": 1,
+            "page": 1,
+            "language": "ja",
+            "sort_by": "vote_count.asc",
+            "with_genres": [
+                {
+                    "id": 16,
+                    "name": "Animation"
+                },
+                {
+                    "id": 12,
+                    "name": "Adventure"
+                }
+            ],
+            "with_cast": [
+                {
+                    "id": 10297,
+                    "name": "Matthew McConaughey"
+                }
+            ],
+            "releaseDateTab": "0",
+            "releaseDate": "2015-12-01",
+            "releaseDateMin": null,
+            "releaseDateMax": null,
+            "score": {
+                "min": 2,
+                "max": 5
+            },
+            "vote": {
+                "min": null,
+                "max": null
+            }
+        }
+        queryObject.searchMode = 'basic'
+        queryObject.searchToken = 'Titanic'
+
+        expect(createTMDBSearchQuery(queryObject.searchToken, 1)).toEqual(`https://api.themoviedb.org/3/search/movie?query=${queryObject.searchToken}&include_adult=false&language=en-US&page=${queryObject.page}`)
     })
 });

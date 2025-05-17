@@ -16,30 +16,50 @@ import ASLanguage from './ASLanguage.vue';
 import { onClickOutside } from '@vueuse/core'
 
 import {useRouter, useRoute} from 'vue-router'
+const route = useRoute()
+    //console.log(route.query.sorhted_by, route.query.shit, route.query.pop)
+const router = useRouter()
 
 
+const getSearchValue = () => {
+    return queryObject.searchToken
+}
+
+const getSearchMode = () => {
+    if (queryObject.searchMode === 'basic') {
+        return null
+    }
+    else if (queryObject.searchMode === 'advanced') {
+        return '0'
+    }
+}
 
 const isAdvancedSearchOpen = ref(true);
 const selectedOption = ref(null);
-const active = ref('0')
+const active = ref(getSearchMode())
 const sortWidth = ref()
+
+
+
+watch(() => queryObject.searchMode, () => {
+    active.value = getSearchMode()
+})
 
 
 const toggleAdvancedSearch = () => {
     console.log("Toggled Advanced Search")
     if (active.value === '0') {
         active.value = null
+        queryObject.searchMode = 'basic'
     }
     else if (!active.value) {
         active.value = '0'
-        searchValue.value = ""
+        queryObject.searchMode = 'advanced'
         searchItems.value = []
     }
 }
 
-const route = useRoute()
-    //console.log(route.query.sorhted_by, route.query.shit, route.query.pop)
-const router = useRouter()
+
 
 const initialValues = reactive({
     releaseDate: route.query.rd,
@@ -115,11 +135,7 @@ const getCastFromURL = (castQueryString) => {
 
 
 
-const onSearchClick = () => {
-    queryObject.page = 1
-    queryObject.searchCount += 1
-    createInternalQueryAndPush(router, queryObject)
-}
+
 
 
 const logQuery = () => {
@@ -158,6 +174,10 @@ queryObject.vote.max = (route.query.vote_max) ? route.query.vote_max : null
 //Page value and Search Count
 queryObject.page = (route.query.page) ? Number(route.query.page) : 1
 queryObject.searchCount = (route.query.search_count) ? Number(route.query.search_count) : 0
+
+//Search mode
+queryObject.searchMode = (route.query.mode) ? route.query.mode : 'basic'
+queryObject.searchToken = (route.query.search) ? route.query.search : ''
 
 
 }, {immediate: true})
@@ -217,11 +237,10 @@ const changeLanguage = (arg) => {
     queryObject.language = arg
 }
 
-const searchValue = ref("")
 const searchItems = ref([])
 
 const clearSearchInput = () => {
-    searchValue.value = ""
+    queryObject.searchToken = ""
 }
 
 const suggestionsIsDisplayed = ref(false)
@@ -235,13 +254,13 @@ watch(searchItems, () => {
     }
 })
 
-watch(searchValue, async () => {
-    console.log(searchValue.value)
-    if (searchValue.value.length === 0) {
+watch(() => queryObject.searchToken, async () => {
+    console.log(queryObject.searchToken.value)
+    if (queryObject.searchToken.length === 0) {
         searchItems.value = []
     }
-    if (searchValue.value.length > 0) {
-        searchItems.value = await searchQueryTMDB(searchValue.value)
+    if (queryObject.searchToken.length > 0) {
+        searchItems.value = await searchQueryTMDB(queryObject.searchToken)
     }
 })
 
@@ -285,8 +304,8 @@ const myInput = useTemplateRef('myInput')
 onClickOutside(myInput, () => {searchItems.value = []})
 
 const inputLookupOnFocus = async () => {
-    if (searchValue.value.length > 0) {
-        searchItems.value = await searchQueryTMDB(searchValue.value)
+    if (queryObject.searchToken.length > 0) {
+        searchItems.value = await searchQueryTMDB(queryObject.searchToken)
     }
 }
 
@@ -294,6 +313,25 @@ const searchClass = computed(() => ({
     searchBarEnabled: active.value === null,
     searchBarDisabled: active.value === '0'
 }))
+
+const handleSuggestionClick = (movieID) => {
+    router.push(`/movie?id=${movieID}`)
+}
+
+const searchValue = computed(() => {
+    return (queryObject.searchToken === '')
+})
+
+const onSearchClick = () => {
+    if (queryObject.searchToken !== '') {
+        myInput.value.blur()
+        searchItems.value = []
+        queryObject.page = 1
+        queryObject.searchCount += 1
+        createInternalQueryAndPush(router, queryObject)
+    }
+}
+
 
 </script>
 
@@ -307,15 +345,15 @@ const searchClass = computed(() => ({
                 <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
             </div>
 
-            <input autocomplete="off" :disabled="(active === '0') ? true : false" @focus="inputLookupOnFocus" ref="myInput" class="
-            focus:outline-none w-full indent-[8px]" type="text" id="search" name="search" v-model="searchValue">
+            <input @keydown.enter="onSearchClick" autocomplete="off" :disabled="(active === '0') ? true : false" @focus="inputLookupOnFocus" ref="myInput" class="
+            focus:outline-none w-full indent-[8px]" type="text" id="search" name="search" v-model="queryObject.searchToken">
             <!-- <AutoComplete
             class="w-full"
             fluid
             optionLabel="title"
             v-model="searchValue" :suggestions="searchItems" @complete="onSearchComplete"/>
              -->
-            <div class="border-r-[1px] border-[#777777] flex items-center mr-[10px]" v-if="searchValue !== ''">
+            <div class="border-r-[1px] border-[#777777] flex items-center mr-[10px]" v-if="!searchValue">
                 <div class="pi pi-times ml-[10px] mr-[10px] cursor-pointer text-[#777777]" @click="clearSearchInput"></div>
             </div>
             <div class="w-[32px] h-[32px]">
@@ -332,14 +370,14 @@ const searchClass = computed(() => ({
                     <div class="flex items-center ml-[12px]">
                 <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
             </div>
-            <div :style="{webkitUserSelect: 'none', cursor: 'default'}" class="ml-[8px]">
+            <div @click="handleSuggestionClick(item.id)" :style="{webkitUserSelect: 'none', cursor: 'default'}" class="ml-[8px]">
                     {{item.title }}
                     {{ (item.release_date) ? '(' + item.release_date.slice(0,4) + ')' : '*Undated*'}}
             </div>
                 </li>
             </ul>
             <div class=" flex justify-center mt-[15px] mb-[15px]">
-                <Button class="mr-[10px]" variant="outlined" label="Search"/>
+                <Button @click="onSearchClick" class="mr-[10px]" variant="outlined" label="Search"/>
                 <Button class="ml-[10px]" variant="outlined" label="I'm Feeling Lucky"/>
             </div>
             </div>
@@ -351,7 +389,9 @@ const searchClass = computed(() => ({
                 <!-- <Fieldset legend="Form States" class="h-80 overflow-auto">
                 <pre class="whitespace-pre-wrap">{{ $form }}</pre> -->
             <!-- </Fieldset> -->
-            <ASRelease @value-changed-rd="changeReleaseDate" @value-changed-min="changeReleaseDateMin" @value-changed-max="changeReleaseDateMax"
+            <ASRelease
+            
+            @value-changed-rd="changeReleaseDate" @value-changed-min="changeReleaseDateMin" @value-changed-max="changeReleaseDateMax"
             @value-changed-tab="changeReleaseDateTab"
             />
             <ASScore 

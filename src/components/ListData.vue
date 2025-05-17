@@ -1,7 +1,7 @@
 <script setup>
 
 import { ref, reactive, watch, computed, watchEffect } from 'vue'
-import {createTMDBQuery, SECRET} from '@/utilites/jsonUtilities'
+import {createTMDBSearchQuery, createTMDBQuery, SECRET} from '@/utilites/jsonUtilities'
 
 import { queryObject } from '@/store'
 
@@ -12,7 +12,14 @@ const emit = defineEmits(['loadedQuery'])
 const queryResults = ref(null)
 
 watch([() => page, () => searchCount], async () => {
-    const queryString = createTMDBQuery(queryObject)
+
+    let queryString = ""
+    if (queryObject.searchMode === 'basic') {
+        queryString = createTMDBSearchQuery(queryObject.searchToken, queryObject.page)
+    }
+    else {
+        queryString = createTMDBQuery(queryObject)
+    }
 
     const options = {
         method: 'GET',

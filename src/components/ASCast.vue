@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, useTemplateRef, onMounted} from 'vue';
+import { ref, watch, useTemplateRef, onMounted, onUpdated, onUnmounted} from 'vue';
 import { getCastObjFromQueryString, getFirstTenCastNamesAndIdsFromQuery, objectExistsInArray, removeNumberFromArray, removeObjectFromArray, SECRET } from '@/utilites/jsonUtilities';
 import { queryObject } from '@/store';
 
