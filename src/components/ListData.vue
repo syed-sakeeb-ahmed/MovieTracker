@@ -2,14 +2,14 @@
 
 import { ref, reactive, watch, computed, watchEffect } from 'vue'
 import {createTMDBSearchQuery, createTMDBQuery, SECRET} from '@/utilites/jsonUtilities'
-
+import ListCol from '@/components/ListCol.vue';
 import { queryObject } from '@/store'
 
 const { page, searchCount } = defineProps(['page', 'searchCount'])
 const emit = defineEmits(['loadedQuery'])
 
 
-const queryResults = ref(null)
+const queryResults = ref({total_results: 0})
 
 watch([() => page, () => searchCount], async () => {
 
@@ -34,7 +34,6 @@ watch([() => page, () => searchCount], async () => {
         .catch(err => { throw new Error("Failed to fetch discover information" + err) });
 
     emit('loadedQuery', queryResults.value.total_pages)
-
 }, {immediate: true})
 
 // watch(queryObject.page, async () => {
@@ -56,8 +55,9 @@ watch([() => page, () => searchCount], async () => {
 </script>
 
 <template>
-    <div v-if="queryResults !== null">
-
+    <div>
+    <div v-if="queryResults.total_results > 0">
+        <ListCol/>
         <div v-for="item,index in queryResults.results" :key="item.id"  class="w-[1060px] flex justify-center">
             <div class=" w-[75px] h-[94px] flex items-center justify-center">
                 {{ index + ((queryResults.page - 1) * 20) + 1 }}
@@ -94,6 +94,11 @@ watch([() => page, () => searchCount], async () => {
                 </select>
             </div>
         </div>
+        
     </div>
+    <div v-else >
+    </div>
+</div>
+
 
 </template>

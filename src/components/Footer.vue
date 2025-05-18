@@ -4,7 +4,14 @@
 
 
 <template>
-    <div class="bg-red-500 w-full h-[300px]">
-
+    <div class='mt-auto w-full white '>
+        <div>
+            <div class="flex flex-col items-center">
+                <Image v-tooltip="'Resources used: TMDB\n\nLegal Notice: This product uses the TMDB API but is not endorsed or certified by TMDB.\n'"
+  src="/src/assets/tmdb_logo.svg"
+  alt="TMDB logo" width="24"/>
+            </div>
+        </div>
     </div>
+    
 </template>

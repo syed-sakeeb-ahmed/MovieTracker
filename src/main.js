@@ -33,6 +33,9 @@ import AccordionContent from 'primevue/accordioncontent';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
+import Tooltip from 'primevue/tooltip';
+import Image from 'primevue/image';
+
 
 
 
@@ -98,6 +101,9 @@ app.component("AccordionContent", AccordionContent)
 app.component("IconField", IconField)
 app.component("InputIcon", InputIcon)
 app.component("InputText", InputText)
+app.component("Image", Image)
+
+app.directive('tooltip', Tooltip);
 
 
 

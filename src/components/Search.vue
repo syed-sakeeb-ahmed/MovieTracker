@@ -336,7 +336,7 @@ const onSearchClick = () => {
 </script>
 
 <template>
-    <div class="flex flex-col justify-center items-center">
+    <div class=" mt-[100px] mb-[100px] flex flex-col justify-center items-center">
         <Accordion v-model:value="active">
             <AccordionPanel value="0">
         <AccordionHeader asChild>
@@ -419,5 +419,6 @@ const onSearchClick = () => {
             <Button variant="outlined" @click="onSearchClick" label="Search" /> 
                 <Button variant="outlined" label="I'm Feeling Lucky" /> 
         </div>
+
     </div>
 </template>
