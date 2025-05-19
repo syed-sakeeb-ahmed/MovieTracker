@@ -338,11 +338,13 @@ const onSearchClick = () => {
 
 <template>
     <div class=" mt-[100px] mb-[100px] flex flex-col justify-center items-center">
-        <Accordion v-model:value="active">
+        <Accordion
+        class="w-[80%] min-w-[350px] max-w-[582px]" 
+        v-model:value="active">
             <AccordionPanel value="0">
         <AccordionHeader asChild>
-            <div ref="searchBar" class="flex border-[2px] border-solid border-[#ebebeb] pl-[12px] pr-[12px] w-[582px] h-[46px] pt-[5px] pb-[5px]" :style="[(suggestionsIsDisplayed) ? suggestionsSearchStyle : normalSearchStyle]" :class="searchClass">
-            <div class="flex items-center">
+            <div ref="searchBar" class="flex border-[2px] border-solid border-[#ebebeb] pl-[6px] pr-[6px] w-[100%] h-[52px] pt-[5px] pb-[5px]" :style="[(suggestionsIsDisplayed) ? suggestionsSearchStyle : normalSearchStyle]" :class="searchClass">
+            <div class="flex items-center ml-[6px]">
                 <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
             </div>
 
@@ -357,7 +359,7 @@ const onSearchClick = () => {
             <div class="border-r-[1px] border-[#777777] flex items-center mr-[10px]" v-if="!searchValue">
                 <div class="pi pi-times ml-[10px] mr-[10px] cursor-pointer text-[#777777]" @click="clearSearchInput"></div>
             </div>
-            <div class="w-[32px] h-[32px]">
+            <div class="h-full flex items-center">
                 <button @click="toggleAdvancedSearch"
                     class="cursor-pointer bg-red-500 rounded-full flex items-center justify-center h-[32px] w-[32px]">
                     <font-awesome-icon v-if="active === null" :icon="['fas', 'plus']" class=" text-white" />
@@ -368,8 +370,8 @@ const onSearchClick = () => {
         <div v-if="suggestionsIsDisplayed" class="flex flex-col bg-white border-[#ebebeb] border-[1px] absolute z-20" :style="{marginTop: searchHeight + 'px', width: searchWidth + 'px'}">
             <ul>
                 <li class="hover:bg-[#ebebeb] flex pt-[10px] pb-[10px]" v-for="item, index in searchItems" :key=index>
-                    <div class="flex items-center ml-[12px]">
-                <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
+                    <div class="flex items-center pl-[12px]">
+                <font-awesome-icon :icon="['fas', 'magnifying-glass']"/>
             </div>
             <div @click="handleSuggestionClick(item.id)" :style="{webkitUserSelect: 'none', cursor: 'default'}" class="ml-[8px]">
                     {{item.title }}
