@@ -55,7 +55,7 @@ watch(queryObject, () => {
 
 
 <template>
-    <div >
+    <div class="w-full max-w-[2000px]">
         <div class="bg-red-500">{{ helloWorld }}</div>
         <button v-if="queryObject.page < pageUpperLimit" @click="fetchNextPage" class="bg-amber-500">Next Page</button>
         <button v-if="queryObject.page > 1" @click="fetchPreviousPage"

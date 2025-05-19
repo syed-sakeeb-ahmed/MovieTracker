@@ -13,14 +13,18 @@
     background-color: white;
     box-shadow: 0 0 3px rgba(0,0,0,0.25)
 }
-body, html { height: 100%; }
+html { height: 100%; }
 
 .movieCardStyles {
     border-radius: 5px;
 }
 
-.movieCardStyles img {
-    border-radius: 5px;
+
+.listGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(185px, 185px));
+    gap: 5px;
+    justify-content: center;
 }
 
 #app {

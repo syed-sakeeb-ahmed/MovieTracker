@@ -58,8 +58,8 @@ watch([() => page, () => searchCount], async () => {
 
 <template>
     <div>
-    <div v-if="queryResults.total_results > 0">
-        <div v-for="item,index in queryResults.results" :key="item.id"  class="w-[1060px] flex justify-center">
+    <div class="listGrid" v-if="queryResults.total_results > 0">
+        <div v-for="item,index in queryResults.results" :key="item.id">
             <MovieCard :title="item.title" :image="item.poster_path" :release-date="item.release_date" :voters="vote_count" :score="item.vote_average" />
         </div>
         
