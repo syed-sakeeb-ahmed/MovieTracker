@@ -343,7 +343,7 @@ const onSearchClick = () => {
         v-model:value="active">
             <AccordionPanel value="0">
         <AccordionHeader asChild>
-            <div ref="searchBar" class="flex border-[2px] border-solid border-[#ebebeb] pl-[6px] pr-[6px] w-[100%] h-[52px] pt-[5px] pb-[5px]" :style="[(suggestionsIsDisplayed) ? suggestionsSearchStyle : normalSearchStyle]" :class="searchClass">
+            <div ref="searchBar" class="flex border-[2px] relative border-solid border-[#ebebeb] pl-[6px] pr-[6px] w-[100%] h-[52px] pt-[5px] pb-[5px]" :style="[(suggestionsIsDisplayed) ? suggestionsSearchStyle : normalSearchStyle]" :class="searchClass">
             <div class="flex items-center ml-[6px]">
                 <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
             </div>
@@ -359,7 +359,7 @@ const onSearchClick = () => {
             <div class="border-r-[1px] border-[#777777] flex items-center mr-[10px]" v-if="!searchValue">
                 <div class="pi pi-times ml-[10px] mr-[10px] cursor-pointer text-[#777777]" @click="clearSearchInput"></div>
             </div>
-            <div class="h-full flex items-center">
+            <div class="h-full flex items-center mr-[6px]">
                 <button @click="toggleAdvancedSearch"
                     class="cursor-pointer bg-red-500 rounded-full flex items-center justify-center h-[32px] w-[32px]">
                     <font-awesome-icon v-if="active === null" :icon="['fas', 'plus']" class=" text-white" />
@@ -367,23 +367,25 @@ const onSearchClick = () => {
                 </button>
             </div>
         </div>
-        <div v-if="suggestionsIsDisplayed" class="flex flex-col bg-white border-[#ebebeb] border-[1px] absolute z-20" :style="{marginTop: searchHeight + 'px', width: searchWidth + 'px'}">
-            <ul>
-                <li class="hover:bg-[#ebebeb] flex pt-[10px] pb-[10px]" v-for="item, index in searchItems" :key=index>
-                    <div class="flex items-center pl-[12px]">
-                <font-awesome-icon :icon="['fas', 'magnifying-glass']"/>
-            </div>
-            <div @click="handleSuggestionClick(item.id)" :style="{webkitUserSelect: 'none', cursor: 'default'}" class="ml-[8px]">
-                    {{item.title }}
-                    {{ (item.release_date) ? '(' + item.release_date.slice(0,4) + ')' : '*Undated*'}}
-            </div>
-                </li>
-            </ul>
-            <div class=" flex justify-center mt-[15px] mb-[15px]">
-                <Button @click="onSearchClick" class="mr-[10px]" variant="outlined" label="Search"/>
-                <Button class="ml-[10px]" variant="outlined" label="I'm Feeling Lucky"/>
-            </div>
-            </div>
+        <div class="relative">
+            <div v-if="suggestionsIsDisplayed" class="flex flex-col bg-white border-[#ebebeb] w-full border-[1px] absolute z-20" >
+                <ul>
+                    <li class="hover:bg-[#ebebeb] flex pt-[10px] pb-[10px] pl-[12px] pr-[12px]" v-for="item, index in searchItems" :key=index>
+                        <div class="flex items-center">
+                    <font-awesome-icon :icon="['fas', 'magnifying-glass']"/>
+                </div>
+                <div @click="handleSuggestionClick(item.id)" :style="{webkitUserSelect: 'none', cursor: 'default'}" class="ml-[8px]">
+                        {{item.title }}
+                        {{ (item.release_date) ? '(' + item.release_date.slice(0,4) + ')' : '*Undated*'}}
+                </div>
+                    </li>
+                </ul>
+                <div class=" flex justify-center mt-[15px] mb-[15px]">
+                    <Button @click="onSearchClick" class="mr-[10px]" variant="outlined" label="Search"/>
+                    <Button class="ml-[10px]" variant="outlined" label="I'm Feeling Lucky"/>
+                </div>
+                </div>
+        </div>
         </AccordionHeader>
         <AccordionContent>
             <div class="flex flex-col gap-[10px] h-[350px] mt-[20px]">
