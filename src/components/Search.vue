@@ -14,6 +14,7 @@ import ASRelease from './ASRelease.vue'
 import ASScore from './ASScore.vue'
 import ASLanguage from './ASLanguage.vue';
 import { onClickOutside } from '@vueuse/core'
+import MovieCard from './MovieCard.vue'
 
 import {useRouter, useRoute} from 'vue-router'
 const route = useRoute()
@@ -419,6 +420,8 @@ const onSearchClick = () => {
             <Button variant="outlined" @click="onSearchClick" label="Search" /> 
                 <Button variant="outlined" label="I'm Feeling Lucky" /> 
         </div>
+
+        <MovieCard />
 
     </div>
 </template>
