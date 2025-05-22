@@ -1,9 +1,26 @@
 import './assets/main.css'
 
 import { createApp } from 'vue'
+import VueSplide from '@splidejs/vue-splide';
 import App from './App.vue'
 import router from './router/index.js'
 import './index.css'
+import {initializeApp} from "@firebase/app";
+
+
+//Firebase configuration
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID
+  };
+
+  const firebase = initializeApp(firebaseConfig);
 
 
 /* import the fontawesome core */
@@ -35,6 +52,9 @@ import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import Tooltip from 'primevue/tooltip';
 import Image from 'primevue/image';
+import Message from 'primevue/message';
+import Checkbox from 'primevue/checkbox';
+import CheckboxGroup from 'primevue/checkboxgroup';
 
 
 
@@ -102,11 +122,16 @@ app.component("IconField", IconField)
 app.component("InputIcon", InputIcon)
 app.component("InputText", InputText)
 app.component("Image", Image)
+app.component("Message", Message)
+app.component("Checkbox", Checkbox)
+app.component("CheckboxGroup", CheckboxGroup)
+
+
 
 app.directive('tooltip', Tooltip);
 
 
-
+app.use( VueSplide );
 
 
 

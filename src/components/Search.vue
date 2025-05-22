@@ -421,11 +421,9 @@ const onSearchClick = () => {
         
 
         <div v-if="!suggestionsIsDisplayed" class="flex mt-[10px]" >
-            <Button variant="outlined" @click="onSearchClick" label="Search" /> 
-                <Button variant="outlined" label="I'm Feeling Lucky" /> 
+            <Button class="mr-[5px]" variant="outlined" @click="onSearchClick" label="Search" /> 
+                <Button class="ml-[5px]" variant="outlined" label="I'm Feeling Lucky" /> 
         </div>
-
-        <MovieCard />
 
     </div>
 </template>

@@ -13,7 +13,7 @@
     background-color: white;
     box-shadow: 0 0 3px rgba(0,0,0,0.25)
 }
-html { height: 100%; }
+html, body { height: 100%; }
 
 .movieCardStyles {
     border-radius: 5px;
@@ -26,6 +26,49 @@ html { height: 100%; }
     gap: 5px;
     justify-content: center;
 }
+
+
+.movieContainer { 
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 10px
+}
+
+.castCardContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 150px));
+    gap: 5px;
+    transition: grid-template-rows 500ms
+}
+
+.castCardContainerPanel {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 150px));
+    grid-template-rows: auto;
+    gap: 5px;
+}
+
+.castCardContainerContent {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 150px));
+    gap: 5px;
+}
+
+
+.loginShadow {
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.6)
+}
+
+.roundLoginFooter {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.isNotVisible {
+    visibility: hidden;
+}
+
+
 
 #app {
     height: 100%
