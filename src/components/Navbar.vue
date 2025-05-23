@@ -1,12 +1,61 @@
 <script setup>
-import {useRoute} from 'vue-router'
+import {useRoute, useRouter} from 'vue-router'
 import {ref, computed} from 'vue'
+import { getAuth, signOut } from "firebase/auth";
+import { myUserStore} from '@/authStore'
 
 const route = useRoute()
+const router = useRouter()
+
+const auth = getAuth()
+
+const userSessionExists = ref(false)
+
+const userFromStorage = myUserStore()
+
+if (userFromStorage.user) {
+    userSessionExists.value = true
+}
+ else if (!userFromStorage.user)
+{
+    auth.onAuthStateChanged((user) => {
+  if (user) {
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/firebase.User
+    userFromStorage.user = user
+    userSessionExists.value = true
+    // ...
+  } else {
+    // User is signed out
+    // ...
+    userSessionExists.value = false
+  }
+});
+}
+
+const handleLogout = () => {
+    const auth = getAuth();
+signOut(auth).then(() => {
+  // Sign-out successful.
+  const userFromStorage = myUserStore()
+  userFromStorage.user = null
+  userSessionExists.value = false
+}).catch((error) => {
+  throw error
+});
+}
 
 const comp = computed(() => ({
     isNotVisible: route.path === '/login' || route.path === '/register'
 }))
+
+const handleLoginClick = () => {
+    router.push('/login')
+}
+
+const handleSignUpClick = () => {
+    router.push('/register')
+}
 
 </script>
 
@@ -15,9 +64,12 @@ const comp = computed(() => ({
     <div class="flex justify-between bg-white w-full">
         
         <div class="flex justify-center items-center ml-[30px]">MyMovieIndex</div>
-        <div :class="comp" class="flex items-center bg-white p-[10px]">
-            <Button rounded label='Login' />
-            <Button class="ml-[5px]" rounded variant="outlined" label="Sign up" />
+        <div v-if="!userSessionExists" :class="comp" class="flex items-center bg-white p-[10px]">
+            <Button @click="handleLoginClick" rounded label='Login' />
+            <Button @click="handleSignUpClick" class="ml-[5px]" rounded variant="outlined" label="Sign up" />
+        </div>
+        <div v-else-if="userSessionExists">
+            <Button @click="handleLogout" label="Logout" />
         </div>
 </div>
 </template>

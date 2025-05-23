@@ -6,7 +6,12 @@ import App from './App.vue'
 import router from './router/index.js'
 import './index.css'
 import {initializeApp} from "@firebase/app";
+import { getAuth } from 'firebase/auth';
 
+
+//Pinia
+import { createPinia } from 'pinia'
+const pinia = createPinia()
 
 //Firebase configuration
 
@@ -21,6 +26,7 @@ const firebaseConfig = {
   };
 
   const firebase = initializeApp(firebaseConfig);
+  const auth = getAuth(firebase)
 
 
 /* import the fontawesome core */
@@ -94,6 +100,25 @@ const MyPreset = definePreset(Aura, {
     }
 });
 
+
+//Nav guards for login
+
+import { myUserStore} from '@/authStore'
+
+router.beforeEach((to, from) => {
+    const userFromStorage = myUserStore()
+
+    if (userFromStorage.user && (to.name === 'login' || to.name === 'register')) {
+        return {name: 'list'}
+    }
+})
+
+
+//Pinia
+app.use(pinia)
+
+
+//PrimeVue
 
 app.use(PrimeVue, {
     theme: {

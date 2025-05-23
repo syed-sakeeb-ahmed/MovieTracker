@@ -1,12 +1,18 @@
 <script setup>
 import { ref } from 'vue';
 import { Form } from '@primevue/forms';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from 'vue-router'
+
+
+const router = useRouter()
 
 const initialValues = ref({
     email: '',
     firstName: '',
     password: ''
 });
+
 
 const resolver = ({ values }) => {
     const errors = {};
@@ -28,8 +34,23 @@ const resolver = ({ values }) => {
     };
 };
 
-const onFormSubmit = ({ valid }) => {
-    console.log("Form Submitted")
+const onFormSubmit = ({ valid, states }) => {
+    if (valid) {
+        const auth = getAuth()
+        signInWithEmailAndPassword(auth, states.email.value, states.password.value)
+  .then((userCredential) => {
+    // Signed in 
+    console.log("Logged in")
+    router.replace('/list')
+
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    throw error
+  });
+    }
 }
 </script>
 
