@@ -4,7 +4,7 @@ import { ref, reactive, watch, computed, watchEffect } from 'vue'
 import {createTMDBSearchQuery, createTMDBQuery, SECRET} from '@/utilites/jsonUtilities'
 import ListCol from '@/components/ListCol.vue';
 import { queryObject } from '@/store'
-import MovieCard from './MovieCard.vue'
+import MovieGrid from "./MovieGrid.vue"
 
 const { page, searchCount } = defineProps(['page', 'searchCount'])
 const emit = defineEmits(['loadedQuery'])
@@ -58,11 +58,8 @@ watch([() => page, () => searchCount], async () => {
 
 <template>
     <div class="ml-[12px] mr-[12px]">
-    <div class="listGrid" v-if="queryResults.total_results > 0">
-        <div v-for="item,index in queryResults.results" :key="item.id">
-            <MovieCard :title="item.title" :image="item.poster_path" :release-date="item.release_date" :voters="vote_count" :score="item.vote_average" />
-        </div>
-        
+    <div v-if="queryResults.total_results > 0">
+        <MovieGrid :results="queryResults.results" />
     </div>
     <div v-else >
     </div>
