@@ -57,6 +57,10 @@ const handleSignUpClick = () => {
     router.push('/register')
 }
 
+const handleMyList = () => {
+    router.push('/mylist')
+}
+
 </script>
 
 
@@ -69,6 +73,7 @@ const handleSignUpClick = () => {
             <Button @click="handleSignUpClick" class="ml-[5px]" rounded variant="outlined" label="Sign up" />
         </div>
         <div v-else-if="userSessionExists">
+            <Button @click="handleMyList" label="My List" />
             <Button @click="handleLogout" label="Logout" />
         </div>
 </div>

@@ -61,6 +61,8 @@ import Image from 'primevue/image';
 import Message from 'primevue/message';
 import Checkbox from 'primevue/checkbox';
 import CheckboxGroup from 'primevue/checkboxgroup';
+import Paginator from 'primevue/paginator';
+
 
 
 
@@ -150,6 +152,7 @@ app.component("Image", Image)
 app.component("Message", Message)
 app.component("Checkbox", Checkbox)
 app.component("CheckboxGroup", CheckboxGroup)
+app.component("Paginator", Paginator)
 
 
 

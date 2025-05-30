@@ -27,6 +27,11 @@ const fetchPreviousPage = () => {
     }
 }
 
+const first = ref(1)
+const upPaginator = () => {
+    first.value += 10;
+}
+
 const fetchHelloWorld = async () => {
     const options = {
         method: 'GET',
@@ -39,10 +44,19 @@ const fetchHelloWorld = async () => {
 
 fetchHelloWorld()
 
-const setPageUpperLimit = (numberOfPages) => {
+
+const totalRecords = ref(null)
+const setPageUpperLimit = (numberOfPages, totalResults) => {
     pageUpperLimit.value = numberOfPages
+    totalRecords.value = totalResults
 }
 
+const handlePageChange = (page) => {
+    // {"page":3,"first":30,"rows":10,"pageCount":12}
+    // console.log('gamer ' + JSON.stringify(page))
+    queryObject.page = page.page + 1
+    createInternalQueryAndPush(router, queryObject)
+}
 
 
 watch(queryObject, () => {
@@ -62,7 +76,10 @@ watch(queryObject, () => {
             class="bg-amber-500">Prev
             Page</button>
         <Search/>
+        <button @click="upPaginator">sdfsdf</button>
+        <Paginator :first="(queryObject.page - 1) * 20 + 1" :rows="20" :totalRecords="totalRecords" @page="handlePageChange" />
         <ListData @loaded-query="setPageUpperLimit" :page="queryObject.page" :search-count="queryObject.searchCount"/>
+        <Paginator :first="(queryObject.page - 1) * 20 + 1" :rows="20" :totalRecords="totalRecords" @page="handlePageChange" />
 
     </div>
 

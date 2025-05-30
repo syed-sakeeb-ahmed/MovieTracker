@@ -5,11 +5,12 @@ import {createTMDBSearchQuery, createTMDBQuery, SECRET} from '@/utilites/jsonUti
 import ListCol from '@/components/ListCol.vue';
 import { queryObject } from '@/store'
 import MovieGrid from "./MovieGrid.vue"
+import { myUserStore} from '@/authStore'
 
 const { page, searchCount } = defineProps(['page', 'searchCount'])
 const emit = defineEmits(['loadedQuery'])
 
-
+const userFromStorage = myUserStore()
 
 const queryResults = ref({total_results: 0})
 
@@ -35,7 +36,7 @@ watch([() => page, () => searchCount], async () => {
         .then(res => res.json())
         .catch(err => { throw new Error("Failed to fetch discover information" + err) });
 
-    emit('loadedQuery', queryResults.value.total_pages)
+    emit('loadedQuery', queryResults.value.total_pages, queryResults.value.total_results)
 }, {immediate: true})
 
 // watch(queryObject.page, async () => {

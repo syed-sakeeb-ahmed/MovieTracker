@@ -1,4 +1,18 @@
 export const SECRET = import.meta.env.VITE_KEY;
+export const BASE_URL = import.meta.env.VITE_BACKEND_URL
+
+//Joined table dict
+export const jt = {
+	uid: 0,
+	mid: 1,
+	user_rating: 2,
+	movie_status: 3,
+	poster_path: 4,
+	title: 5,
+	rating: 6,
+	votes: 7,
+	release_date: 8,
+}
 
 export const options = {
     method: "GET",

@@ -3,7 +3,7 @@ import MovieCard from './MovieCard.vue'
 import {getMovieCardInfo} from '@/getMovieCardInfo'
 import { ref, watch } from "vue"
 import { myUserStore} from '@/authStore'
-
+import { BASE_URL } from '/src/utilites/jsonUtilities'
 
 const props = defineProps(['results'])
 const listDataArr = ref([])
@@ -15,12 +15,11 @@ const user = JSON.parse(userFromStorage.user)
  
 
  //Fetch Movie Card Data
- const BASE_URL = import.meta.env.VITE_BACKEND_URL
- const uid = user.uid
+ const uid = (user) ? user.uid : 'null'
 const getMovieData = async () => {
     const {data} = await getMovieCardInfo(BASE_URL + `getHasMovie/${uid}`)
     if (data.value !== null) {
-        listDataArr.value = data.value
+        listDataArr.value = data.value //Will get HTTP.OK and empty array if uid does not exist
     }
     console.log(listDataArr.value[0])
     // console.log(dataObjArr.value.length, dataObjArr.value[1])

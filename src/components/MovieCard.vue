@@ -3,9 +3,12 @@ import {ref} from 'vue'
 import {postUpdate} from '/src/updateMovieCardInfo'
 import {getMovieCardInfo} from '/src/getMovieCardInfo'
 import { myUserStore} from '@/authStore'
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
+import {useRouter} from 'vue-router'
 
 const props = defineProps(['listArr', 'mid', 'image', 'title', 'releaseDate', 'voters', 'score'])
+
+const router = useRouter();
 
 const status = ref(null)
 const rating = ref(null)
@@ -84,6 +87,15 @@ const handleListChange = async (movieStatus, userRating) => {
     }
 }
 
+const handleActionButtonClick = (event) => {
+    if (!userFromStorage.user) {
+        router.push('/login')
+    }
+    else {
+        toggle(event);
+    }
+}
+
 const handleSubmit = (movieStatus, userRating) => {
     if (movieStatus !== null && userRating !== null) {
         handleListChange(movieStatus, userRating);
@@ -98,6 +110,12 @@ const handleSubmit = (movieStatus, userRating) => {
     }
 }
 
+watch(() => userFromStorage.user, () => {
+    if (!userFromStorage.user) {
+        status.value = null
+        rating.value = null
+    }
+})
 
 
 </script>
@@ -111,9 +129,9 @@ const handleSubmit = (movieStatus, userRating) => {
 <div class="flex items-center mt-[3px]"><img src="/src/assets/STAR_ON.svg" /><p class='ml-[1px]'>{{(props.score) ? props.score.toFixed(2) : 'N/A'}}</p></div>
 <div class=" mt-[3px]"><p class='ml-[5px] text-ellipsis  overflow-hidden whitespace-nowrap'>Votes: {{(props.voters) ? props.voters : 'N/A'}}</p></div>
 <div><p class='ml-[5px]'>{{(props.releaseDate) ? props.releaseDate : 'N/A'}}</p></div>
-<Button v-if="status === 'Completed'" class='mt-[10px] mb-[10px]' severity="success" rounded label="Completed" @click="toggle"/>
-<Button v-else-if="status === 'Plan to Watch'" class='mt-[10px] mb-[10px]' severity="warn" rounded label="Plan to Watch" @click="toggle"/>
-<Button v-else-if="status === null" class='mt-[10px] mb-[10px]' rounded label="Add to List" @click="toggle"/>
+<Button v-if="status === 'Completed'" class='mt-[10px] mb-[10px]' severity="success" rounded label="Completed" @click="handleActionButtonClick"/>
+<Button v-else-if="status === 'Plan to Watch'" class='mt-[10px] mb-[10px]' severity="warn" rounded label="Plan to Watch" @click="handleActionButtonClick"/>
+<Button v-else-if="status === null" class='mt-[10px] mb-[10px]' rounded label="Add to List" @click="handleActionButtonClick"/>
 <Popover ref="op">
     <div class="flex flex-col gap-[10px]">
         <!-- <span>Rating</span> -->
