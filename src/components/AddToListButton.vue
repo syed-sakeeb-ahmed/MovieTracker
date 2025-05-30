@@ -6,7 +6,7 @@ import {postUpdate} from '/src/updateMovieCardInfo'
 import {SECRET, checkIfInUserList, getMovieData} from '@/utilites/jsonUtilities'
 
 const props = defineProps(['queryResults', 'myListData'])
-const emit = defineEmits(['handleListChange'])
+const emit = defineEmits(['ratingValue'])
 
 const router = useRouter()
 const route = useRoute()
@@ -75,6 +75,7 @@ onMounted(async () => {
     console.log("AddToList listData value: " + listDataArr.value)
     const outputObj = checkIfInUserList(listDataArr.value, props.queryResults.id)
     status.value = outputObj.status
+    rating.value = outputObj.rating
     loadedUserListData.value = true
     console.log("AddToList status value: " + status.value)
  })
@@ -105,6 +106,17 @@ const addToListURL = BASE_URL + "addToList"
     }
 }
 
+//Check if user logged in
+watch(() => userFromStorage.user, () => {
+    if (!userFromStorage.user) {
+        status.value = null
+        rating.value = null
+    }
+})
+
+watch(rating, () => {
+    emit('ratingValue', rating.value)
+})
 
 </script>
 

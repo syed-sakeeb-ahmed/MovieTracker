@@ -37,7 +37,7 @@ if (userFromStorage.user) {
     userSessionExists.value = false
  }
 
- const status = ref(null)
+const status = ref(null)
 const rating = ref(null)
 
 
@@ -45,23 +45,16 @@ const rating = ref(null)
 
  
 
- //Check if user logged in
-watch(() => userFromStorage.user, () => {
-    if (!userFromStorage.user) {
-        status.value = null
-        rating.value = null
-    }
-})
+ 
 
 // const parsedData = JSON.parse(data)
 //console.log("This is movie status: " + data.value)
 
  
- onMounted(() => {
-    const statusRatingObj = checkIfInUserList(props.listArr, props.mid)
-    status.value = statusRatingObj.status
-    rating.value = statusRatingObj.rating
- })
+
+ const handleRatingSetter = (emittedRating) => {
+    rating.value = emittedRating
+ }
 
 
 </script>
@@ -75,10 +68,14 @@ watch(() => userFromStorage.user, () => {
 
 <div class="whitespace-nowrap el mt-[3px] text-[24px]"><p class='ml-[5px] mr-[5px] text-ellipsis  overflow-hidden hover:underline'>{{props.title}}</p></div>
 </RouterLink>
-<div class="flex items-center mt-[3px]"><img src="/src/assets/STAR_ON.svg" /><p class='ml-[1px]'>{{(props.score) ? props.score.toFixed(2) : 'N/A'}}</p></div>
+<div class="flex ">
+    <div class="flex items-center mt-[3px]"><img src="/src/assets/STAR_ON.svg" /><p class='ml-[1px]'>{{(props.score) ? props.score.toFixed(2) : 'N/A'}}</p></div>
+    <div v-if="rating" class="flex items-center mt-[3px]"><img src="/src/assets/STAR_RED.svg" /><p class='ml-[1px]'>{{rating}}</p></div>
+</div>
+
 <div class=" mt-[3px]"><p class='ml-[5px] text-ellipsis  overflow-hidden whitespace-nowrap'>Votes: {{(props.voters) ? props.voters : 'N/A'}}</p></div>
 <div><p class='ml-[5px]'>{{(props.releaseDate) ? props.releaseDate : 'N/A'}}</p></div>
-<AddToListButton :myListData="props.listArr" :queryResults="queryResults" />
+<AddToListButton @rating-value="handleRatingSetter" :myListData="props.listArr" :queryResults="queryResults" />
 </div>
     </div>
 

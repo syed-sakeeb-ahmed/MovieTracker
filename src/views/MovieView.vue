@@ -62,7 +62,9 @@ const hasMovieDataRetreived = ref(false)
  getUserListData(uid);
 
 
-
+const handleRatingValue = (emittedRating) => {
+    rating.value = emittedRating
+}
 
 
 watch(() => route.query.id, async () => {
@@ -104,9 +106,11 @@ watch(() => route.query.id, async () => {
                 <div class="flex items-center">
                     <img src="/src/assets/STAR_ON.svg" />
                     {{queryResults.vote_average.toFixed(2)}}
+                    <img src="/src/assets/Star_RED.svg" />
+                    {{rating}}
                     | Votes: {{queryResults.vote_count}}
                 </div>
-                <AddToListButton :myListData="listDataArr" :queryResults="queryResults" />
+                <AddToListButton @rating-value="handleRatingValue" :myListData="listDataArr" :queryResults="queryResults" />
                 <div>
                     <p class="text-[32px] font-bold">Overview</p>
                     <p>{{queryResults.overview}}</p>
