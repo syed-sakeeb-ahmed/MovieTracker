@@ -68,6 +68,16 @@ html, body { height: 100%; }
     visibility: hidden;
 }
 
+.searchNotMade {
+    justify-content: center;
+    height: 100%;
+}
+
+.searchMade {
+    margin-top: 50px;
+    margin-bottom: 50px
+}
+
 
 
 #app {

@@ -46,6 +46,10 @@ const router = createRouter({
         component: PersonalList,
       }
     ],
-    });
+    scrollBehavior(to, from, savedPosition) {
+      return {top: 0, left: 0}
+    },
+    }, 
+  );
 
 export default router;

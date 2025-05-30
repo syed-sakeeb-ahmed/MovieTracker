@@ -2,7 +2,7 @@
 
 import { computed, ref, reactive,watch, Suspense, defineAsyncComponent, useTemplateRef, onMounted } from 'vue';
 import {createInternalQueryAndPush, createReleaseDateQuery, createScoreQuery, createGenreQuery, createCastQuery, createSortQuery} from "@/utilites/jsonUtilities"
-import { buildQuery, genresDict, languages, SECRET, createInternalQuery } from '@/utilites/jsonUtilities';
+import { getRandomMovieID, buildQuery, genresDict, languages, SECRET, createInternalQuery } from '@/utilites/jsonUtilities';
 import {queryObject} from '@/store'
 import { Form } from '@primevue/forms';
 
@@ -15,6 +15,7 @@ import ASScore from './ASScore.vue'
 import ASLanguage from './ASLanguage.vue';
 import { onClickOutside } from '@vueuse/core'
 import MovieCard from './MovieCard.vue'
+
 
 import {useRouter, useRoute} from 'vue-router'
 const route = useRoute()
@@ -316,6 +317,7 @@ const searchClass = computed(() => ({
 }))
 
 const handleSuggestionClick = (movieID) => {
+    // alert("Handling suggestion click")
     router.push(`/movie?id=${movieID}`)
 }
 
@@ -333,11 +335,16 @@ const onSearchClick = () => {
     }
 }
 
+const handleImFeelingLucky = () => {
+    const randID = getRandomMovieID()
+    router.push(`/movie?id=${randID}`)
+}
+
 
 </script>
 
 <template>
-    <div class=" mt-[100px] mb-[100px] flex flex-col justify-center items-center">
+    <div class="flex flex-col justify-center items-center">
         <Accordion
         class="w-[80%] min-w-[350px] max-w-[582px]" 
         v-model:value="active">
@@ -368,13 +375,13 @@ const onSearchClick = () => {
             </div>
         </div>
         <div class="relative">
-            <div v-if="suggestionsIsDisplayed" class="flex flex-col bg-white border-[#ebebeb] w-full border-[1px] absolute z-20" >
+            <div  v-if="suggestionsIsDisplayed" class="flex flex-col bg-white border-[#ebebeb] w-full border-[1px] absolute z-20" >
                 <ul>
-                    <li class="hover:bg-[#ebebeb] flex pt-[10px] pb-[10px] pl-[12px] pr-[12px]" v-for="item, index in searchItems" :key=index>
+                    <li @click="handleSuggestionClick(item.id)" class="hover:bg-[#ebebeb] flex pt-[10px] pb-[10px] pl-[12px] pr-[12px]" v-for="item, index in searchItems" :key=index>
                         <div class="flex items-center">
                     <font-awesome-icon :icon="['fas', 'magnifying-glass']"/>
                 </div>
-                <div @click="handleSuggestionClick(item.id)" :style="{webkitUserSelect: 'none', cursor: 'default'}" class="ml-[8px]">
+                <div  :style="{webkitUserSelect: 'none', cursor: 'default'}" class="ml-[8px]">
                         {{item.title }}
                         {{ (item.release_date) ? '(' + item.release_date.slice(0,4) + ')' : '*Undated*'}}
                 </div>
@@ -382,7 +389,7 @@ const onSearchClick = () => {
                 </ul>
                 <div class=" flex justify-center mt-[15px] mb-[15px]">
                     <Button @click="onSearchClick" class="mr-[10px]" variant="outlined" label="Search"/>
-                    <Button class="ml-[10px]" variant="outlined" label="I'm Feeling Lucky"/>
+                    <Button @click="handleImFeelingLucky" class="ml-[10px]" variant="outlined" label="I'm Feeling Lucky"/>
                 </div>
                 </div>
         </div>
@@ -422,7 +429,7 @@ const onSearchClick = () => {
 
         <div v-if="!suggestionsIsDisplayed" class="flex mt-[10px]" >
             <Button class="mr-[5px]" variant="outlined" @click="onSearchClick" label="Search" /> 
-                <Button class="ml-[5px]" variant="outlined" label="I'm Feeling Lucky" /> 
+                <Button class="ml-[5px]" variant="outlined" label="I'm Feeling Lucky" @click="handleImFeelingLucky" /> 
         </div>
 
     </div>

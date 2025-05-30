@@ -41,7 +41,7 @@ getListData();
 
 <template>
     <div v-if="results.length === 0">Loading...</div>
-    <div v-else-if="results.length > 0" class="listGrid">
+    <div v-else-if="results.length > 0" class="listGrid w-full mt-[50px]">
         <div v-for="item,index in results" :key="index">
             <MovieCard :list-arr="listDataArr" :mid="item[jt.mid]" :title="item[jt.title]" :image="item[jt.poster_path]" :release-date="item[jt.release_date]" :voters="item[jt.votes]" :score="item[jt.rating]" />
         </div>

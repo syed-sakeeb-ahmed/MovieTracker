@@ -1,3 +1,6 @@
+import {getMovieCardInfo} from '@/getMovieCardInfo'
+import {idList} from '/src/idList.js'
+
 export const SECRET = import.meta.env.VITE_KEY;
 export const BASE_URL = import.meta.env.VITE_BACKEND_URL
 
@@ -12,6 +15,50 @@ export const jt = {
 	rating: 6,
 	votes: 7,
 	release_date: 8,
+}
+
+//Check if user in list
+//[{"uid":"vttM5T2RNWbcNpabqSGzAztck712","mid":18501,"user_rating":2,"movie_status":"Completed"},{"uid":"vttM5T2RNWbcNpabqSGzAztck712","mid":82495,"user_rating":3,"movie_status":"Completed"},{"uid":"vttM5T2RNWbcNpabqSGzAztck712","mid":124905,"user_rating":3,"movie_status":"Plan to Watch"},{"uid":"vttM5T2RNWbcNpabqSGzAztck712","mid":1296022,"user_rating":4,"movie_status":"Plan to Watch"}]
+export const checkIfInUserList = (listArr, mid) => {
+    //console.log("This is listArr props: " + props.listArr[0].uid)
+    const outputObj = {
+        status: null,
+        rating: null,
+    }
+    for (const item of listArr) {
+        console.log("This is item mid: " + item.mid)
+        if (mid === item.mid) {
+            outputObj.status = item.movie_status
+            outputObj.rating = item.user_rating
+            console.log("Found one")
+            break;
+        }
+    }
+    return outputObj
+ }
+
+
+ //Im feeling lucky funcs
+ function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
+
+ export const getRandomMovieID = () => {
+    const max = 1064643
+    const myIndex = getRandomInt(max)
+    return idList[myIndex]
+ }
+
+
+ export const getMovieData = async (uid) => {
+    let outputArr = []
+    const {data} = await getMovieCardInfo(BASE_URL + `getHasMovie/${uid}`)
+    if (data.value !== null) {
+        outputArr = data.value //Will get HTTP.OK and empty array if uid does not exist
+    }
+    console.log("This is output arr in getMovieData() " + outputArr[0])
+    // console.log(dataObjArr.value.length, dataObjArr.value[1])
+    return outputArr
 }
 
 export const options = {

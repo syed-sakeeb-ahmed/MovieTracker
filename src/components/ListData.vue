@@ -6,16 +6,28 @@ import ListCol from '@/components/ListCol.vue';
 import { queryObject } from '@/store'
 import MovieGrid from "./MovieGrid.vue"
 import { myUserStore} from '@/authStore'
+import { useRoute } from 'vue-router'
 
 const { page, searchCount } = defineProps(['page', 'searchCount'])
 const emit = defineEmits(['loadedQuery'])
 
 const userFromStorage = myUserStore()
 
-const queryResults = ref({total_results: 0})
+const route = useRoute()
 
-watch([() => page, () => searchCount], async () => {
+const queryResults = ref({total_results: -1})
 
+watch(() => route.fullPath, async () => {
+    if (route.fullPath === '/list' || route.fullPath === '/list/') {
+        console.log("This is route full path: " + route.fullPath)
+        queryResults.value = {total_results: -1}
+        console.log("This is queryResults value: " + JSON.stringify(queryResults.value))
+        emit('loadedQuery', 0, 0)
+
+    }
+    else {
+
+    
     let queryString = ""
     if (queryObject.searchMode === 'basic') {
         queryString = createTMDBSearchQuery(queryObject.searchToken, queryObject.page)
@@ -35,8 +47,9 @@ watch([() => page, () => searchCount], async () => {
     queryResults.value = await fetch(queryString, options)
         .then(res => res.json())
         .catch(err => { throw new Error("Failed to fetch discover information" + err) });
-
+    console.log("Else statement in ListData.vue")
     emit('loadedQuery', queryResults.value.total_pages, queryResults.value.total_results)
+}
 }, {immediate: true})
 
 // watch(queryObject.page, async () => {
@@ -62,8 +75,10 @@ watch([() => page, () => searchCount], async () => {
     <div v-if="queryResults.total_results > 0">
         <MovieGrid :results="queryResults.results" />
     </div>
-    <div v-else >
+    <div class="mt-[100px] flex justify-center items-center text-[34px]" v-else-if="queryResults.total_results === 0" >
+        Nothing found
     </div>
+    <div v-else></div>
 </div>
 
 

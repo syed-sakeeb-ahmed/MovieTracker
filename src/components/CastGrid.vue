@@ -26,7 +26,7 @@ const toggleEndLength = () => {
             <div class="castCardContainerPanel">
                     
             </div>
-            <Button v-if="castObjArray.length > 8" @click="toggleEndLength" :label="(endLength === startLength) ? `Show More` : `Show less`" />
+            <Button class="mt-[10px] mb-[10px]" v-if="castObjArray.length > 8" @click="toggleEndLength" :label="(endLength === startLength) ? `Show More` : `Show less`" />
         
     </div>
 </template>

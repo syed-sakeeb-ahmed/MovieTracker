@@ -4,7 +4,7 @@ import ListCol from '@/components/ListCol.vue';
 import ListData from '@/components/ListData.vue';
 
 import { modifiedQueryObject, queryObject } from '@/store';
-import { watch, ref } from 'vue';
+import { watch, ref, computed } from 'vue';
 import { createInternalQueryAndPush, buildQuery, createTMDBReleaseDateQuery, genresDict, languages, SECRET } from '@/utilites/jsonUtilities';
 import { useRoute, useRouter } from 'vue-router'
 
@@ -45,8 +45,9 @@ const fetchHelloWorld = async () => {
 fetchHelloWorld()
 
 
-const totalRecords = ref(null)
+const totalRecords = ref(0)
 const setPageUpperLimit = (numberOfPages, totalResults) => {
+    console.log("Set page upper limit ran")
     pageUpperLimit.value = numberOfPages
     totalRecords.value = totalResults
 }
@@ -63,23 +64,29 @@ watch(queryObject, () => {
     console.log("Query object changed: " + queryObject)
 })
 
+watch((totalRecords), () => {
+    console.log("This is total records: " + totalRecords.value)
+})
+
+const searchNotMade = computed(() => ({
+    searchNotMade: totalRecords.value === 0,
+}))
+
+const searchMade = computed(() => ({
+    searchMade: totalRecords.value !== 0,
+}))
 
 
 </script>
 
 
 <template>
-    <div class="w-full max-w-[2000px]">
+    <div :class="searchNotMade" class="w-full max-w-[2000px] flex flex-col">
         <div class="bg-red-500">{{ helloWorld }}</div>
-        <button v-if="queryObject.page < pageUpperLimit" @click="fetchNextPage" class="bg-amber-500">Next Page</button>
-        <button v-if="queryObject.page > 1" @click="fetchPreviousPage"
-            class="bg-amber-500">Prev
-            Page</button>
-        <Search/>
-        <button @click="upPaginator">sdfsdf</button>
-        <Paginator :first="(queryObject.page - 1) * 20 + 1" :rows="20" :totalRecords="totalRecords" @page="handlePageChange" />
+        <Search :class="searchMade"/>
+        <Paginator class="mb-[20px]" :alwaysShow="false" :first="(queryObject.page - 1) * 20 + 1" :rows="20" :totalRecords="totalRecords" @page="handlePageChange" />
         <ListData @loaded-query="setPageUpperLimit" :page="queryObject.page" :search-count="queryObject.searchCount"/>
-        <Paginator :first="(queryObject.page - 1) * 20 + 1" :rows="20" :totalRecords="totalRecords" @page="handlePageChange" />
+        <Paginator class="mt-[20px]" :alwaysShow="false" :first="(queryObject.page - 1) * 20 + 1" :rows="20" :totalRecords="totalRecords" @page="handlePageChange" />
 
     </div>
 

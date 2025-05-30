@@ -67,7 +67,7 @@ const handleMyList = () => {
 <template>
     <div class="flex justify-between bg-white w-full">
         
-        <div class="flex justify-center items-center ml-[30px]">MyMovieIndex</div>
+       <a class="flex bg-amber-300"  href="/list"><div class="flex justify-center w-full items-center p-[10px]">MyMovieIndex</div></a>
         <div v-if="!userSessionExists" :class="comp" class="flex items-center bg-white p-[10px]">
             <Button @click="handleLoginClick" rounded label='Login' />
             <Button @click="handleSignUpClick" class="ml-[5px]" rounded variant="outlined" label="Sign up" />
