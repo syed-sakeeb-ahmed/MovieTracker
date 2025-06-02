@@ -36,7 +36,7 @@ const fetchHelloWorld = async () => {
     const options = {
         method: 'GET',
     };
-    const hello = await fetch(`${BASE_URL}/api/hello`, options)
+    const hello = await fetch(`${BASE_URL}api/hello`, options)
         .then(res => res.json())
         .catch(err => { throw new Error("Failed to fetch hello world information " + err) });
     helloWorld.value = hello.name
