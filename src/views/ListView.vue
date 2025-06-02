@@ -83,7 +83,7 @@ const searchMade = computed(() => ({
 <template>
     <div :class="searchNotMade" class="w-full max-w-[2000px] flex flex-col">
         <!-- <div class="bg-red-500">{{ helloWorld }}</div> -->
-         <div>Hello</div>
+         <div>Well, {{ helloWorld }}</div>
         <Search :class="searchMade"/>
         <Paginator class="mb-[20px]" :alwaysShow="false" :first="(queryObject.page - 1) * 20 + 1" :rows="20" :totalRecords="totalRecords" @page="handlePageChange" />
         <ListData @loaded-query="setPageUpperLimit" :page="queryObject.page" :search-count="queryObject.searchCount"/>
