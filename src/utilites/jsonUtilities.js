@@ -1,5 +1,4 @@
 import {getMovieCardInfo} from '@/getMovieCardInfo'
-import {idList} from '/src/idList.js'
 
 export const SECRET = import.meta.env.VITE_KEY;
 export const BASE_URL = import.meta.env.VITE_BACKEND_URL
@@ -42,7 +41,7 @@ export const checkIfInUserList = (listArr, mid) => {
  function getRandomInt(max) {
     return Math.floor(Math.random() * max);
   }
-
+  const idList = [1,2,3]
  export const getRandomMovieID = () => {
     const max = 1064643
     const myIndex = getRandomInt(max)

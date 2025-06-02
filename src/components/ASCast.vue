@@ -25,7 +25,7 @@ watch(() => queryObject.with_cast, () => {
 </script>
 
 <template>
-    <div :style="{maxWidth: maxWidth + 'px'}" ref="castRef">
+    <div ref="castRef">
             <AutoComplete @value-change="$emit('value-changed', selectedCastList)" placeholder="Select Cast" multiple fluid v-model="selectedCastList" optionLabel="name" :suggestions="castQueryResults" @complete="search" />
     </div>
 </template>

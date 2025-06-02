@@ -106,8 +106,8 @@ watch(() => route.query.id, async () => {
                 <div class="flex items-center">
                     <img src="/src/assets/STAR_ON.svg" />
                     {{queryResults.vote_average.toFixed(2)}}
-                    <img src="/src/assets/Star_RED.svg" />
-                    {{rating}}
+                    <img v-if="rating"  src="/src/assets/Star_RED.svg" />
+                    {{(rating) ? rating : ""}}
                     | Votes: {{queryResults.vote_count}}
                 </div>
                 <AddToListButton @rating-value="handleRatingValue" :myListData="listDataArr" :queryResults="queryResults" />

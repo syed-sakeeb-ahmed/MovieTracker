@@ -326,7 +326,7 @@ const searchValue = computed(() => {
 })
 
 const onSearchClick = () => {
-    if (queryObject.searchToken !== '') {
+    if (queryObject.searchToken !== '' || active.value) {
         myInput.value.blur()
         searchItems.value = []
         queryObject.page = 1
@@ -340,6 +340,10 @@ const handleImFeelingLucky = () => {
     router.push(`/movie?id=${randID}`)
 }
 
+const accordionContentRef = useTemplateRef('accordionContentRef')
+onMounted(() => {
+    console.log("This is inner width: " + accordionContentRef.innerWidth)
+})
 
 </script>
 
@@ -394,7 +398,7 @@ const handleImFeelingLucky = () => {
                 </div>
         </div>
         </AccordionHeader>
-        <AccordionContent>
+        <AccordionContent ref="accordionContentRef">
             <div class="flex flex-col gap-[10px] h-[350px] mt-[20px]">
             <!-- <Form v-slot="$form" :initialValues :resolver @submit="onFormSubmit" class="flex flex-col gap-4 w-full sm:w-56"> -->
                 <!-- <InputNumber name="username" type="text" placeholder="Username" class="w-full sm:w-56" /> -->
