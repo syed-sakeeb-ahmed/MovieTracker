@@ -5,7 +5,7 @@ import ListData from '@/components/ListData.vue';
 
 import { modifiedQueryObject, queryObject } from '@/store';
 import { watch, ref, computed } from 'vue';
-import { createInternalQueryAndPush, buildQuery, createTMDBReleaseDateQuery, genresDict, languages, SECRET } from '@/utilites/jsonUtilities';
+import { BASE_URL, createInternalQueryAndPush, buildQuery, createTMDBReleaseDateQuery, genresDict, languages, SECRET } from '@/utilites/jsonUtilities';
 import { useRoute, useRouter } from 'vue-router'
 
 const pageUpperLimit = ref(null)
@@ -36,7 +36,7 @@ const fetchHelloWorld = async () => {
     const options = {
         method: 'GET',
     };
-    const hello = await fetch("http://localhost:8080/api/hello", options)
+    const hello = await fetch(`${BASE_URL}/api/hello`, options)
         .then(res => res.json())
         .catch(err => { throw new Error("Failed to fetch hello world information " + err) });
     helloWorld.value = hello.name
