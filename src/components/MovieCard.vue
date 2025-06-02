@@ -69,8 +69,8 @@ const rating = ref(null)
 <div class="whitespace-nowrap el mt-[3px] text-[24px]"><p class='ml-[5px] mr-[5px] text-ellipsis  overflow-hidden hover:underline'>{{props.title}}</p></div>
 </RouterLink>
 <div class="flex ">
-    <div class="flex items-center mt-[3px]"><img src="/src/assets/STAR_ON.svg" /><p class='ml-[1px]'>{{(props.score) ? props.score.toFixed(2) : 'N/A'}}</p></div>
-    <div v-if="rating" class="flex items-center mt-[3px]"><img src="/src/assets/STAR_RED.svg" /><p class='ml-[1px]'>{{rating}}</p></div>
+    <div class="flex items-center mt-[3px]"><img src="/src/assets/Star_ON.svg" /><p class='ml-[1px]'>{{(props.score) ? props.score.toFixed(2) : 'N/A'}}</p></div>
+    <div v-if="rating" class="flex items-center mt-[3px]"><img src="/src/assets/Star_RED.svg" /><p class='ml-[1px]'>{{rating}}</p></div>
 </div>
 
 <div class=" mt-[3px]"><p class='ml-[5px] text-ellipsis  overflow-hidden whitespace-nowrap'>Votes: {{(props.voters) ? props.voters : 'N/A'}}</p></div>

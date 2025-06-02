@@ -104,7 +104,7 @@ watch(() => route.query.id, async () => {
                     <span>Genres: <span v-for="item,index in queryResults.genres" :key="index">{{item.name}}<span v-if="index !== queryResults.genres.length - 1">, </span></span></span>
                 
                 <div class="flex items-center">
-                    <img src="/src/assets/STAR_ON.svg" />
+                    <img src="/src/assets/Star_ON.svg" />
                     {{queryResults.vote_average.toFixed(2)}}
                     <img v-if="rating"  src="/src/assets/Star_RED.svg" />
                     {{(rating) ? rating : ""}}

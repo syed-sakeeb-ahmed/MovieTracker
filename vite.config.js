@@ -12,12 +12,12 @@ export default defineConfig({
     vue(),
     vueDevTools(),
     tailwindcss(),
-    visualizer({
-      filename: './dist/stats.html',
-      open: true, // automatically opens the file in your browser
-      gzipSize: true,
-      brotliSize: true,
-    }),
+    // visualizer({
+    //   filename: './dist/stats.html',
+    //   open: true, // automatically opens the file in your browser
+    //   gzipSize: true,
+    //   brotliSize: true,
+    // }),
   ],
   resolve: {
     alias: {
