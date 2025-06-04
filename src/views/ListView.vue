@@ -11,6 +11,7 @@ import { useRoute, useRouter } from 'vue-router'
 const pageUpperLimit = ref(null)
 const helloWorld = ref(null)
 
+
 const router = useRouter()
 
 const fetchNextPage = () => {
@@ -77,17 +78,22 @@ const searchMade = computed(() => ({
 }))
 
 
+const isPaginatorVisible = ref(false)
+const handlePaginatorView = (value) => {
+    isPaginatorVisible.value = value
+}
+
 </script>
 
 
 <template>
     <div :class="searchNotMade" class="w-full max-w-[2000px] flex flex-col">
         <!-- <div class="bg-red-500">{{ helloWorld }}</div> -->
-         <div>Well, {{ helloWorld }}</div>
+         <!-- <div>Well, {{ helloWorld }}</div> -->
         <Search :class="searchMade"/>
-        <Paginator class="mb-[20px]" :alwaysShow="false" :first="(queryObject.page - 1) * 20 + 1" :rows="20" :totalRecords="totalRecords" @page="handlePageChange" />
-        <ListData @loaded-query="setPageUpperLimit" :page="queryObject.page" :search-count="queryObject.searchCount"/>
-        <Paginator class="mt-[20px]" :alwaysShow="false" :first="(queryObject.page - 1) * 20 + 1" :rows="20" :totalRecords="totalRecords" @page="handlePageChange" />
+        <Paginator v-if="isPaginatorVisible" class="mb-[20px]" :alwaysShow="false" :first="(queryObject.page - 1) * 20 + 1" :rows="20" :totalRecords="totalRecords" @page="handlePageChange" />
+        <ListData @has-movie-data-loaded="handlePaginatorView" @loaded-query="setPageUpperLimit" :page="queryObject.page" :search-count="queryObject.searchCount"/>
+        <Paginator v-if="isPaginatorVisible" class="mt-[20px]" :alwaysShow="false" :first="(queryObject.page - 1) * 20 + 1" :rows="20" :totalRecords="totalRecords" @page="handlePageChange" />
 
     </div>
 

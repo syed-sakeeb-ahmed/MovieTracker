@@ -60,22 +60,24 @@ const rating = ref(null)
 </script>
 
 <template>
-    <div class='movieCardStyles border-[1px] border-[#ebebeb]'>
-        <div v-if="props.title" class="max-w-[185px]">
+    <div :style="{borderRadius: '20px'}" class='flex movieCardStyles overflow-hidden movieCardDropShadow'>
+        <div v-if="props.title" class="max-w-[185px] rounded-[20px] overflow-hidden border-[1px] border-[#ebebeb] ">
 <RouterLink :to="`/movie?id=${mid}`">
     <img v-if="props.image" :src="imageBaseURL + props.image" :alt="`Image for ${props.title}`" class="w-[185px]"/>
 <img v-else src="/src/assets/image_not_found.png" class="w-[185px]"/>
 
-<div class="whitespace-nowrap el mt-[3px] text-[24px]"><p class='ml-[5px] mr-[5px] text-ellipsis  overflow-hidden hover:underline'>{{props.title}}</p></div>
+<div class="ml-[6px] whitespace-nowrap el mt-[3px] text-[24px]"><p class='ml-[5px] mr-[5px] text-ellipsis  overflow-hidden hover:underline'>{{props.title}}</p></div>
 </RouterLink>
-<div class="flex ">
-    <div class="flex items-center mt-[3px]"><img src="/src/assets/Star_ON.svg" /><p class='ml-[1px]'>{{(props.score) ? props.score.toFixed(2) : 'N/A'}}</p></div>
-    <div v-if="rating" class="flex items-center mt-[3px]"><img src="/src/assets/Star_RED.svg" /><p class='ml-[1px]'>{{rating}}</p></div>
+<div class="ml-[7px]">
+    <div class="flex ">
+        <div class="flex items-center mt-[3px]"><img src="/src/assets/Star_ON.svg" /><p class='ml-[1px]'>{{(props.score) ? props.score.toFixed(2) : 'N/A'}}</p></div>
+        <div v-if="rating" class="flex items-center mt-[3px]"><img src="/src/assets/Star_RED.svg" /><p class='ml-[1px]'>{{rating}}</p></div>
+    </div>
+    
+    <div class=" mt-[3px]"><p class='ml-[5px] text-ellipsis  overflow-hidden whitespace-nowrap'>Votes: {{(props.voters) ? props.voters : 'N/A'}}</p></div>
+    <div><p class='ml-[5px]'>{{(props.releaseDate) ? props.releaseDate : 'N/A'}}</p></div>
 </div>
-
-<div class=" mt-[3px]"><p class='ml-[5px] text-ellipsis  overflow-hidden whitespace-nowrap'>Votes: {{(props.voters) ? props.voters : 'N/A'}}</p></div>
-<div><p class='ml-[5px]'>{{(props.releaseDate) ? props.releaseDate : 'N/A'}}</p></div>
-<AddToListButton @rating-value="handleRatingSetter" :myListData="props.listArr" :queryResults="queryResults" />
+<AddToListButton class="ml-[5px]" @rating-value="handleRatingSetter" :myListData="props.listArr" :queryResults="queryResults" />
 </div>
     </div>
 

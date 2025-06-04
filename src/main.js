@@ -62,6 +62,7 @@ import Message from 'primevue/message';
 import Checkbox from 'primevue/checkbox';
 import CheckboxGroup from 'primevue/checkboxgroup';
 import Paginator from 'primevue/paginator';
+import ProgressSpinner from 'primevue/progressspinner';
 
 
 
@@ -99,7 +100,34 @@ const MyPreset = definePreset(Aura, {
             900: '{rose.900}',
             950: '{rose.950}'
         }
+    },
+    components: {
+        progressspinner: {
+            colorScheme: {
+                light: {
+                    root: {
+                        color: {
+                            one: '{rose.500}',
+                            two: '{rose.500}',
+                            three: '{rose.500}',
+                            four: '{rose.500}'
+                        }
+                    }
+                },
+                dark: {
+                    root: {
+                        color: {
+                            one: '{rose.500}',
+                            two: '{rose.500}',
+                            three: '{rose.500}',
+                            four: '{rose.500}'
+                        }
+                    }
+                }
+            }
+        }
     }
+    
 });
 
 
@@ -153,6 +181,7 @@ app.component("Message", Message)
 app.component("Checkbox", Checkbox)
 app.component("CheckboxGroup", CheckboxGroup)
 app.component("Paginator", Paginator)
+app.component("ProgressSpinner", ProgressSpinner)
 
 
 

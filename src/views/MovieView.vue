@@ -87,12 +87,12 @@ watch(() => route.query.id, async () => {
 </script>
 
 <template>
-    <div v-if="queryResults !== null && hasMovieDataRetreived !== false" class="flex flex-col m-[50px]">
+    <div v-if="queryResults !== null && hasMovieDataRetreived !== false" class="flex flex-col m-[10px]">
         <div class="movieContainer">
-            <div class="flex justify-center">
+            <div class="flex justify-center items-start">
                 <!-- <img class="imageBlur w-full" src='/src/assets/image_not_found.png' width="250px"/> -->
-                <img v-if="queryResults.poster_path" :src="imageBaseURL + queryResults.poster_path" :alt="`Image for ${queryResults.title}`" width="500px"/>
-                <img v-else src="/src/assets/image_not_found.png" class="w-[500px]"/>
+                <img v-if="queryResults.poster_path" :src="imageBaseURL + queryResults.poster_path" :alt="`Image for ${queryResults.title}`" width="500px" class="bigMoviePhoto"/>
+                <img v-else src="/src/assets/image_not_found.png" class="w-[500px] bigMoviePhoto"/>
             </div>
             <div class="flex flex-col">
                 <div class="flex text-[44px] font-bold">
@@ -128,6 +128,6 @@ watch(() => route.query.id, async () => {
             <p v-else class="text-[30px] font">Nothing here...</p>
         </div>
     </div>
-    <div v-else>Loading...</div>
+    <div class="h-full flex items-center" v-else><ProgressSpinner /></div>
 
 </template>

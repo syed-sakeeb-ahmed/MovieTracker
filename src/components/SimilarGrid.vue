@@ -26,7 +26,7 @@ console.log(props.similarObjArray)
             <div class="castCardContainer">
                 <MovieCard :list-arr="props.listDataArr" v-for="item in props.similarObjArray.slice(0,endLength)" :mid="item.id" :image="item.poster_path" :title="item.title" :release-date="item.release_date" :voters="item.vote_count" :score="item.vote_average" :key="item.cast_id" />
             </div>
-            <Button class="mt-[20px]" v-if="similarObjArray.length > startLength" @click="toggleEndLength" :label="(endLength === startLength) ? `Show more` : `Show less`" />
+            <Button rounded outlined class="mt-[20px]" v-if="similarObjArray.length > startLength" @click="toggleEndLength" :label="(endLength === startLength) ? `Show more` : `Show less`" />
         
     </div>
 </template>

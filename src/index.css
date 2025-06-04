@@ -17,40 +17,79 @@ html, body { height: 100%; }
 
 .movieCardStyles {
     border-radius: 5px;
+    
+}
+
+.movieCardDropShadow {
+    box-shadow: 0 0 3px rgba(0,0,0,0.25);
+ 
+}
+
+.castCardShadow {
+    box-shadow: 0 0 5px rgba(0,0,0,0.25);
+
 }
 
 
 .listGrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(185px, 185px));
-    gap: 5px;
+    gap: 10px;
     justify-content: center;
 }
 
 
-.movieContainer { 
+/* .movieContainer3 { 
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 10px
+} */
+
+.movieContainer {
+  --grid-max-col-count: 3;
+  --grid-min-col-size: 350px;
+  --grid-gap: 10px;
+
+  /* calculations, do not touch */
+  --grid-col-size-calc: calc(
+    (100% - var(--grid-gap) * var(--grid-max-col-count)) /
+      var(--grid-max-col-count)
+  );
+  --grid-col-min-size-calc: min(
+    100%,
+    max(var(--grid-min-col-size), var(--grid-col-size-calc))
+  );
+
+  display: grid;
+  gap: var(--grid-gap);
+
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(var(--grid-col-min-size-calc), auto)
+  );
+}
+
+:root {
+    --cast-grid-size: 150px;
 }
 
 .castCardContainer {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 150px));
-    gap: 5px;
+    grid-template-columns: repeat(auto-fill, minmax(var(--cast-grid-size), var(--cast-grid-size)));
+    gap: 8px;
     transition: grid-template-rows 500ms
 }
 
 .castCardContainerPanel {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 150px));
+    grid-template-columns: repeat(auto-fill, minmax(var(--cast-grid-size), var(--cast-grid-size)));
     grid-template-rows: auto;
     gap: 5px;
 }
 
 .castCardContainerContent {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 150px));
+    grid-template-columns: repeat(auto-fill, minmax(var(--cast-grid-size), var(--cast-grid-size)));
     gap: 5px;
 }
 
@@ -78,6 +117,41 @@ html, body { height: 100%; }
     margin-bottom: 50px
 }
 
+.logoTitleClass {
+    font-size: 30px;
+    font-weight: bold;
+    color: rgb(225,79,98)
+}
+
+.bigMoviePhoto {
+    border-radius: 10px;
+}
+
+.navButtonsClass {
+    margin-right: 5px;
+    margin-top: 5px;
+    float: right;
+    padding: 10px;
+    min-width: 82px;
+}
+
+.navButtonsContainerClass {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.navButtonsClass {
+    min-width: 82px;
+}
+
+@media (max-width: 500px) {
+    .navButtonsContainerClass {
+        flex-direction: column;
+        
+    }
+}
 
 
 #app {

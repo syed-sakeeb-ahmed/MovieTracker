@@ -335,9 +335,12 @@ const onSearchClick = () => {
     }
 }
 
-const handleImFeelingLucky = () => {
-    const randID = getRandomMovieID()
-    router.push(`/movie?id=${randID}`)
+const handleImFeelingLucky = async () => {
+    const randIDObj = await getRandomMovieID()
+    console.log("This is randomOBJID: " + randIDObj.id)
+    if (randIDObj.id) {
+        router.push(`/movie?id=${randIDObj.id}`)
+    }
 }
 
 const accordionContentRef = useTemplateRef('accordionContentRef')

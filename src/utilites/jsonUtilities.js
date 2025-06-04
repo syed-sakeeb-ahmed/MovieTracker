@@ -41,11 +41,48 @@ export const checkIfInUserList = (listArr, mid) => {
  function getRandomInt(max) {
     return Math.floor(Math.random() * max);
   }
-  const idList = [1,2,3]
- export const getRandomMovieID = () => {
-    const max = 1064643
-    const myIndex = getRandomInt(max)
-    return idList[myIndex]
+
+
+ export const getRandomMovieID = async () => {
+
+    const options = {
+        method: 'GET',  
+    };
+    
+      return fetch(BASE_URL + "getRandomMovieID", options)
+        .then((res) => {
+            if (res.ok) {
+                return res.json()
+            }
+            else {
+                return null;
+            }
+        })
+        .then(resData =>{ return resData})
+        .catch((err) => (console.log(err)))
+ }
+
+
+ export const deleteMovieFromUserList = async (hasMovieObject) => {
+    const options = {
+        method: 'POST',  
+        headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify( hasMovieObject )
+    };
+    
+      return fetch(BASE_URL + "deleteFromUserList", options)
+        .then((res) => {
+            if (res.ok) {
+                return res.json()
+            }
+            else {
+                return null;
+            }
+        })
+        .then(resData =>{ return resData})
+        .catch((err) => (console.log(err)))
  }
 
 

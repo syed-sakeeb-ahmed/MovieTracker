@@ -9,7 +9,7 @@ import { myUserStore} from '@/authStore'
 import { useRoute } from 'vue-router'
 
 const { page, searchCount } = defineProps(['page', 'searchCount'])
-const emit = defineEmits(['loadedQuery'])
+const emit = defineEmits(['loadedQuery', 'hasMovieDataLoaded'])
 
 const userFromStorage = myUserStore()
 
@@ -68,12 +68,18 @@ watch(() => route.fullPath, async () => {
 //         .catch(err => { throw new Error("Failed to fetch discover information" + err) });
 
 // })
+
+
+const handleMovieDataLoaded = (value) => {
+    console.log("Inside list data: " + value)
+    emit('hasMovieDataLoaded', value)
+}
 </script>
 
 <template>
     <div class="ml-[12px] mr-[12px]">
     <div v-if="queryResults.total_results > 0">
-        <MovieGrid :results="queryResults.results" />
+        <MovieGrid @movie-data-loaded="handleMovieDataLoaded" :results="queryResults.results" />
     </div>
     <div class="mt-[100px] flex justify-center items-center text-[34px]" v-else-if="queryResults.total_results === 0" >
         Nothing found

@@ -67,14 +67,14 @@ const handleMyList = () => {
 <template>
     <div class="flex justify-between bg-white w-full">
         
-       <a class="flex bg-amber-300"  href="/list"><div class="flex justify-center w-full items-center p-[10px]">MyMovieIndex</div></a>
-        <div v-if="!userSessionExists" :class="comp" class="flex items-center bg-white p-[10px]">
-            <Button @click="handleLoginClick" rounded label='Login' />
-            <Button @click="handleSignUpClick" class="ml-[5px]" rounded variant="outlined" label="Sign up" />
+       <a class="flex"  href="/list"><div class="flex justify-center w-full items-center p-[10px] logoTitleClass">MyMovieIndex</div></a>
+        <div v-if="!userSessionExists" :class="comp" class="navButtonsContainerClass bg-white p-[10px]">
+            <Button @click="handleLoginClick" rounded label='Login' class="" />
+            <Button @click="handleSignUpClick" class="" rounded variant="outlined" label="Sign up" />
         </div>
-        <div v-else-if="userSessionExists">
-            <Button @click="handleMyList" label="My List" />
-            <Button @click="handleLogout" label="Logout" />
+        <div class="navButtonsContainerClass p-[10px]" v-else-if="userSessionExists">
+            <Button variant="outlined" class="navButtonsClass" rounded @click="handleMyList" label="My List" />
+            <Button rounded @click="handleLogout" class="navButtonsClass" label="Logout" />
         </div>
 </div>
 </template>

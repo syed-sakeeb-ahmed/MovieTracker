@@ -3,7 +3,7 @@ import {ref, watch, onMounted} from 'vue'
 import {useRouter, useRoute} from 'vue-router'
 import { myUserStore} from '@/authStore'
 import {postUpdate} from '/src/updateMovieCardInfo'
-import {SECRET, checkIfInUserList, getMovieData} from '@/utilites/jsonUtilities'
+import {SECRET, checkIfInUserList, getMovieData, deleteMovieFromUserList} from '@/utilites/jsonUtilities'
 
 const props = defineProps(['queryResults', 'myListData'])
 const emit = defineEmits(['ratingValue'])
@@ -106,6 +106,21 @@ const addToListURL = BASE_URL + "addToList"
     }
 }
 
+const handleDeleteFromUserList = async () => {
+    const deleteObj = {
+        uid: user.uid,
+        mid: props.queryResults.id,
+        user_rating: 3,
+        movie_status: 'null'
+    }
+    const result = await deleteMovieFromUserList(deleteObj)
+    if (result === true) {
+        status.value = null
+        rating.value = null
+    }
+    console.log(`This is delete user movie result: ${result === true}`)
+}
+
 //Check if user logged in
 watch(() => userFromStorage.user, () => {
     if (!userFromStorage.user) {
@@ -122,9 +137,12 @@ watch(rating, () => {
 
 <template>
     <div v-if="loadedUserListData">
-    <Button v-if="status === 'Completed'" class='mt-[10px] mb-[10px]' severity="success" rounded label="Completed" @click="handleActionButtonClick"/>
-<Button v-else-if="status === 'Plan to Watch'" class='mt-[10px] mb-[10px]' severity="warn" rounded label="Plan to Watch" @click="handleActionButtonClick"/>
-<Button v-else-if="status === null" class='mt-[10px] mb-[10px]' rounded label="Add to List" @click="handleActionButtonClick"/>
+        <div class="flex justify-between items-center">
+            <Button v-if="status === 'Completed'" class='mt-[10px] mb-[10px]' severity="success" rounded label="Completed" @click="handleActionButtonClick"/>
+        <Button v-else-if="status === 'Plan to Watch'" class='mt-[10px] mb-[10px]' severity="warn" rounded label="Plan to Watch" @click="handleActionButtonClick"/>
+        <Button v-else-if="status === null" class='mt-[10px] mb-[10px]' rounded label="Add to List" @click="handleActionButtonClick"/>
+        <Button @click="handleDeleteFromUserList" class="mr-[5px]" rounded v-if="status !== null" icon="pi pi-trash" severity="contrast" aria-label="Delete" />
+        </div>
 <Popover ref="op">
     <div class="flex flex-col gap-[10px]">
         <!-- <span>Rating</span> -->
