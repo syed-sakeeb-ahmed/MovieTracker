@@ -31,7 +31,7 @@ const user = JSON.parse(userFromStorage.user)
 
 <template>
     <div class="flex justify-center" v-if="hasMovieDataRetreived === false"><ProgressSpinner /></div>
-    <div v-else class="listGrid">
+    <div v-else class="movieListGrid">
         <!-- <div v-if="props.results.length === 0">Nothing found</div> -->
         <div v-for="item,index in props.results" :key="item.id">
             <MovieCard :list-arr="listDataArr" :mid="item.id" :title="item.title" :image="item.poster_path" :release-date="item.release_date" :voters="item.vote_count" :score="item.vote_average" />

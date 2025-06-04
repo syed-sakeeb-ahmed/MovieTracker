@@ -38,6 +38,13 @@ html, body { height: 100%; }
     justify-content: center;
 }
 
+.movieListGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 150px));
+    gap: 5px;
+    justify-content: center;
+}
+
 
 /* .movieContainer3 { 
     display: grid;
