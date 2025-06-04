@@ -69,8 +69,8 @@ const handleMyList = () => {
         
        <a class="flex"  href="/list"><div class="flex justify-center w-full items-center p-[10px] logoTitleClass">MyMovieIndex</div></a>
         <div v-if="!userSessionExists" :class="comp" class="navButtonsContainerClass bg-white p-[10px]">
-            <Button @click="handleLoginClick" rounded label='Login' class="" />
-            <Button @click="handleSignUpClick" class="" rounded variant="outlined" label="Sign up" />
+            <Button @click="handleLoginClick" rounded label='Login' class="navButtonsClass" />
+            <Button @click="handleSignUpClick" class="navButtonsClass" rounded variant="outlined" label="Sign up" />
         </div>
         <div class="navButtonsContainerClass p-[10px]" v-else-if="userSessionExists">
             <Button variant="outlined" class="navButtonsClass" rounded @click="handleMyList" label="My List" />

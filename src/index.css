@@ -123,6 +123,13 @@ html, body { height: 100%; }
     color: rgb(225,79,98)
 }
 
+@media (max-width: 250px) {
+    .logoTitleClass {
+        font-size: 20px;
+        
+    }
+}
+
 .bigMoviePhoto {
     border-radius: 10px;
 }
@@ -144,6 +151,10 @@ html, body { height: 100%; }
 
 .navButtonsClass {
     min-width: 82px;
+}
+
+.notMovieView {
+    align-items: center;
 }
 
 @media (max-width: 500px) {

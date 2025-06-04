@@ -13,6 +13,7 @@ const helloWorld = ref(null)
 
 
 const router = useRouter()
+const route = useRoute()
 
 const fetchNextPage = () => {
     if (queryObject.page < pageUpperLimit.value) {
@@ -76,7 +77,6 @@ const searchNotMade = computed(() => ({
 const searchMade = computed(() => ({
     searchMade: totalRecords.value !== 0,
 }))
-
 
 const isPaginatorVisible = ref(false)
 const handlePaginatorView = (value) => {

@@ -88,7 +88,7 @@ watch(() => route.query.id, async () => {
 
 <template>
     <div v-if="queryResults !== null && hasMovieDataRetreived !== false" class="flex flex-col m-[10px]">
-        <div class="movieContainer">
+        <div :style="{maxWidth: '1400px'}" class="movieContainer">
             <div class="flex justify-center items-start">
                 <!-- <img class="imageBlur w-full" src='/src/assets/image_not_found.png' width="250px"/> -->
                 <img v-if="queryResults.poster_path" :src="imageBaseURL + queryResults.poster_path" :alt="`Image for ${queryResults.title}`" width="500px" class="bigMoviePhoto"/>
