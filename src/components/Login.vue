@@ -40,7 +40,7 @@ const onFormSubmit = ({ valid, states }) => {
         signInWithEmailAndPassword(auth, states.email.value, states.password.value)
   .then((userCredential) => {
     // Signed in 
-    console.log("Logged in")
+    // console.log("Logged in")
     router.replace('/list')
 
     // ...

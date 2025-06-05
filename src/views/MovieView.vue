@@ -23,7 +23,7 @@ const rating = ref(null)
 const route = useRoute()
 let movieID = (route.query.id) ? route.query.id : undefined
 const queryResults = ref(null)
-console.log(movieID)
+// console.log(movieID)
 const imageBaseURL = ref('https://image.tmdb.org/t/p/w500')
 
 const fetchMovieData = async (movieID) => {

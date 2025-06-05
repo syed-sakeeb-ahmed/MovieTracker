@@ -17,7 +17,7 @@ const toggleEndLength = () => {
     }
 }
 
-console.log(props.similarObjArray)
+// console.log(props.similarObjArray)
 </script>
 
 <template>

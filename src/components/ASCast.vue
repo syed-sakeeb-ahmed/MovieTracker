@@ -9,7 +9,7 @@ const maxWidth = ref(null)
 
 const myRef = useTemplateRef('castRef')
 onMounted(() => {
-    console.log("This is castRef: " + myRef.value.offsetWidth)
+    // console.log("This is castRef: " + myRef.value.offsetWidth)
     maxWidth.value = myRef.value.clientWidth
 })
 

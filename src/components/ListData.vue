@@ -19,9 +19,9 @@ const queryResults = ref({total_results: -1})
 
 watch(() => route.fullPath, async () => {
     if (route.fullPath === '/list' || route.fullPath === '/list/') {
-        console.log("This is route full path: " + route.fullPath)
+        // console.log("This is route full path: " + route.fullPath)
         queryResults.value = {total_results: -1}
-        console.log("This is queryResults value: " + JSON.stringify(queryResults.value))
+        // console.log("This is queryResults value: " + JSON.stringify(queryResults.value))
         emit('loadedQuery', 0, 0)
 
     }
@@ -47,7 +47,7 @@ watch(() => route.fullPath, async () => {
     queryResults.value = await fetch(queryString, options)
         .then(res => res.json())
         .catch(err => { throw new Error("Failed to fetch discover information" + err) });
-    console.log("Else statement in ListData.vue")
+    // console.log("Else statement in ListData.vue")
     emit('loadedQuery', queryResults.value.total_pages, queryResults.value.total_results)
 }
 }, {immediate: true})
@@ -71,7 +71,7 @@ watch(() => route.fullPath, async () => {
 
 
 const handleMovieDataLoaded = (value) => {
-    console.log("Inside list data: " + value)
+    // console.log("Inside list data: " + value)
     emit('hasMovieDataLoaded', value)
 }
 </script>

@@ -49,7 +49,7 @@ fetchHelloWorld()
 
 const totalRecords = ref(0)
 const setPageUpperLimit = (numberOfPages, totalResults) => {
-    console.log("Set page upper limit ran")
+    // console.log("Set page upper limit ran")
     pageUpperLimit.value = numberOfPages
     totalRecords.value = totalResults
 }
@@ -63,11 +63,11 @@ const handlePageChange = (page) => {
 
 
 watch(queryObject, () => {
-    console.log("Query object changed: " + queryObject)
+    // console.log("Query object changed: " + queryObject)
 })
 
 watch((totalRecords), () => {
-    console.log("This is total records: " + totalRecords.value)
+    // console.log("This is total records: " + totalRecords.value)
 })
 
 const searchNotMade = computed(() => ({

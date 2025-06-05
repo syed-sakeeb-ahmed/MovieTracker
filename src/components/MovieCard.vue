@@ -72,7 +72,7 @@ const rating = ref(null)
         rating.value = null
         emit('deleteFromList', deleteObj.mid)
     }
-    console.log(`This is delete user movie result: ${result === true}`)
+    // console.log(`This is delete user movie result: ${result === true}`)
 }
 
 

@@ -7,7 +7,7 @@ import {queryObject} from "@/store"
 
 const languageList = ref(languages)
 const selectedLanguage = ref('en')
-console.log(JSON.stringify(queryObject.language))
+// console.log(JSON.stringify(queryObject.language))
 
 //English is at index 172
 // let count = 0

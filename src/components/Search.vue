@@ -49,7 +49,7 @@ watch(() => queryObject.searchMode, () => {
 
 
 const toggleAdvancedSearch = () => {
-    console.log("Toggled Advanced Search")
+    // console.log("Toggled Advanced Search")
     if (active.value === '0') {
         active.value = null
         queryObject.searchMode = 'basic'
@@ -90,7 +90,7 @@ const resolver = ({ values }) => {
 
 const onFormSubmit = ({ valid }) => {
     if (valid) {
-        console.log("gamer")
+        // console.log("gamer")
     }
 };
 
@@ -141,8 +141,8 @@ const getCastFromURL = (castQueryString) => {
 
 
 const logQuery = () => {
-    console.log(createInternalQuery(queryObject))
-    console.log(queryObject.with_genres)
+    // console.log(createInternalQuery(queryObject))
+    // console.log(queryObject.with_genres)
 }
 
 const isDirty = ref(false)
@@ -281,7 +281,7 @@ watch(searchItems, () => {
 })
 
 watch(() => queryObject.searchToken, async () => {
-    console.log(queryObject.searchToken.value)
+    // console.log(queryObject.searchToken.value)
     if (queryObject.searchToken.length === 0) {
         searchItems.value = []
     }
@@ -314,7 +314,7 @@ const searchWidth = ref(null)
 const dontQuerySearch = ref(false)
 
 onMounted(() => {
-    console.log("This is searchRef height: " + searchRef.value.offsetHeight)
+    // console.log("This is searchRef height: " + searchRef.value.offsetHeight)
     searchHeight.value = searchRef.value.offsetHeight
     searchWidth.value = searchRef.value.offsetWidth
 })
@@ -375,7 +375,7 @@ const onSearchClick = () => {
 
 const handleImFeelingLucky = async () => {
     const randIDObj = await getRandomMovieID()
-    console.log("This is randomOBJID: " + randIDObj.id)
+    // console.log("This is randomOBJID: " + randIDObj.id)
     if (randIDObj.id) {
         router.push(`/movie?id=${randIDObj.id}`)
     }
@@ -383,7 +383,7 @@ const handleImFeelingLucky = async () => {
 
 const accordionContentRef = useTemplateRef('accordionContentRef')
 onMounted(() => {
-    console.log("This is inner width: " + accordionContentRef.innerWidth)
+    // console.log("This is inner width: " + accordionContentRef.innerWidth)
 })
 
 </script>

@@ -66,7 +66,7 @@ const handleDeleteFromUserList = async () => {
         status.value = null
         rating.value = null
     }
-    console.log(`This is delete user movie result: ${result === true}`)
+    // console.log(`This is delete user movie result: ${result === true}`)
 }
 
 
@@ -87,12 +87,12 @@ const movieID = (route.query.id) ? route.query.id : undefined
 onMounted(async () => {
     //ToDO move getMovieData upward
     listDataArr.value = props.myListData
-    console.log("AddToList listData value: " + listDataArr.value)
+    // console.log("AddToList listData value: " + listDataArr.value)
     const outputObj = checkIfInUserList(listDataArr.value, props.queryResults.id)
     status.value = outputObj.status
     rating.value = outputObj.rating
     loadedUserListData.value = true
-    console.log("AddToList status value: " + status.value)
+    // console.log("AddToList status value: " + status.value)
  })
 
 
