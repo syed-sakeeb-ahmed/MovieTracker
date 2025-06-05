@@ -6,10 +6,11 @@ import { myUserStore} from '@/authStore'
 import { onMounted, watch } from 'vue'
 import {useRouter} from 'vue-router'
 import AddToListButton from '/src/components/AddToListButton.vue'
-import {checkIfInUserList} from '/src/utilites/jsonUtilities.js'
+import {checkIfInUserList, deleteMovieFromUserList} from '/src/utilites/jsonUtilities.js'
 
 
 const props = defineProps(['listArr', 'mid', 'image', 'title', 'releaseDate', 'voters', 'score'])
+const emit = defineEmits(['deleteFromList'])
 
 const router = useRouter();
 
@@ -29,6 +30,7 @@ const queryResults = ref({
 //User info
 const userSessionExists = ref(false)
 const userFromStorage = myUserStore()
+const user = JSON.parse(userFromStorage.user)
 
 if (userFromStorage.user) {
     userSessionExists.value = true
@@ -56,11 +58,31 @@ const rating = ref(null)
     rating.value = emittedRating
  }
 
+ const handleStatusSetter = (emittedStatus) => {
+    status.value = emittedStatus
+ } 
+
+ const handleDeleteFromUserList = async () => {
+    const deleteObj = {
+        uid: user.uid,
+        mid: queryResults.value.id,
+        user_rating: 3,
+        movie_status: 'null'
+    }
+    const result = await deleteMovieFromUserList(deleteObj)
+    if (result === true) {
+        status.value = null
+        rating.value = null
+        emit('deleteFromList', deleteObj.mid)
+    }
+    console.log(`This is delete user movie result: ${result === true}`)
+}
+
 
 </script>
 
 <template>
-    <div :style="{borderRadius: '20px'}" class='flex movieCardStyles overflow-hidden movieCardDropShadow'>
+    <div :style="{borderRadius: '20px', position: 'relative'}" class='flex movieCardStyles overflow-hidden movieCardDropShadow'>
         <div v-if="props.title" class="max-w-[185px] rounded-[20px] overflow-hidden border-[1px] border-[#ebebeb] ">
 <RouterLink :to="`/movie?id=${mid}`">
     <img v-if="props.image" :src="imageBaseURL + props.image" :alt="`Image for ${props.title}`" class="w-[185px]"/>
@@ -77,7 +99,8 @@ const rating = ref(null)
     <div class=" mt-[3px]"><p class='ml-[5px] text-ellipsis  overflow-hidden whitespace-nowrap'>Votes: {{(props.voters) ? props.voters : 'N/A'}}</p></div>
     <div><p class='ml-[5px]'>{{(props.releaseDate) ? props.releaseDate : 'N/A'}}</p></div>
 </div>
-<AddToListButton class="ml-[5px]" @rating-value="handleRatingSetter" :myListData="props.listArr" :queryResults="queryResults" />
+<AddToListButton :parent-rating="rating" :parent-status="status" @status-value="handleStatusSetter" class="ml-[5px]" @rating-value="handleRatingSetter" :myListData="props.listArr" :queryResults="queryResults" />
+<Button :style="{position: 'absolute', left: '10px', top: '10px'}" @click="handleDeleteFromUserList" class="mr-[5px] deleteButtonClass" rounded v-if="status !== null" icon="pi pi-trash" severity="danger" aria-label="Delete" />
 </div>
     </div>
 

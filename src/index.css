@@ -45,6 +45,12 @@ html, body { height: 100%; }
     justify-content: center;
 }
 
+.deleteButtonClass {
+    position: absolute;
+    top: 0;
+    
+}
+
 
 /* .movieContainer3 { 
     display: grid;

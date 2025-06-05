@@ -37,14 +37,24 @@ const getListData = async () => {
 }
 
 getListData();
+
+
+const deleteFromRealTimeList = (id) => {
+    //console.log("Delete from real time list")
+    for (let i = 0; i < results.value.length; i++) {
+        if (results.value[i][jt.mid] === id) {
+            results.value.splice(i, 1)
+            return
+        }
+    }
+}
 </script>
 
 <template>
     <div v-if="results.length === 0" class="h-full flex items-center"><ProgressSpinner /></div>
     <div v-else-if="results.length > 0" class="listGrid w-full mt-[50px]">
         <div v-for="item,index in results" :key="index">
-            <MovieCard :list-arr="listDataArr" :mid="item[jt.mid]" :title="item[jt.title]" :image="item[jt.poster_path]" :release-date="item[jt.release_date]" :voters="item[jt.votes]" :score="item[jt.rating]" />
+            <MovieCard @delete-from-list="deleteFromRealTimeList" :list-arr="listDataArr" :mid="item[jt.mid]" :title="item[jt.title]" :image="item[jt.poster_path]" :release-date="item[jt.release_date]" :voters="item[jt.votes]" :score="item[jt.rating]" />
         </div>
-        
     </div>
 </template>
