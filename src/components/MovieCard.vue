@@ -42,9 +42,6 @@ if (userFromStorage.user) {
 const status = ref(null)
 const rating = ref(null)
 
-
-
-
  
 
  
