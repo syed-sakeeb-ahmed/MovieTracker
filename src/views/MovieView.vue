@@ -110,7 +110,7 @@ watch(() => route.query.id, async () => {
                     {{(rating) ? rating : ""}}
                     | Votes: {{queryResults.vote_count}}
                 </div>
-                <AddToListButton @rating-value="handleRatingValue" :myListData="listDataArr" :queryResults="queryResults" />
+                <AddToListButton :deleteButton="true" @rating-value="handleRatingValue" :myListData="listDataArr" :queryResults="queryResults" />
                 <div>
                     <p class="text-[32px] font-bold">Overview</p>
                     <p>{{queryResults.overview}}</p>

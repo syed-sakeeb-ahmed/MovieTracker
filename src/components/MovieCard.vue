@@ -96,7 +96,7 @@ const rating = ref(null)
     <div class=" mt-[3px]"><p class='ml-[5px] text-ellipsis  overflow-hidden whitespace-nowrap'>Votes: {{(props.voters) ? props.voters : 'N/A'}}</p></div>
     <div><p class='ml-[5px]'>{{(props.releaseDate) ? props.releaseDate : 'N/A'}}</p></div>
 </div>
-<AddToListButton :parent-rating="rating" :parent-status="status" @status-value="handleStatusSetter" class="ml-[5px]" @rating-value="handleRatingSetter" :myListData="props.listArr" :queryResults="queryResults" />
+<AddToListButton :deleteButton="false" :parent-rating="rating" :parent-status="status" @status-value="handleStatusSetter" class="ml-[5px]" @rating-value="handleRatingSetter" :myListData="props.listArr" :queryResults="queryResults" />
 <Button :style="{position: 'absolute', left: '10px', top: '10px'}" @click="handleDeleteFromUserList" class="mr-[5px] deleteButtonClass" rounded v-if="status !== null" icon="pi pi-trash" severity="danger" aria-label="Delete" />
 </div>
     </div>

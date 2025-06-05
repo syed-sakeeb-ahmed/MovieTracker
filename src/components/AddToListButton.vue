@@ -5,7 +5,7 @@ import { myUserStore} from '@/authStore'
 import {postUpdate} from '/src/updateMovieCardInfo'
 import {SECRET, checkIfInUserList, getMovieData, deleteMovieFromUserList} from '@/utilites/jsonUtilities'
 
-const props = defineProps(['queryResults', 'myListData', 'parentStatus', 'parentRating'])
+const props = defineProps(['queryResults', 'myListData', 'parentStatus', 'parentRating', 'deleteButton'])
 const emit = defineEmits(['ratingValue', 'statusValue'])
 
 const router = useRouter()
@@ -52,6 +52,21 @@ const handleSubmit = (movieStatus, userRating) => {
     else {
         displayError.value = true
     }
+}
+
+const handleDeleteFromUserList = async () => {
+    const deleteObj = {
+        uid: user.uid,
+        mid: props.queryResults.id,
+        user_rating: 3,
+        movie_status: 'null'
+    }
+    const result = await deleteMovieFromUserList(deleteObj)
+    if (result === true) {
+        status.value = null
+        rating.value = null
+    }
+    console.log(`This is delete user movie result: ${result === true}`)
 }
 
 
@@ -140,7 +155,8 @@ watch(() => props.parentStatus, () => {
             <Button v-if="status === 'Completed'" class='mt-[10px] mb-[10px]' severity="success" rounded label="Completed" @click="handleActionButtonClick"/>
         <Button v-else-if="status === 'Plan to Watch'" class='mt-[10px] mb-[10px]' severity="warn" rounded label="Plan to Watch" @click="handleActionButtonClick"/>
         <Button v-else-if="status === null" class='mt-[10px] mb-[10px]' rounded label="Add to List" @click="handleActionButtonClick"/>
-        </div>
+        <Button  @click="handleDeleteFromUserList" class="ml-[10px]" rounded v-if="status !== null && props.deleteButton" icon="pi pi-trash" severity="contrast" aria-label="Delete" />
+    </div>
 <Popover ref="op">
     <div class="flex flex-col gap-[10px]">
         <!-- <span>Rating</span> -->

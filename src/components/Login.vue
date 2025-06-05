@@ -79,7 +79,7 @@ const onFormSubmit = ({ valid, states }) => {
                 </div>
             </div>
         </Form>
-        <div class="roundLoginFooter flex items-center justify-center bg-[#dfdfdf] w-full h-[75px] mt-[100px]">
+        <div class="roundLoginFooter flex items-center justify-center bg-[#f7f9fc] w-full h-[75px] mt-[100px]">
             <span>New to MyMovieIndex? <span class="text-[#E53939]"> <RouterLink to="/register">Create Account</RouterLink></span></span> 
         </div>
     </div>

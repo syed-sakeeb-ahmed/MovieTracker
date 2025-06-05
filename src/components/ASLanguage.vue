@@ -18,7 +18,7 @@ console.log(JSON.stringify(queryObject.language))
 
 watch(() => queryObject.language , () => {
   selectedLanguage.value = queryObject.language
-})
+}, {immediate: true})
 
 </script>
 

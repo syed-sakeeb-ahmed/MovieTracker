@@ -145,9 +145,32 @@ const logQuery = () => {
     console.log(queryObject.with_genres)
 }
 
+const isDirty = ref(false)
 watch(queryObject, () => {
-    console.log(queryObject)
+    const expr = (queryObject.language === 'en' && queryObject.sort_by === 'popularity.desc' && queryObject.with_genres.length === 0 && queryObject.with_cast.length === 0 && queryObject.releaseDate === null && queryObject.releaseDateMin === null && queryObject.releaseDateMax === null && queryObject.score.min === null && queryObject.score.max === null && queryObject.vote.min === null && queryObject.vote.max === null)
+    if (expr === true) {
+        isDirty.value = false
+    }
+    else if (expr === false) {
+        isDirty.value = true
+    }
 })
+
+
+const handleClearFilters = () => {
+    queryObject.language = 'en' 
+    queryObject.sort_by = 'popularity.desc'  
+    queryObject.with_genres.length = 0 
+    queryObject.with_cast.length = 0 
+    queryObject.releaseDate = null 
+    queryObject.releaseDateMin = null 
+    queryObject.releaseDateMax = null 
+    queryObject.score.min = null 
+    queryObject.score.max = null 
+    queryObject.vote.min = null 
+    queryObject.vote.max = null 
+}
+
 
 watch(() => route.fullPath, () => {
     //Setup query object on load
@@ -242,6 +265,7 @@ const changeLanguage = (arg) => {
 const searchItems = ref([])
 
 const clearSearchInput = () => {
+    dontQuerySearch.value = false
     queryObject.searchToken = ""
 }
 
@@ -261,7 +285,7 @@ watch(() => queryObject.searchToken, async () => {
     if (queryObject.searchToken.length === 0) {
         searchItems.value = []
     }
-    if (queryObject.searchToken.length > 0) {
+    if (queryObject.searchToken.length > 0 && dontQuerySearch.value === false) {
         searchItems.value = await searchQueryTMDB(queryObject.searchToken)
     }
 })
@@ -287,9 +311,10 @@ const searchQueryTMDB = async (searchString) => {
 const searchRef = useTemplateRef('searchBar')
 const searchHeight = ref(null)
 const searchWidth = ref(null)
+const dontQuerySearch = ref(false)
 
 onMounted(() => {
-    //console.log("This is searchRef height: " + searchRef.value.offsetHeight)
+    console.log("This is searchRef height: " + searchRef.value.offsetHeight)
     searchHeight.value = searchRef.value.offsetHeight
     searchWidth.value = searchRef.value.offsetWidth
 })
@@ -307,6 +332,7 @@ onClickOutside(myInput, () => {searchItems.value = []})
 
 const inputLookupOnFocus = async () => {
     if (queryObject.searchToken.length > 0) {
+        dontQuerySearch.value = false
         searchItems.value = await searchQueryTMDB(queryObject.searchToken)
     }
 }
@@ -316,10 +342,21 @@ const searchClass = computed(() => ({
     searchBarDisabled: active.value === '0'
 }))
 
-const handleSuggestionClick = (movieID) => {
+const handleSuggestionClick = (movieTitle) => {
     // alert("Handling suggestion click")
-    router.push(`/movie?id=${movieID}`)
+    //router.push(`/movie?id=${movieID}`) // Old functionality
+
+    if (movieTitle !== '' || active.value) {
+        dontQuerySearch.value = true
+        queryObject.searchToken = movieTitle
+        myInput.value.blur()
+        searchItems.value = []
+        queryObject.page = 1
+        queryObject.searchCount += 1
+        createInternalQueryAndPush(router, queryObject)
+    }
 }
+
 
 const searchValue = computed(() => {
     return (queryObject.searchToken === '')
@@ -328,6 +365,7 @@ const searchValue = computed(() => {
 const onSearchClick = () => {
     if (queryObject.searchToken !== '' || active.value) {
         myInput.value.blur()
+        dontQuerySearch.value = true
         searchItems.value = []
         queryObject.page = 1
         queryObject.searchCount += 1
@@ -384,7 +422,7 @@ onMounted(() => {
         <div class="relative">
             <div  v-if="suggestionsIsDisplayed" class="flex flex-col bg-white border-[#ebebeb] w-full border-[1px] absolute z-20" >
                 <ul>
-                    <li @click="handleSuggestionClick(item.id)" class="hover:bg-[#ebebeb] flex pt-[10px] pb-[10px] pl-[12px] pr-[12px]" v-for="item, index in searchItems" :key=index>
+                    <li @click="handleSuggestionClick(item.title)" class="hover:bg-[#ebebeb] flex pt-[10px] pb-[10px] pl-[12px] pr-[12px]" v-for="item, index in searchItems" :key=index>
                         <div class="flex items-center">
                     <font-awesome-icon :icon="['fas', 'magnifying-glass']"/>
                 </div>
@@ -424,6 +462,7 @@ onMounted(() => {
             <ASCast @value-changed="changeCast"/>
             <ASSort @value-changed="changeSort"/>
             <ASLanguage @value-changed="changeLanguage"/>
+            <Button v-if="isDirty" variant="outlined" @click="handleClearFilters" label="Clear Filters" /> 
             <!-- </Form> -->
         </div>
         </AccordionContent>
