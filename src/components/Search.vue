@@ -420,7 +420,7 @@ onMounted(() => {
             </div>
         </div>
         <div class="relative">
-            <div  v-if="suggestionsIsDisplayed" class="flex flex-col bg-white border-[#ebebeb] w-full border-[1px] absolute z-20" >
+            <div  v-if="suggestionsIsDisplayed" class="flex flex-col bg-white border-[#ebebeb] w-full border-[1px] absolute z-20 rounded-bl-[30px] rounded-br-[30px]" >
                 <ul>
                     <li @click="handleSuggestionClick(item.title)" class="hover:bg-[#ebebeb] flex pt-[10px] pb-[10px] pl-[12px] pr-[12px]" v-for="item, index in searchItems" :key=index>
                         <div class="flex items-center">
