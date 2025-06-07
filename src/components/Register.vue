@@ -53,7 +53,7 @@ const onFormSubmit = async ({ valid, states }) => {
         const auth = getAuth();
 createUserWithEmailAndPassword(auth, states.email.value, states.password.value)
   .then((userCredential) => {
-    router.replace('/list')
+    router.push('/list')
   })
   .catch((error) => {
     errorMessage.value = getErrorString(error.code)

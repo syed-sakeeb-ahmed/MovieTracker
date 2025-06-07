@@ -1,6 +1,6 @@
 <script setup>
 import {useRoute, useRouter} from 'vue-router'
-import {ref, computed} from 'vue'
+import {ref, computed, watch} from 'vue'
 import { getAuth, signOut } from "firebase/auth";
 import { myUserStore} from '@/authStore'
 
@@ -60,6 +60,15 @@ const handleSignUpClick = () => {
 const handleMyList = () => {
     router.push('/mylist')
 }
+
+watch(() => userFromStorage.user, () => {
+  if (userFromStorage.user) {
+    userSessionExists.value = true
+  }
+  else if (!userFromStorage.user) {
+    userSessionExists.value = false
+  }
+})
 
 </script>
 
