@@ -13,9 +13,12 @@ import { ref, watch, onMounted } from 'vue'
 import { SECRET, checkIfInUserList, getMovieData } from '@/utilites/jsonUtilities'
 import AddToListButton from '/src/components/AddToListButton.vue'
 import { myUserStore } from '@/authStore'
+import { useTitle } from '@vueuse/core';
 
 
 const items = [1, 2, 3, 4, 5]
+
+const tabTitle = useTitle('MyMovieIndex');
 
 const status = ref(null)
 const rating = ref(null)
@@ -69,7 +72,8 @@ const handleRatingValue = (emittedRating) => {
 
 watch(() => route.query.id, async () => {
     movieID = (route.query.id) ? route.query.id : undefined
-    fetchMovieData(movieID)
+    await fetchMovieData(movieID)
+    tabTitle.value = `${queryResults.value.title} - MyMovieIndex`
 }, { immediate: true })
 
 // watch(queryResults, () => {
