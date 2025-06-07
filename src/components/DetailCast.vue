@@ -29,10 +29,10 @@ const items = ref([
             <div class="text-[11px]" :style="redColor">More cast members</div>
         </div>
         <div class="gridStyle">
-            <DetailCastInfo checkIndex='1'/>
-            <DetailCastInfo checkIndex='2'/>
-            <DetailCastInfo checkIndex='3'/>
-            <DetailCastInfo checkIndex='4'/>
+            <DetailCastInfo checkIndex='1' />
+            <DetailCastInfo checkIndex='2' />
+            <DetailCastInfo checkIndex='3' />
+            <DetailCastInfo checkIndex='4' />
         </div>
     </div>
 </template>

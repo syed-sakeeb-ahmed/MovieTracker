@@ -11,7 +11,7 @@ import DetailRec from '@/components/DetailRec.vue';
     <div class="w-[1060px] flex flex-col">
         <DetailTitle>Leonardo Dicaprio </DetailTitle>
         <div class="flex ">
-            <DetailInfo class="pr-[3px]"/>
+            <DetailInfo class="pr-[3px]" />
 
             <div class="score-container bg-white w-full pl-[5px] border-l-1 border-l-[#bebebe]">
                 <DetailEssay />

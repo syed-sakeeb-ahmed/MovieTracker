@@ -16,7 +16,8 @@ const styles = reactive({
 </script>
 
 <template>
-    <div style="font-family: Verdana, Arial" class="font-bold text-[16px] pl-[9px] pt-[5px] pb-[5px] pr-[7px] w-[1060px] h-[50px]" :style="styles">
+    <div style="font-family: Verdana, Arial"
+        class="font-bold text-[16px] pl-[9px] pt-[5px] pb-[5px] pr-[7px] w-[1060px] h-[50px]" :style="styles">
         <slot></slot>
     </div>
 </template>

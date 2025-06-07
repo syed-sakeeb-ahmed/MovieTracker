@@ -1,217 +1,216 @@
-import {getMovieCardInfo} from '@/getMovieCardInfo'
+import { getMovieCardInfo } from "@/getMovieCardInfo";
 
 export const SECRET = import.meta.env.VITE_KEY;
-export const BASE_URL = import.meta.env.VITE_BACKEND_URL
-
+export const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const getErrorString = (errorCode) => {
     switch (errorCode) {
         case "auth/admin-restricted-operation":
-        return "Error, Admin restricted operation.";
-    case "auth/argument-error":
-        return "Error, Argument error.";
-    case "auth/app-not-authorized":
-        return "Error, App not authorized.";
-    case "auth/app-not-installed":
-        return "Error, App not installed.";
-    case "auth/captcha-check-failed":
-        return "Error, Captcha check failed.";
-    case "auth/code-expired":
-        return "Error, Code expired.";
-    case "auth/cordova-not-ready":
-        return "Error, Cordova not ready.";
-    case "auth/cors-unsupported":
-        return "Error, Cors unsupported.";
-    case "auth/credential-already-in-use":
-        return "Error, Credential already in use.";
-    case "auth/custom-token-mismatch":
-        return "Error, Custom token mismatch.";
-    case "auth/requires-recent-login":
-        return "Error, Requires recent login.";
-    case "auth/dependent-sdk-initialized-before-auth":
-        return "Error, Dependent sdk initialized before auth.";
-    case "auth/dynamic-link-not-activated":
-        return "Error, Dynamic link not activated.";
-    case "auth/email-change-needs-verification":
-        return "Error, Email change needs verification.";
-    case "auth/email-already-in-use":
-        return "Error, Email already in use.";
-    case "auth/emulator-config-failed":
-        return "Error, Emulator config failed.";
-    case "auth/expired-action-code":
-        return "Error, Expired action code.";
-    case "auth/cancelled-popup-request":
-        return "Error, Cancelled popup request.";
-    case "auth/internal-error":
-        return "Error, Internal error.";
-    case "auth/invalid-api-key":
-        return "Error, Invalid api key.";
-    case "auth/invalid-app-credential":
-        return "Error, Invalid app credential.";
-    case "auth/invalid-app-id":
-        return "Error, Invalid app id.";
-    case "auth/invalid-user-token":
-        return "Error, Invalid user token.";
-    case "auth/invalid-auth-event":
-        return "Error, Invalid auth event.";
-    case "auth/invalid-cert-hash":
-        return "Error, Invalid cert hash.";
-    case "auth/invalid-verification-code":
-        return "Error, Invalid verification code.";
-    case "auth/invalid-continue-uri":
-        return "Error, Invalid continue uri.";
-    case "auth/invalid-cordova-configuration":
-        return "Error, Invalid cordova configuration.";
-    case "auth/invalid-custom-token":
-        return "Error, Invalid custom token.";
-    case "auth/invalid-dynamic-link-domain":
-        return "Error, Invalid dynamic link domain.";
-    case "auth/invalid-email":
-        return "Error, Invalid email.";
-    case "auth/invalid-emulator-scheme":
-        return "Error, Invalid emulator scheme.";
-    case "auth/invalid-credential":
-        return "Error, Invalid credential.";
-    case "auth/invalid-message-payload":
-        return "Error, Invalid message payload.";
-    case "auth/invalid-multi-factor-session":
-        return "Error, Invalid multi factor session.";
-    case "auth/invalid-oauth-client-id":
-        return "Error, Invalid oauth client id.";
-    case "auth/invalid-oauth-provider":
-        return "Error, Invalid oauth provider.";
-    case "auth/invalid-action-code":
-        return "Error, Invalid action code.";
-    case "auth/unauthorized-domain":
-        return "Error, Unauthorized domain.";
-    case "auth/wrong-password":
-        return "Error, Wrong password.";
-    case "auth/invalid-persistence-type":
-        return "Error, Invalid persistence type.";
-    case "auth/invalid-phone-number":
-        return "Error, Invalid phone number.";
-    case "auth/invalid-provider-id":
-        return "Error, Invalid provider id.";
-    case "auth/invalid-recipient-email":
-        return "Error, Invalid recipient email.";
-    case "auth/invalid-sender":
-        return "Error, Invalid sender.";
-    case "auth/invalid-verification-id":
-        return "Error, Invalid verification id.";
-    case "auth/invalid-tenant-id":
-        return "Error, Invalid tenant id.";
-    case "auth/multi-factor-info-not-found":
-        return "Error, Multi factor info not found.";
-    case "auth/multi-factor-auth-required":
-        return "Error, Multi factor auth required.";
-    case "auth/missing-android-pkg-name":
-        return "Error, Missing android pkg name.";
-    case "auth/missing-app-credential":
-        return "Error, Missing app credential.";
-    case "auth/auth-domain-config-required":
-        return "Error, Auth domain config required.";
-    case "auth/missing-verification-code":
-        return "Error, Missing verification code.";
-    case "auth/missing-iframe-start":
-        return "Error, Missing iframe start.";
-    case "auth/missing-ios-bundle-id":
-        return "Error, Missing ios bundle id.";
-    case "auth/missing-or-invalid-nonce":
-        return "Error, Missing or invalid nonce.";
-    case "auth/missing-multi-factor-info":
-        return "Error, Missing multi factor info.";
-    case "auth/missing-multi-factor-session":
-        return "Error, Missing multi factor session.";
-    case "auth/missing-phone-number":
-        return "Error, Missing phone number.";
-    case "auth/missing-verification-id":
-        return "Error, Missing verification id.";
-    case "auth/app-deleted":
-        return "Error, App deleted.";
-    case "auth/account-exists-with-different-credential":
-        return "Error, Account exists with different credential.";
-    case "auth/network-request-failed":
-        return "Error, Network request failed.";
-    case "auth/null-user":
-        return "Error, Null user.";
-    case "auth/no-auth-event":
-        return "Error, No auth event.";
-    case "auth/no-such-provider":
-        return "Error, No such provider.";
-    case "auth/operation-not-allowed":
-        return "Error, Operation not allowed.";
-    case "auth/operation-not-supported-in-this-environment":
-        return "Error, Operation not supported in this environment.";
-    case "auth/popup-blocked":
-        return "Error, Popup blocked.";
-    case "auth/popup-closed-by-user":
-        return "Error, Popup closed by user.";
-    case "auth/provider-already-linked":
-        return "Error, Provider already linked.";
-    case "auth/quota-exceeded":
-        return "Error, Quota exceeded.";
-    case "auth/redirect-cancelled-by-user":
-        return "Error, Redirect cancelled by user.";
-    case "auth/redirect-operation-pending":
-        return "Error, Redirect operation pending.";
-    case "auth/rejected-credential":
-        return "Error, Rejected credential.";
-    case "auth/second-factor-already-in-use":
-        return "Error, Second factor already in use.";
-    case "auth/maximum-second-factor-count-exceeded":
-        return "Error, Maximum second factor count exceeded.";
-    case "auth/tenant-id-mismatch":
-        return "Error, Tenant id mismatch.";
-    case "auth/timeout":
-        return "Error, Timeout.";
-    case "auth/user-token-expired":
-        return "Error, User token expired.";
-    case "auth/too-many-requests":
-        return "Error, Too many requests.";
-    case "auth/unauthorized-continue-uri":
-        return "Error, Unauthorized continue uri.";
-    case "auth/unsupported-first-factor":
-        return "Error, Unsupported first factor.";
-    case "auth/unsupported-persistence-type":
-        return "Error, Unsupported persistence type.";
-    case "auth/unsupported-tenant-operation":
-        return "Error, Unsupported tenant operation.";
-    case "auth/unverified-email":
-        return "Error, Unverified email.";
-    case "auth/user-cancelled":
-        return "Error, User cancelled.";
-    case "auth/user-not-found":
-        return "Error, User not found.";
-    case "auth/user-disabled":
-        return "Error, User disabled.";
-    case "auth/user-mismatch":
-        return "Error, User mismatch.";
-    case "auth/user-signed-out":
-        return "Error, User signed out.";
-    case "auth/weak-password":
-        return "Error, Weak password.";
-    case "auth/web-storage-unsupported":
-        return "Error, Web storage unsupported.";
-    case "auth/already-initialized":
-        return "Error, Already initialized.";
-    case "auth/recaptcha-not-enabled":
-        return "Error, Recaptcha not enabled.";
-    case "auth/missing-recaptcha-token":
-        return "Error, Missing recaptcha token.";
-    case "auth/invalid-recaptcha-token":
-        return "Error, Invalid recaptcha token.";
-    case "auth/invalid-recaptcha-action":
-        return "Error, Invalid recaptcha action.";
-    case "auth/missing-client-type":
-        return "Error, Missing client type.";
-    case "auth/missing-recaptcha-version":
-        return "Error, Missing recaptcha version.";
-    case "auth/invalid-recaptcha-version":
-        return "Error, Invalid recaptcha version.";
-    case "auth/invalid-req-type":
-        return "Error, Invalid req type.";
-    case "auth/invalid-hosting-link-domain":
-        return "Error, Invalid hosting link domain.";
+            return "Error, Admin restricted operation.";
+        case "auth/argument-error":
+            return "Error, Argument error.";
+        case "auth/app-not-authorized":
+            return "Error, App not authorized.";
+        case "auth/app-not-installed":
+            return "Error, App not installed.";
+        case "auth/captcha-check-failed":
+            return "Error, Captcha check failed.";
+        case "auth/code-expired":
+            return "Error, Code expired.";
+        case "auth/cordova-not-ready":
+            return "Error, Cordova not ready.";
+        case "auth/cors-unsupported":
+            return "Error, Cors unsupported.";
+        case "auth/credential-already-in-use":
+            return "Error, Credential already in use.";
+        case "auth/custom-token-mismatch":
+            return "Error, Custom token mismatch.";
+        case "auth/requires-recent-login":
+            return "Error, Requires recent login.";
+        case "auth/dependent-sdk-initialized-before-auth":
+            return "Error, Dependent sdk initialized before auth.";
+        case "auth/dynamic-link-not-activated":
+            return "Error, Dynamic link not activated.";
+        case "auth/email-change-needs-verification":
+            return "Error, Email change needs verification.";
+        case "auth/email-already-in-use":
+            return "Error, Email already in use.";
+        case "auth/emulator-config-failed":
+            return "Error, Emulator config failed.";
+        case "auth/expired-action-code":
+            return "Error, Expired action code.";
+        case "auth/cancelled-popup-request":
+            return "Error, Cancelled popup request.";
+        case "auth/internal-error":
+            return "Error, Internal error.";
+        case "auth/invalid-api-key":
+            return "Error, Invalid api key.";
+        case "auth/invalid-app-credential":
+            return "Error, Invalid app credential.";
+        case "auth/invalid-app-id":
+            return "Error, Invalid app id.";
+        case "auth/invalid-user-token":
+            return "Error, Invalid user token.";
+        case "auth/invalid-auth-event":
+            return "Error, Invalid auth event.";
+        case "auth/invalid-cert-hash":
+            return "Error, Invalid cert hash.";
+        case "auth/invalid-verification-code":
+            return "Error, Invalid verification code.";
+        case "auth/invalid-continue-uri":
+            return "Error, Invalid continue uri.";
+        case "auth/invalid-cordova-configuration":
+            return "Error, Invalid cordova configuration.";
+        case "auth/invalid-custom-token":
+            return "Error, Invalid custom token.";
+        case "auth/invalid-dynamic-link-domain":
+            return "Error, Invalid dynamic link domain.";
+        case "auth/invalid-email":
+            return "Error, Invalid email.";
+        case "auth/invalid-emulator-scheme":
+            return "Error, Invalid emulator scheme.";
+        case "auth/invalid-credential":
+            return "Error, Invalid credential.";
+        case "auth/invalid-message-payload":
+            return "Error, Invalid message payload.";
+        case "auth/invalid-multi-factor-session":
+            return "Error, Invalid multi factor session.";
+        case "auth/invalid-oauth-client-id":
+            return "Error, Invalid oauth client id.";
+        case "auth/invalid-oauth-provider":
+            return "Error, Invalid oauth provider.";
+        case "auth/invalid-action-code":
+            return "Error, Invalid action code.";
+        case "auth/unauthorized-domain":
+            return "Error, Unauthorized domain.";
+        case "auth/wrong-password":
+            return "Error, Wrong password.";
+        case "auth/invalid-persistence-type":
+            return "Error, Invalid persistence type.";
+        case "auth/invalid-phone-number":
+            return "Error, Invalid phone number.";
+        case "auth/invalid-provider-id":
+            return "Error, Invalid provider id.";
+        case "auth/invalid-recipient-email":
+            return "Error, Invalid recipient email.";
+        case "auth/invalid-sender":
+            return "Error, Invalid sender.";
+        case "auth/invalid-verification-id":
+            return "Error, Invalid verification id.";
+        case "auth/invalid-tenant-id":
+            return "Error, Invalid tenant id.";
+        case "auth/multi-factor-info-not-found":
+            return "Error, Multi factor info not found.";
+        case "auth/multi-factor-auth-required":
+            return "Error, Multi factor auth required.";
+        case "auth/missing-android-pkg-name":
+            return "Error, Missing android pkg name.";
+        case "auth/missing-app-credential":
+            return "Error, Missing app credential.";
+        case "auth/auth-domain-config-required":
+            return "Error, Auth domain config required.";
+        case "auth/missing-verification-code":
+            return "Error, Missing verification code.";
+        case "auth/missing-iframe-start":
+            return "Error, Missing iframe start.";
+        case "auth/missing-ios-bundle-id":
+            return "Error, Missing ios bundle id.";
+        case "auth/missing-or-invalid-nonce":
+            return "Error, Missing or invalid nonce.";
+        case "auth/missing-multi-factor-info":
+            return "Error, Missing multi factor info.";
+        case "auth/missing-multi-factor-session":
+            return "Error, Missing multi factor session.";
+        case "auth/missing-phone-number":
+            return "Error, Missing phone number.";
+        case "auth/missing-verification-id":
+            return "Error, Missing verification id.";
+        case "auth/app-deleted":
+            return "Error, App deleted.";
+        case "auth/account-exists-with-different-credential":
+            return "Error, Account exists with different credential.";
+        case "auth/network-request-failed":
+            return "Error, Network request failed.";
+        case "auth/null-user":
+            return "Error, Null user.";
+        case "auth/no-auth-event":
+            return "Error, No auth event.";
+        case "auth/no-such-provider":
+            return "Error, No such provider.";
+        case "auth/operation-not-allowed":
+            return "Error, Operation not allowed.";
+        case "auth/operation-not-supported-in-this-environment":
+            return "Error, Operation not supported in this environment.";
+        case "auth/popup-blocked":
+            return "Error, Popup blocked.";
+        case "auth/popup-closed-by-user":
+            return "Error, Popup closed by user.";
+        case "auth/provider-already-linked":
+            return "Error, Provider already linked.";
+        case "auth/quota-exceeded":
+            return "Error, Quota exceeded.";
+        case "auth/redirect-cancelled-by-user":
+            return "Error, Redirect cancelled by user.";
+        case "auth/redirect-operation-pending":
+            return "Error, Redirect operation pending.";
+        case "auth/rejected-credential":
+            return "Error, Rejected credential.";
+        case "auth/second-factor-already-in-use":
+            return "Error, Second factor already in use.";
+        case "auth/maximum-second-factor-count-exceeded":
+            return "Error, Maximum second factor count exceeded.";
+        case "auth/tenant-id-mismatch":
+            return "Error, Tenant id mismatch.";
+        case "auth/timeout":
+            return "Error, Timeout.";
+        case "auth/user-token-expired":
+            return "Error, User token expired.";
+        case "auth/too-many-requests":
+            return "Error, Too many requests.";
+        case "auth/unauthorized-continue-uri":
+            return "Error, Unauthorized continue uri.";
+        case "auth/unsupported-first-factor":
+            return "Error, Unsupported first factor.";
+        case "auth/unsupported-persistence-type":
+            return "Error, Unsupported persistence type.";
+        case "auth/unsupported-tenant-operation":
+            return "Error, Unsupported tenant operation.";
+        case "auth/unverified-email":
+            return "Error, Unverified email.";
+        case "auth/user-cancelled":
+            return "Error, User cancelled.";
+        case "auth/user-not-found":
+            return "Error, User not found.";
+        case "auth/user-disabled":
+            return "Error, User disabled.";
+        case "auth/user-mismatch":
+            return "Error, User mismatch.";
+        case "auth/user-signed-out":
+            return "Error, User signed out.";
+        case "auth/weak-password":
+            return "Error, Weak password.";
+        case "auth/web-storage-unsupported":
+            return "Error, Web storage unsupported.";
+        case "auth/already-initialized":
+            return "Error, Already initialized.";
+        case "auth/recaptcha-not-enabled":
+            return "Error, Recaptcha not enabled.";
+        case "auth/missing-recaptcha-token":
+            return "Error, Missing recaptcha token.";
+        case "auth/invalid-recaptcha-token":
+            return "Error, Invalid recaptcha token.";
+        case "auth/invalid-recaptcha-action":
+            return "Error, Invalid recaptcha action.";
+        case "auth/missing-client-type":
+            return "Error, Missing client type.";
+        case "auth/missing-recaptcha-version":
+            return "Error, Missing recaptcha version.";
+        case "auth/invalid-recaptcha-version":
+            return "Error, Invalid recaptcha version.";
+        case "auth/invalid-req-type":
+            return "Error, Invalid req type.";
+        case "auth/invalid-hosting-link-domain":
+            return "Error, Invalid hosting link domain.";
         case "auth/claims-too-large":
             return "Error, custom claims payload is too large.";
         case "auth/email-already-exists":
@@ -237,7 +236,8 @@ export const getErrorString = (errorCode) => {
         case "auth/invalid-disabled-field":
             return "Error, the disabled field is invalid.";
         case "auth/invalid-display-name":
-            return "Error, display name is invalid.";        case "auth/invalid-dynamic-link-domain":
+            return "Error, display name is invalid.";
+        case "auth/invalid-dynamic-link-domain":
             return "Error, dynamic link domain is invalid.";
         case "auth/invalid-email":
             return "Error, email address is invalid.";
@@ -324,21 +324,20 @@ export const getErrorString = (errorCode) => {
         default:
             return "Error, an unknown error occurred.";
     }
-}
-
+};
 
 //Joined table dict
 export const jt = {
-	uid: 0,
-	mid: 1,
-	user_rating: 2,
-	movie_status: 3,
-	poster_path: 4,
-	title: 5,
-	rating: 6,
-	votes: 7,
-	release_date: 8,
-}
+    uid: 0,
+    mid: 1,
+    user_rating: 2,
+    movie_status: 3,
+    poster_path: 4,
+    title: 5,
+    rating: 6,
+    votes: 7,
+    release_date: 8,
+};
 
 //Check if user in list
 //[{"uid":"vttM5T2RNWbcNpabqSGzAztck712","mid":18501,"user_rating":2,"movie_status":"Completed"},{"uid":"vttM5T2RNWbcNpabqSGzAztck712","mid":82495,"user_rating":3,"movie_status":"Completed"},{"uid":"vttM5T2RNWbcNpabqSGzAztck712","mid":124905,"user_rating":3,"movie_status":"Plan to Watch"},{"uid":"vttM5T2RNWbcNpabqSGzAztck712","mid":1296022,"user_rating":4,"movie_status":"Plan to Watch"}]
@@ -347,79 +346,76 @@ export const checkIfInUserList = (listArr, mid) => {
     const outputObj = {
         status: null,
         rating: null,
-    }
+    };
     for (const item of listArr) {
         // console.log("This is item mid: " + item.mid)
         if (mid === item.mid) {
-            outputObj.status = item.movie_status
-            outputObj.rating = item.user_rating
+            outputObj.status = item.movie_status;
+            outputObj.rating = item.user_rating;
             // console.log("Found one")
             break;
         }
     }
-    return outputObj
- }
+    return outputObj;
+};
 
-
- //Im feeling lucky funcs
- function getRandomInt(max) {
+//Im feeling lucky funcs
+function getRandomInt(max) {
     return Math.floor(Math.random() * max);
-  }
+}
 
-
- export const getRandomMovieID = async () => {
-
+export const getRandomMovieID = async () => {
     const options = {
-        method: 'GET',  
+        method: "GET",
     };
-    
-      return fetch(BASE_URL + "getRandomMovieID", options)
+
+    return fetch(BASE_URL + "getRandomMovieID", options)
         .then((res) => {
             if (res.ok) {
-                return res.json()
-            }
-            else {
+                return res.json();
+            } else {
                 return null;
             }
         })
-        .then(resData =>{ return resData})
-        .catch((err) => (console.log(err)))
- }
+        .then((resData) => {
+            return resData;
+        })
+        .catch((err) => console.log(err));
+};
 
-
- export const deleteMovieFromUserList = async (hasMovieObject) => {
+export const deleteMovieFromUserList = async (hasMovieObject) => {
     const options = {
-        method: 'POST',  
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify( hasMovieObject )
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(hasMovieObject),
     };
-    
-      return fetch(BASE_URL + "deleteFromUserList", options)
+
+    return fetch(BASE_URL + "deleteFromUserList", options)
         .then((res) => {
             if (res.ok) {
-                return res.json()
-            }
-            else {
+                return res.json();
+            } else {
                 return null;
             }
         })
-        .then(resData =>{ return resData})
-        .catch((err) => (console.log(err)))
- }
+        .then((resData) => {
+            return resData;
+        })
+        .catch((err) => console.log(err));
+};
 
-
- export const getMovieData = async (uid) => {
-    let outputArr = []
-    const {data} = await getMovieCardInfo(BASE_URL + `getHasMovie/${uid}`)
+export const getMovieData = async (uid) => {
+    let outputArr = [];
+    const { data } = await getMovieCardInfo(BASE_URL + `getHasMovie/${uid}`);
     if (data.value !== null) {
-        outputArr = data.value //Will get HTTP.OK and empty array if uid does not exist
+        outputArr = data.value; //Will get HTTP.OK and empty array if uid does not exist
     }
     // console.log("This is output arr in getMovieData() " + outputArr[0])
     // console.log(dataObjArr.value.length, dataObjArr.value[1])
-    return outputArr
-}
+    return outputArr;
+};
 
 export const options = {
     method: "GET",
@@ -1844,8 +1840,8 @@ export const originalLanguageQuery = (queryObject) => {
 };
 
 export const createSearchCountQuery = (queryObject) => {
-    return `search_count=${queryObject.searchCount}&`
-}
+    return `search_count=${queryObject.searchCount}&`;
+};
 
 export const createTMDBReleaseDateQuery = (
     releaseDateTab,
@@ -1913,7 +1909,7 @@ export const createTMDBCastQuery = (castIDList) => {
     let queryString = "";
 
     if (castIDList.length > 0) {
-        queryString += "with_cast="
+        queryString += "with_cast=";
         for (const item of castIDList) {
             queryString += `${item.id},`;
         }
@@ -1939,8 +1935,8 @@ export const createTMDBPrimaryLanguageQuery = (languageOption) => {
 };
 
 export const createPageQuery = (pageNum) => {
-    return `page=${pageNum}&`
-}
+    return `page=${pageNum}&`;
+};
 
 export const createTMDBQuery = (queryObject) => {
     let queryString = `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&`;
@@ -1968,54 +1964,51 @@ export const createTMDBQuery = (queryObject) => {
     queryString += createTMDBCastQuery(queryObject.with_cast);
 
     //Sort Query
-    queryString += createTMDBSortQuery(queryObject.sort_by)
+    queryString += createTMDBSortQuery(queryObject.sort_by);
 
     //Primary Language Query
-    queryString += createTMDBPrimaryLanguageQuery(queryObject.language)
+    queryString += createTMDBPrimaryLanguageQuery(queryObject.language);
 
     //Page Query
-    queryString += createPageQuery(queryObject.page)
+    queryString += createPageQuery(queryObject.page);
 
-    queryString = queryString.substring(0, queryString.length - 1)
+    queryString = queryString.substring(0, queryString.length - 1);
 
-
-    return queryString
+    return queryString;
 };
-
 
 //Create query for internal use
 export const createInternalQuery = (queryObject) => {
-    let queryString = "/list/?"
+    let queryString = "/list/?";
 
-    if (queryObject.searchMode === 'basic') {
-        queryString += `search=${queryObject.searchToken}&`
-        queryString += `mode=${queryObject.searchMode}&`
-        queryString += `page=${queryObject.page}`
-        return queryString
+    if (queryObject.searchMode === "basic") {
+        queryString += `search=${queryObject.searchToken}&`;
+        queryString += `mode=${queryObject.searchMode}&`;
+        queryString += `page=${queryObject.page}`;
+        return queryString;
     }
-    
-    queryString += createReleaseDateQuery(queryObject)
-    queryString += createScoreQuery(queryObject)
-    queryString += createGenreQuery(queryObject)
-    queryString += createCastQuery(queryObject)
-    queryString += createSortQuery(queryObject)
-    queryString += originalLanguageQuery(queryObject)
-    queryString += createPageQuery(queryObject.page)
-    queryString += createSearchCountQuery(queryObject)
-    queryString += `mode=${queryObject.searchMode}&`
-    queryString += `search=${queryObject.searchToken}&`
-    
+
+    queryString += createReleaseDateQuery(queryObject);
+    queryString += createScoreQuery(queryObject);
+    queryString += createGenreQuery(queryObject);
+    queryString += createCastQuery(queryObject);
+    queryString += createSortQuery(queryObject);
+    queryString += originalLanguageQuery(queryObject);
+    queryString += createPageQuery(queryObject.page);
+    queryString += createSearchCountQuery(queryObject);
+    queryString += `mode=${queryObject.searchMode}&`;
+    queryString += `search=${queryObject.searchToken}&`;
+
     queryString = queryString.substring(0, queryString.length - 1);
-    return queryString
-}
+    return queryString;
+};
 
 export const createInternalQueryAndPush = (router, queryObject) => {
-    const internalQueryString = createInternalQuery(queryObject)
-    router.push(internalQueryString)
-}
+    const internalQueryString = createInternalQuery(queryObject);
+    router.push(internalQueryString);
+};
 
-export const 
-createTMDBSearchQuery = (searchToken, page) => {
-    const queryString = `https://api.themoviedb.org/3/search/movie?query=${searchToken}&include_adult=false&language=en-US&page=${page}`
-    return queryString
-}
+export const createTMDBSearchQuery = (searchToken, page) => {
+    const queryString = `https://api.themoviedb.org/3/search/movie?query=${searchToken}&include_adult=false&language=en-US&page=${page}`;
+    return queryString;
+};

@@ -1,9 +1,9 @@
 <script setup>
 
-import { computed, ref, reactive,watch, Suspense, defineAsyncComponent, useTemplateRef, onMounted } from 'vue';
-import {createInternalQueryAndPush, createReleaseDateQuery, createScoreQuery, createGenreQuery, createCastQuery, createSortQuery} from "@/utilites/jsonUtilities"
+import { computed, ref, reactive, watch, Suspense, defineAsyncComponent, useTemplateRef, onMounted } from 'vue';
+import { createInternalQueryAndPush, createReleaseDateQuery, createScoreQuery, createGenreQuery, createCastQuery, createSortQuery } from "@/utilites/jsonUtilities"
 import { getRandomMovieID, buildQuery, genresDict, languages, SECRET, createInternalQuery } from '@/utilites/jsonUtilities';
-import {queryObject} from '@/store'
+import { queryObject } from '@/store'
 import { Form } from '@primevue/forms';
 
 import { menuToggle } from '@/store';
@@ -17,9 +17,9 @@ import { onClickOutside } from '@vueuse/core'
 import MovieCard from './MovieCard.vue'
 
 
-import {useRouter, useRoute} from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 const route = useRoute()
-    //console.log(route.query.sorhted_by, route.query.shit, route.query.pop)
+//console.log(route.query.sorhted_by, route.query.shit, route.query.pop)
 const router = useRouter()
 
 
@@ -69,7 +69,7 @@ const initialValues = reactive({
     releaseDateMax: route['query']['primary_release_date.lte'],
     scoreMin: route['query']['vote_average.gte'],
     scoreMax: route['query']['vote_average.lte'],
-    genre: {id: 12, name: 'Adventure'},
+    genre: { id: 12, name: 'Adventure' },
     cast: route.query.with_cast,
     sort: route.query.sort_by,
     language: route.query.with_original_language,
@@ -129,7 +129,7 @@ const getCastFromURL = (castQueryString) => {
     const outputArr = []
     for (const item of splitArr) {
         const localArr = item.split(':')
-        const localObj = {id: localArr[0], name: localArr[1]}
+        const localObj = { id: localArr[0], name: localArr[1] }
         outputArr.push(localObj)
     }
     return outputArr
@@ -158,54 +158,54 @@ watch(queryObject, () => {
 
 
 const handleClearFilters = () => {
-    queryObject.language = 'en' 
-    queryObject.sort_by = 'popularity.desc'  
-    queryObject.with_genres.length = 0 
-    queryObject.with_cast.length = 0 
-    queryObject.releaseDate = null 
-    queryObject.releaseDateMin = null 
-    queryObject.releaseDateMax = null 
-    queryObject.score.min = null 
-    queryObject.score.max = null 
-    queryObject.vote.min = null 
-    queryObject.vote.max = null 
+    queryObject.language = 'en'
+    queryObject.sort_by = 'popularity.desc'
+    queryObject.with_genres.length = 0
+    queryObject.with_cast.length = 0
+    queryObject.releaseDate = null
+    queryObject.releaseDateMin = null
+    queryObject.releaseDateMax = null
+    queryObject.score.min = null
+    queryObject.score.max = null
+    queryObject.vote.min = null
+    queryObject.vote.max = null
 }
 
 
 watch(() => route.fullPath, () => {
     //Setup query object on load
-queryObject.language = (route.query.with_original_language) ? route.query.with_original_language : 'en'
-queryObject.sort_by = (route.query.sort_by) ? route.query.sort_by : 'popularity.desc'
-queryObject.with_genres = (route.query.with_genres) ? getGenresFromURL(route.query.with_genres) : []
-queryObject.with_cast = (route.query.with_cast) ? getCastFromURL(route.query.with_cast) : []
+    queryObject.language = (route.query.with_original_language) ? route.query.with_original_language : 'en'
+    queryObject.sort_by = (route.query.sort_by) ? route.query.sort_by : 'popularity.desc'
+    queryObject.with_genres = (route.query.with_genres) ? getGenresFromURL(route.query.with_genres) : []
+    queryObject.with_cast = (route.query.with_cast) ? getCastFromURL(route.query.with_cast) : []
 
-//Release Date tab
-queryObject.releaseDateTab = (route.query.release_date_tab) ? route.query.release_date_tab : '0'
-queryObject.releaseDate = (route.query.release_date) ? route.query.release_date : null // has Date object need to convert to yyyy-mm-dd value
-queryObject.releaseDateMin = (route.query.release_date_min) ? route.query.release_date_min : null // has Date object need to convert to yyyy-mm-dd value
-queryObject.releaseDateMax = (route.query.release_date_max) ? route.query.release_date_max : null // has Date object need to convert to yyyy-mm-dd value
-
-
-//Scores and votes
-queryObject.score = {min: null, max: null}
-queryObject.vote = {min: null, max: null}
-
-queryObject.score.min = (route.query.score_min) ? route.query.score_min : null
-queryObject.score.max = (route.query.score_max) ? route.query.score_max : null
-queryObject.vote.min = (route.query.vote_min) ? route.query.vote_min : null
-queryObject.vote.max = (route.query.vote_max) ? route.query.vote_max : null
+    //Release Date tab
+    queryObject.releaseDateTab = (route.query.release_date_tab) ? route.query.release_date_tab : '0'
+    queryObject.releaseDate = (route.query.release_date) ? route.query.release_date : null // has Date object need to convert to yyyy-mm-dd value
+    queryObject.releaseDateMin = (route.query.release_date_min) ? route.query.release_date_min : null // has Date object need to convert to yyyy-mm-dd value
+    queryObject.releaseDateMax = (route.query.release_date_max) ? route.query.release_date_max : null // has Date object need to convert to yyyy-mm-dd value
 
 
-//Page value and Search Count
-queryObject.page = (route.query.page) ? Number(route.query.page) : 1
-queryObject.searchCount = (route.query.search_count) ? Number(route.query.search_count) : 0
+    //Scores and votes
+    queryObject.score = { min: null, max: null }
+    queryObject.vote = { min: null, max: null }
 
-//Search mode
-queryObject.searchMode = (route.query.mode) ? route.query.mode : 'basic'
-queryObject.searchToken = (route.query.search) ? route.query.search : ''
+    queryObject.score.min = (route.query.score_min) ? route.query.score_min : null
+    queryObject.score.max = (route.query.score_max) ? route.query.score_max : null
+    queryObject.vote.min = (route.query.vote_min) ? route.query.vote_min : null
+    queryObject.vote.max = (route.query.vote_max) ? route.query.vote_max : null
 
 
-}, {immediate: true})
+    //Page value and Search Count
+    queryObject.page = (route.query.page) ? Number(route.query.page) : 1
+    queryObject.searchCount = (route.query.search_count) ? Number(route.query.search_count) : 0
+
+    //Search mode
+    queryObject.searchMode = (route.query.mode) ? route.query.mode : 'basic'
+    queryObject.searchToken = (route.query.search) ? route.query.search : ''
+
+
+}, { immediate: true })
 
 //Emit callbacks
 const changeGenre = (arg) => {
@@ -213,15 +213,15 @@ const changeGenre = (arg) => {
 }
 
 const changeReleaseDate = (arg) => {
-    queryObject.releaseDate = arg.toISOString().slice(0,10)
+    queryObject.releaseDate = arg.toISOString().slice(0, 10)
 }
 
 const changeReleaseDateMin = (arg) => {
-    queryObject.releaseDateMin = arg.toISOString().slice(0,10)
+    queryObject.releaseDateMin = arg.toISOString().slice(0, 10)
 }
 
 const changeReleaseDateMax = (arg) => {
-    queryObject.releaseDateMax = arg.toISOString().slice(0,10)
+    queryObject.releaseDateMax = arg.toISOString().slice(0, 10)
 }
 
 const changeReleaseDateTab = (arg) => {
@@ -276,7 +276,7 @@ watch(searchItems, () => {
         suggestionsIsDisplayed.value = true
     }
     else {
-        suggestionsIsDisplayed.value = false 
+        suggestionsIsDisplayed.value = false
     }
 })
 
@@ -328,7 +328,7 @@ const suggestionsSearchStyle = reactive({
 })
 
 const myInput = useTemplateRef('myInput')
-onClickOutside(myInput, () => {searchItems.value = []})
+onClickOutside(myInput, () => { searchItems.value = [] })
 
 const inputLookupOnFocus = async () => {
     if (queryObject.searchToken.length > 0) {
@@ -390,92 +390,94 @@ onMounted(() => {
 
 <template>
     <div class="flex flex-col justify-center items-center">
-        <Accordion
-        class="w-[80%] min-w-[350px] max-w-[582px]" 
-        v-model:value="active">
+        <Accordion class="w-[80%] min-w-[350px] max-w-[582px]" v-model:value="active">
             <AccordionPanel value="0">
-        <AccordionHeader asChild>
-            <div ref="searchBar" class="flex border-[2px] relative border-solid border-[#ebebeb] pl-[6px] pr-[6px] w-[100%] h-[52px] pt-[5px] pb-[5px]" :style="[(suggestionsIsDisplayed) ? suggestionsSearchStyle : normalSearchStyle]" :class="searchClass">
-            <div class="flex items-center ml-[6px]">
-                <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
-            </div>
+                <AccordionHeader asChild>
+                    <div ref="searchBar"
+                        class="flex border-[2px] relative border-solid border-[#ebebeb] pl-[6px] pr-[6px] w-[100%] h-[52px] pt-[5px] pb-[5px]"
+                        :style="[(suggestionsIsDisplayed) ? suggestionsSearchStyle : normalSearchStyle]"
+                        :class="searchClass">
+                        <div class="flex items-center ml-[6px]">
+                            <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
+                        </div>
 
-            <input @keydown.enter="onSearchClick" autocomplete="off" :disabled="(active === '0') ? true : false" @focus="inputLookupOnFocus" ref="myInput" class="
-            focus:outline-none w-full indent-[8px]" type="text" id="search" name="search" v-model="queryObject.searchToken">
-            <!-- <AutoComplete
+                        <input @keydown.enter="onSearchClick" autocomplete="off"
+                            :disabled="(active === '0') ? true : false" @focus="inputLookupOnFocus" ref="myInput" class="
+            focus:outline-none w-full indent-[8px]" type="text" id="search" name="search"
+                            v-model="queryObject.searchToken">
+                        <!-- <AutoComplete
             class="w-full"
             fluid
             optionLabel="title"
             v-model="searchValue" :suggestions="searchItems" @complete="onSearchComplete"/>
              -->
-            <div class="border-r-[1px] border-[#777777] flex items-center mr-[10px]" v-if="!searchValue">
-                <div class="pi pi-times ml-[10px] mr-[10px] cursor-pointer text-[#777777]" @click="clearSearchInput"></div>
-            </div>
-            <div class="h-full flex items-center mr-[6px]">
-                <button @click="toggleAdvancedSearch"
-                    class="cursor-pointer bg-red-500 rounded-full flex items-center justify-center h-[32px] w-[32px]">
-                    <font-awesome-icon v-if="active === null" :icon="['fas', 'plus']" class=" text-white" />
-                    <div class="pi pi-minus text-white" v-else></div>
-                </button>
-            </div>
-        </div>
-        <div class="relative">
-            <div  v-if="suggestionsIsDisplayed" class="flex flex-col bg-white border-[#ebebeb] w-full border-[1px] absolute z-20 rounded-bl-[30px] rounded-br-[30px]" >
-                <ul>
-                    <li @click="handleSuggestionClick(item.title)" class="hover:bg-[#ebebeb] flex pt-[10px] pb-[10px] pl-[12px] pr-[12px]" v-for="item, index in searchItems" :key=index>
-                        <div class="flex items-center">
-                    <font-awesome-icon :icon="['fas', 'magnifying-glass']"/>
-                </div>
-                <div  :style="{webkitUserSelect: 'none', cursor: 'default'}" class="ml-[8px]">
-                        {{item.title }}
-                        {{ (item.release_date) ? '(' + item.release_date.slice(0,4) + ')' : '*Undated*'}}
-                </div>
-                    </li>
-                </ul>
-                <div class=" flex justify-center mt-[15px] mb-[15px]">
-                    <Button @click="onSearchClick" class="mr-[10px]" variant="outlined" label="Search"/>
-                    <Button @click="handleImFeelingLucky" class="ml-[10px]" variant="outlined" label="I'm Feeling Lucky"/>
-                </div>
-                </div>
-        </div>
-        </AccordionHeader>
-        <AccordionContent ref="accordionContentRef">
-            <div class="flex flex-col gap-[10px] mt-[20px]">
-            <!-- <Form v-slot="$form" :initialValues :resolver @submit="onFormSubmit" class="flex flex-col gap-4 w-full sm:w-56"> -->
-                <!-- <InputNumber name="username" type="text" placeholder="Username" class="w-full sm:w-56" /> -->
-                <!-- <Fieldset legend="Form States" class="h-80 overflow-auto">
+                        <div class="border-r-[1px] border-[#777777] flex items-center mr-[10px]" v-if="!searchValue">
+                            <div class="pi pi-times ml-[10px] mr-[10px] cursor-pointer text-[#777777]"
+                                @click="clearSearchInput"></div>
+                        </div>
+                        <div class="h-full flex items-center mr-[6px]">
+                            <button @click="toggleAdvancedSearch"
+                                class="cursor-pointer bg-red-500 rounded-full flex items-center justify-center h-[32px] w-[32px]">
+                                <font-awesome-icon v-if="active === null" :icon="['fas', 'plus']" class=" text-white" />
+                                <div class="pi pi-minus text-white" v-else></div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div v-if="suggestionsIsDisplayed"
+                            class="flex flex-col bg-white border-[#ebebeb] w-full border-[1px] absolute z-20 rounded-bl-[30px] rounded-br-[30px]">
+                            <ul>
+                                <li @click="handleSuggestionClick(item.title)"
+                                    class="hover:bg-[#ebebeb] flex pt-[10px] pb-[10px] pl-[12px] pr-[12px]"
+                                    v-for="item, index in searchItems" :key=index>
+                                    <div class="flex items-center">
+                                        <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
+                                    </div>
+                                    <div :style="{ webkitUserSelect: 'none', cursor: 'default' }" class="ml-[8px]">
+                                        {{ item.title }}
+                                        {{ (item.release_date) ? '(' + item.release_date.slice(0, 4) + ')' :
+                                        '*Undated*'}}
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class=" flex justify-center mt-[15px] mb-[15px]">
+                                <Button @click="onSearchClick" class="mr-[10px]" variant="outlined" label="Search" />
+                                <Button @click="handleImFeelingLucky" class="ml-[10px]" variant="outlined"
+                                    label="I'm Feeling Lucky" />
+                            </div>
+                        </div>
+                    </div>
+                </AccordionHeader>
+                <AccordionContent ref="accordionContentRef">
+                    <div class="flex flex-col gap-[10px] mt-[20px]">
+                        <!-- <Form v-slot="$form" :initialValues :resolver @submit="onFormSubmit" class="flex flex-col gap-4 w-full sm:w-56"> -->
+                        <!-- <InputNumber name="username" type="text" placeholder="Username" class="w-full sm:w-56" /> -->
+                        <!-- <Fieldset legend="Form States" class="h-80 overflow-auto">
                 <pre class="whitespace-pre-wrap">{{ $form }}</pre> -->
-            <!-- </Fieldset> -->
-            <ASRelease
-            
-            @value-changed-rd="changeReleaseDate" @value-changed-min="changeReleaseDateMin" @value-changed-max="changeReleaseDateMax"
-            @value-changed-tab="changeReleaseDateTab"
-            />
-            <ASScore 
-            @score-min-change="changeScoreMin"
-            @score-max-change="changeScoreMax"
-            @vote-min-change="changeVoteMin"
-            @vote-max-change="changeVoteMax"
-            />
-            
-            <ASGenre @value-changed="changeGenre"/>
-            <ASCast @value-changed="changeCast"/>
-            <ASSort @value-changed="changeSort"/>
-            <ASLanguage @value-changed="changeLanguage"/>
-            <Button v-if="isDirty" variant="outlined" @click="handleClearFilters" label="Clear Filters" /> 
-            <!-- </Form> -->
-        </div>
-        </AccordionContent>
-    </AccordionPanel>
-        </Accordion>
-       
-        
-        
-        
+                        <!-- </Fieldset> -->
+                        <ASRelease @value-changed-rd="changeReleaseDate" @value-changed-min="changeReleaseDateMin"
+                            @value-changed-max="changeReleaseDateMax" @value-changed-tab="changeReleaseDateTab" />
+                        <ASScore @score-min-change="changeScoreMin" @score-max-change="changeScoreMax"
+                            @vote-min-change="changeVoteMin" @vote-max-change="changeVoteMax" />
 
-        <div v-if="!suggestionsIsDisplayed" class="flex mt-[10px]" >
-            <Button class="mr-[5px]" variant="outlined" @click="onSearchClick" label="Search" /> 
-                <Button class="ml-[5px]" variant="outlined" label="I'm Feeling Lucky" @click="handleImFeelingLucky" /> 
+                        <ASGenre @value-changed="changeGenre" />
+                        <ASCast @value-changed="changeCast" />
+                        <ASSort @value-changed="changeSort" />
+                        <ASLanguage @value-changed="changeLanguage" />
+                        <Button v-if="isDirty" variant="outlined" @click="handleClearFilters" label="Clear Filters" />
+                        <!-- </Form> -->
+                    </div>
+                </AccordionContent>
+            </AccordionPanel>
+        </Accordion>
+
+
+
+
+
+        <div v-if="!suggestionsIsDisplayed" class="flex mt-[10px]">
+            <Button class="mr-[5px]" variant="outlined" @click="onSearchClick" label="Search" />
+            <Button class="ml-[5px]" variant="outlined" label="I'm Feeling Lucky" @click="handleImFeelingLucky" />
         </div>
 
     </div>

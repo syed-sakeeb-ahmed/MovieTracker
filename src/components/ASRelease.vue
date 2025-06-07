@@ -41,8 +41,7 @@ const changeValue = (arg) => {
 
 <template>
     <div>
-        <Button fluid label="Primary" variant="outlined" 
-            @click="toggle">
+        <Button fluid label="Primary" variant="outlined" @click="toggle">
             <span>Release Date</span>
         </Button>
 
@@ -54,16 +53,19 @@ const changeValue = (arg) => {
                 </TabList>
                 <TabPanels>
                     <TabPanel value="0">
-                        <DatePicker @value-change="$emit('value-changed-rd', releaseDate)" v-model="releaseDate" showIcon fluid iconDisplay="input" />
+                        <DatePicker @value-change="$emit('value-changed-rd', releaseDate)" v-model="releaseDate"
+                            showIcon fluid iconDisplay="input" />
                     </TabPanel>
                     <TabPanel value="1" class="flex flex-col justify-between">
                         <div>
                             <span>From</span>
-                            <DatePicker @value-change="$emit('value-changed-min', releaseDateMin)" v-model="releaseDateMin" showIcon fluid iconDisplay="input"/>
+                            <DatePicker @value-change="$emit('value-changed-min', releaseDateMin)"
+                                v-model="releaseDateMin" showIcon fluid iconDisplay="input" />
                         </div>
                         <div>
                             <span>To</span>
-                            <DatePicker @value-change="$emit('value-changed-max', releaseDateMax)" v-model="releaseDateMax" showIcon fluid iconDisplay="input"/>
+                            <DatePicker @value-change="$emit('value-changed-max', releaseDateMax)"
+                                v-model="releaseDateMax" showIcon fluid iconDisplay="input" />
                         </div>
                     </TabPanel>
                 </TabPanels>

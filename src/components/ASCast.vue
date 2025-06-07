@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, useTemplateRef, onMounted, onUpdated, onUnmounted} from 'vue';
+import { ref, watch, useTemplateRef, onMounted, onUpdated, onUnmounted } from 'vue';
 import { getCastObjFromQueryString, getFirstTenCastNamesAndIdsFromQuery, objectExistsInArray, removeNumberFromArray, removeObjectFromArray, SECRET } from '@/utilites/jsonUtilities';
 import { queryObject } from '@/store';
 
@@ -26,6 +26,7 @@ watch(() => queryObject.with_cast, () => {
 
 <template>
     <div ref="castRef">
-            <AutoComplete @value-change="$emit('value-changed', selectedCastList)" placeholder="Select Cast" multiple fluid v-model="selectedCastList" optionLabel="name" :suggestions="castQueryResults" @complete="search" />
+        <AutoComplete @value-change="$emit('value-changed', selectedCastList)" placeholder="Select Cast" multiple fluid
+            v-model="selectedCastList" optionLabel="name" :suggestions="castQueryResults" @complete="search" />
     </div>
 </template>

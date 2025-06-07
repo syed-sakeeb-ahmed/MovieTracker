@@ -58,11 +58,14 @@ const fontStylesRight = reactive({
                     </span>
                     <span class="ml-[5px] text-white" :style="avenirStyles">Add to My List</span>
                 </div>
-                <div class="bg-blue-400 ml-[7px] w-[130px] h-[28px] rounded-[2px] border-[1px] border-[#bebebe] flex justify-end items-center">
-                    <select class="bg-white text-[#a22e2e] rounded-[2px] flex text-[11px] w-full h-full" name="rating" id="rating">
+                <div
+                    class="bg-blue-400 ml-[7px] w-[130px] h-[28px] rounded-[2px] border-[1px] border-[#bebebe] flex justify-end items-center">
+                    <select class="bg-white text-[#a22e2e] rounded-[2px] flex text-[11px] w-full h-full" name="rating"
+                        id="rating">
                         <option value="">Select</option>
                     </select>
-                    <img :style="{position: 'absolute', marginRight: '20px', marginBottom: '2px', pointerEvents: 'none'}" class="w-[15px] h-[15px]" src="../assets/Rating_Star.svg" alt="Star_ON">
+                    <img :style="{ position: 'absolute', marginRight: '20px', marginBottom: '2px', pointerEvents: 'none' }"
+                        class="w-[15px] h-[15px]" src="../assets/Rating_Star.svg" alt="Star_ON">
                 </div>
             </div>
         </div>
@@ -71,6 +74,4 @@ const fontStylesRight = reactive({
 </template>
 
 
-<style scoped>
-
-</style>
+<style scoped></style>
