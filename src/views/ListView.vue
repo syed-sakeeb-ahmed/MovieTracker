@@ -51,7 +51,13 @@ const totalRecords = ref(0)
 const setPageUpperLimit = (numberOfPages, totalResults) => {
     // console.log("Set page upper limit ran")
     pageUpperLimit.value = numberOfPages
-    totalRecords.value = totalResults
+    if (totalResults > 10000) {
+        totalRecords.value = 10000
+    }
+    else {
+        totalRecords.value = totalResults
+    }
+    // console.log(totalResults)
 }
 
 const handlePageChange = (page) => {

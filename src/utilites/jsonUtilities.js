@@ -349,11 +349,11 @@ export const checkIfInUserList = (listArr, mid) => {
         rating: null,
     }
     for (const item of listArr) {
-        console.log("This is item mid: " + item.mid)
+        // console.log("This is item mid: " + item.mid)
         if (mid === item.mid) {
             outputObj.status = item.movie_status
             outputObj.rating = item.user_rating
-            console.log("Found one")
+            // console.log("Found one")
             break;
         }
     }
@@ -416,7 +416,7 @@ export const checkIfInUserList = (listArr, mid) => {
     if (data.value !== null) {
         outputArr = data.value //Will get HTTP.OK and empty array if uid does not exist
     }
-    console.log("This is output arr in getMovieData() " + outputArr[0])
+    // console.log("This is output arr in getMovieData() " + outputArr[0])
     // console.log(dataObjArr.value.length, dataObjArr.value[1])
     return outputArr
 }
@@ -1749,7 +1749,7 @@ export async function getCastObjFromQueryString(str) {
             .catch((err) => console.error(err));
         outputArr.push({ id: id, name: castObj.name });
     }
-    console.log(outputArr);
+    // console.log(outputArr);
     return outputArr;
 }
 

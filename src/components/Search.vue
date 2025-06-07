@@ -440,7 +440,7 @@ onMounted(() => {
         </div>
         </AccordionHeader>
         <AccordionContent ref="accordionContentRef">
-            <div class="flex flex-col gap-[10px] h-[350px] mt-[20px]">
+            <div class="flex flex-col gap-[10px] mt-[20px]">
             <!-- <Form v-slot="$form" :initialValues :resolver @submit="onFormSubmit" class="flex flex-col gap-4 w-full sm:w-56"> -->
                 <!-- <InputNumber name="username" type="text" placeholder="Username" class="w-full sm:w-56" /> -->
                 <!-- <Fieldset legend="Form States" class="h-80 overflow-auto">
