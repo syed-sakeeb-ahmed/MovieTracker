@@ -85,7 +85,7 @@ createUserWithEmailAndPassword(auth, states.email.value, states.password.value)
             
                 <div class="w-[70%]">
                     <div class="font-bold">Password</div>
-                    <InputText name="password" type="text" fluid/>
+                    <InputText name="password" type="password" fluid/>
                     <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">{{ $form.password.error.message }}</Message>
                     <Message severity="error" size="small" variant="simple">{{ errorMessage }}</Message>
                     <div class="flex items-center gap-[5px] mt-[10px]">
