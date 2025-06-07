@@ -3,6 +3,330 @@ import {getMovieCardInfo} from '@/getMovieCardInfo'
 export const SECRET = import.meta.env.VITE_KEY;
 export const BASE_URL = import.meta.env.VITE_BACKEND_URL
 
+
+export const getErrorString = (errorCode) => {
+    switch (errorCode) {
+        case "auth/admin-restricted-operation":
+        return "Error, Admin restricted operation.";
+    case "auth/argument-error":
+        return "Error, Argument error.";
+    case "auth/app-not-authorized":
+        return "Error, App not authorized.";
+    case "auth/app-not-installed":
+        return "Error, App not installed.";
+    case "auth/captcha-check-failed":
+        return "Error, Captcha check failed.";
+    case "auth/code-expired":
+        return "Error, Code expired.";
+    case "auth/cordova-not-ready":
+        return "Error, Cordova not ready.";
+    case "auth/cors-unsupported":
+        return "Error, Cors unsupported.";
+    case "auth/credential-already-in-use":
+        return "Error, Credential already in use.";
+    case "auth/custom-token-mismatch":
+        return "Error, Custom token mismatch.";
+    case "auth/requires-recent-login":
+        return "Error, Requires recent login.";
+    case "auth/dependent-sdk-initialized-before-auth":
+        return "Error, Dependent sdk initialized before auth.";
+    case "auth/dynamic-link-not-activated":
+        return "Error, Dynamic link not activated.";
+    case "auth/email-change-needs-verification":
+        return "Error, Email change needs verification.";
+    case "auth/email-already-in-use":
+        return "Error, Email already in use.";
+    case "auth/emulator-config-failed":
+        return "Error, Emulator config failed.";
+    case "auth/expired-action-code":
+        return "Error, Expired action code.";
+    case "auth/cancelled-popup-request":
+        return "Error, Cancelled popup request.";
+    case "auth/internal-error":
+        return "Error, Internal error.";
+    case "auth/invalid-api-key":
+        return "Error, Invalid api key.";
+    case "auth/invalid-app-credential":
+        return "Error, Invalid app credential.";
+    case "auth/invalid-app-id":
+        return "Error, Invalid app id.";
+    case "auth/invalid-user-token":
+        return "Error, Invalid user token.";
+    case "auth/invalid-auth-event":
+        return "Error, Invalid auth event.";
+    case "auth/invalid-cert-hash":
+        return "Error, Invalid cert hash.";
+    case "auth/invalid-verification-code":
+        return "Error, Invalid verification code.";
+    case "auth/invalid-continue-uri":
+        return "Error, Invalid continue uri.";
+    case "auth/invalid-cordova-configuration":
+        return "Error, Invalid cordova configuration.";
+    case "auth/invalid-custom-token":
+        return "Error, Invalid custom token.";
+    case "auth/invalid-dynamic-link-domain":
+        return "Error, Invalid dynamic link domain.";
+    case "auth/invalid-email":
+        return "Error, Invalid email.";
+    case "auth/invalid-emulator-scheme":
+        return "Error, Invalid emulator scheme.";
+    case "auth/invalid-credential":
+        return "Error, Invalid credential.";
+    case "auth/invalid-message-payload":
+        return "Error, Invalid message payload.";
+    case "auth/invalid-multi-factor-session":
+        return "Error, Invalid multi factor session.";
+    case "auth/invalid-oauth-client-id":
+        return "Error, Invalid oauth client id.";
+    case "auth/invalid-oauth-provider":
+        return "Error, Invalid oauth provider.";
+    case "auth/invalid-action-code":
+        return "Error, Invalid action code.";
+    case "auth/unauthorized-domain":
+        return "Error, Unauthorized domain.";
+    case "auth/wrong-password":
+        return "Error, Wrong password.";
+    case "auth/invalid-persistence-type":
+        return "Error, Invalid persistence type.";
+    case "auth/invalid-phone-number":
+        return "Error, Invalid phone number.";
+    case "auth/invalid-provider-id":
+        return "Error, Invalid provider id.";
+    case "auth/invalid-recipient-email":
+        return "Error, Invalid recipient email.";
+    case "auth/invalid-sender":
+        return "Error, Invalid sender.";
+    case "auth/invalid-verification-id":
+        return "Error, Invalid verification id.";
+    case "auth/invalid-tenant-id":
+        return "Error, Invalid tenant id.";
+    case "auth/multi-factor-info-not-found":
+        return "Error, Multi factor info not found.";
+    case "auth/multi-factor-auth-required":
+        return "Error, Multi factor auth required.";
+    case "auth/missing-android-pkg-name":
+        return "Error, Missing android pkg name.";
+    case "auth/missing-app-credential":
+        return "Error, Missing app credential.";
+    case "auth/auth-domain-config-required":
+        return "Error, Auth domain config required.";
+    case "auth/missing-verification-code":
+        return "Error, Missing verification code.";
+    case "auth/missing-iframe-start":
+        return "Error, Missing iframe start.";
+    case "auth/missing-ios-bundle-id":
+        return "Error, Missing ios bundle id.";
+    case "auth/missing-or-invalid-nonce":
+        return "Error, Missing or invalid nonce.";
+    case "auth/missing-multi-factor-info":
+        return "Error, Missing multi factor info.";
+    case "auth/missing-multi-factor-session":
+        return "Error, Missing multi factor session.";
+    case "auth/missing-phone-number":
+        return "Error, Missing phone number.";
+    case "auth/missing-verification-id":
+        return "Error, Missing verification id.";
+    case "auth/app-deleted":
+        return "Error, App deleted.";
+    case "auth/account-exists-with-different-credential":
+        return "Error, Account exists with different credential.";
+    case "auth/network-request-failed":
+        return "Error, Network request failed.";
+    case "auth/null-user":
+        return "Error, Null user.";
+    case "auth/no-auth-event":
+        return "Error, No auth event.";
+    case "auth/no-such-provider":
+        return "Error, No such provider.";
+    case "auth/operation-not-allowed":
+        return "Error, Operation not allowed.";
+    case "auth/operation-not-supported-in-this-environment":
+        return "Error, Operation not supported in this environment.";
+    case "auth/popup-blocked":
+        return "Error, Popup blocked.";
+    case "auth/popup-closed-by-user":
+        return "Error, Popup closed by user.";
+    case "auth/provider-already-linked":
+        return "Error, Provider already linked.";
+    case "auth/quota-exceeded":
+        return "Error, Quota exceeded.";
+    case "auth/redirect-cancelled-by-user":
+        return "Error, Redirect cancelled by user.";
+    case "auth/redirect-operation-pending":
+        return "Error, Redirect operation pending.";
+    case "auth/rejected-credential":
+        return "Error, Rejected credential.";
+    case "auth/second-factor-already-in-use":
+        return "Error, Second factor already in use.";
+    case "auth/maximum-second-factor-count-exceeded":
+        return "Error, Maximum second factor count exceeded.";
+    case "auth/tenant-id-mismatch":
+        return "Error, Tenant id mismatch.";
+    case "auth/timeout":
+        return "Error, Timeout.";
+    case "auth/user-token-expired":
+        return "Error, User token expired.";
+    case "auth/too-many-requests":
+        return "Error, Too many requests.";
+    case "auth/unauthorized-continue-uri":
+        return "Error, Unauthorized continue uri.";
+    case "auth/unsupported-first-factor":
+        return "Error, Unsupported first factor.";
+    case "auth/unsupported-persistence-type":
+        return "Error, Unsupported persistence type.";
+    case "auth/unsupported-tenant-operation":
+        return "Error, Unsupported tenant operation.";
+    case "auth/unverified-email":
+        return "Error, Unverified email.";
+    case "auth/user-cancelled":
+        return "Error, User cancelled.";
+    case "auth/user-not-found":
+        return "Error, User not found.";
+    case "auth/user-disabled":
+        return "Error, User disabled.";
+    case "auth/user-mismatch":
+        return "Error, User mismatch.";
+    case "auth/user-signed-out":
+        return "Error, User signed out.";
+    case "auth/weak-password":
+        return "Error, Weak password.";
+    case "auth/web-storage-unsupported":
+        return "Error, Web storage unsupported.";
+    case "auth/already-initialized":
+        return "Error, Already initialized.";
+    case "auth/recaptcha-not-enabled":
+        return "Error, Recaptcha not enabled.";
+    case "auth/missing-recaptcha-token":
+        return "Error, Missing recaptcha token.";
+    case "auth/invalid-recaptcha-token":
+        return "Error, Invalid recaptcha token.";
+    case "auth/invalid-recaptcha-action":
+        return "Error, Invalid recaptcha action.";
+    case "auth/missing-client-type":
+        return "Error, Missing client type.";
+    case "auth/missing-recaptcha-version":
+        return "Error, Missing recaptcha version.";
+    case "auth/invalid-recaptcha-version":
+        return "Error, Invalid recaptcha version.";
+    case "auth/invalid-req-type":
+        return "Error, Invalid req type.";
+    case "auth/invalid-hosting-link-domain":
+        return "Error, Invalid hosting link domain.";
+        case "auth/claims-too-large":
+            return "Error, custom claims payload is too large.";
+        case "auth/email-already-exists":
+            return "Error, this email is already in use.";
+        case "auth/id-token-expired":
+            return "Error, the ID token has expired.";
+        case "auth/id-token-revoked":
+            return "Error, the ID token has been revoked.";
+        case "auth/insufficient-permission":
+            return "Error, insufficient permissions to perform this action.";
+        case "auth/internal-error":
+            return "Error, an internal error occurred.";
+        case "auth/invalid-argument":
+            return "Error, an invalid argument was provided.";
+        case "auth/invalid-claims":
+            return "Error, custom claims are invalid.";
+        case "auth/invalid-continue-uri":
+            return "Error, continue URL is invalid.";
+        case "auth/invalid-creation-time":
+            return "Error, creation time format is invalid.";
+        case "auth/invalid-credential":
+            return "Error, credentials are invalid.";
+        case "auth/invalid-disabled-field":
+            return "Error, the disabled field is invalid.";
+        case "auth/invalid-display-name":
+            return "Error, display name is invalid.";        case "auth/invalid-dynamic-link-domain":
+            return "Error, dynamic link domain is invalid.";
+        case "auth/invalid-email":
+            return "Error, email address is invalid.";
+        case "auth/invalid-email-verified":
+            return "Error, email verified value is invalid.";
+        case "auth/invalid-hash-algorithm":
+            return "Error, hash algorithm is invalid.";
+        case "auth/invalid-hash-block-size":
+            return "Error, hash block size is invalid.";
+        case "auth/invalid-hash-derived-key-length":
+            return "Error, derived key length is invalid.";
+        case "auth/invalid-hash-key":
+            return "Error, hash key is invalid.";
+        case "auth/invalid-hash-memory-cost":
+            return "Error, hash memory cost is invalid.";
+        case "auth/invalid-hash-parallelization":
+            return "Error, hash parallelization value is invalid.";
+        case "auth/invalid-hash-rounds":
+            return "Error, hash rounds value is invalid.";
+        case "auth/invalid-hash-salt-separator":
+            return "Error, hash salt separator is invalid.";
+        case "auth/invalid-id-token":
+            return "Error, ID token is invalid.";
+        case "auth/invalid-last-sign-in-time":
+            return "Error, last sign-in time format is invalid.";
+        case "auth/invalid-page-token":
+            return "Error, page token is invalid.";
+        case "auth/invalid-password":
+            return "Error, password is invalid.";
+        case "auth/invalid-password-hash":
+            return "Error, password hash is invalid.";
+        case "auth/invalid-password-salt":
+            return "Error, password salt is invalid.";
+        case "auth/invalid-phone-number":
+            return "Error, phone number is invalid.";
+        case "auth/invalid-photo-url":
+            return "Error, photo URL is invalid.";
+        case "auth/invalid-provider-data":
+            return "Error, provider data is invalid.";
+        case "auth/invalid-provider-id":
+            return "Error, provider ID is invalid.";
+        case "auth/invalid-oauth-responsetype":
+            return "Error, OAuth response type is invalid.";
+        case "auth/invalid-session-cookie-duration":
+            return "Error, session cookie duration is invalid.";
+        case "auth/invalid-uid":
+            return "Error, UID is invalid.";
+        case "auth/invalid-user-import":
+            return "Error, user import data is invalid.";
+        case "auth/maximum-user-count-exceeded":
+            return "Error, maximum user count exceeded.";
+        case "auth/missing-android-pkg-name":
+            return "Error, Android package name is missing.";
+        case "auth/missing-continue-uri":
+            return "Error, continue URI is missing.";
+        case "auth/missing-hash-algorithm":
+            return "Error, hash algorithm is missing.";
+        case "auth/missing-ios-bundle-id":
+            return "Error, iOS bundle ID is missing.";
+        case "auth/missing-uid":
+            return "Error, UID is missing.";
+        case "auth/missing-oauth-client-secret":
+            return "Error, OAuth client secret is missing.";
+        case "auth/operation-not-allowed":
+            return "Error, this operation is not allowed.";
+        case "auth/phone-number-already-exists":
+            return "Error, this phone number already exists.";
+        case "auth/project-not-found":
+            return "Error, project not found.";
+        case "auth/reserved-claims":
+            return "Error, custom claims use reserved keys.";
+        case "auth/session-cookie-expired":
+            return "Error, session cookie has expired.";
+        case "auth/session-cookie-revoked":
+            return "Error, session cookie has been revoked.";
+        case "auth/too-many-requests":
+            return "Error, too many requests. Please try again later.";
+        case "auth/uid-already-exists":
+            return "Error, UID already exists.";
+        case "auth/unauthorized-continue-uri":
+            return "Error, unauthorized continue URI.";
+        case "auth/user-not-found":
+            return "Error, user not found.";
+        default:
+            return "Error, an unknown error occurred.";
+    }
+}
+
+
 //Joined table dict
 export const jt = {
 	uid: 0,

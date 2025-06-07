@@ -3,9 +3,11 @@ import { ref } from 'vue';
 import { Form } from '@primevue/forms';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from 'vue-router'
+import {getErrorString} from '@/utilites/jsonUtilities';
 
 
 const router = useRouter()
+const errorMessage = ref("")
 
 const initialValues = ref({
     email: '',
@@ -46,9 +48,7 @@ const onFormSubmit = ({ valid, states }) => {
     // ...
   })
   .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    throw error
+        errorMessage.value = getErrorString(error.code)
   });
     }
 }
@@ -71,9 +71,10 @@ const onFormSubmit = ({ valid, states }) => {
                     <div class="font-bold">Password</div>
                     <InputText name="password" type="text" fluid/>
                     <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">{{ $form.password.error.message }}</Message>
+                    <Message severity="error" size="small" variant="simple">{{ errorMessage }}</Message>
                     <div class="flex items-center gap-[5px] mt-[10px]">
-        <Checkbox v-model="rememberMe" inputId="remember" name="remember" value="Remember" />
-        <label for="remember"> Remember Me </label>
+        <!-- <Checkbox v-model="rememberMe" inputId="remember" name="remember" value="Remember" />
+        <label for="remember"> Remember Me </label> -->
     </div>
                     <Button class="mt-[10px]" type="submit" label="Sign in" fluid/>
                 </div>

@@ -4,6 +4,10 @@ import { Form } from '@primevue/forms';
 import { supabase } from '../supabase.js'
 import {useRouter} from 'vue-router'
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {getErrorString} from '@/utilites/jsonUtilities';
+
+
+const errorMessage = ref("")
 
 
 const initialValues = reactive({
@@ -34,6 +38,10 @@ const resolver = async ({ values }) => {
         errors.password = [{ message: 'Password is required.' }];
     }
 
+    if (values.password.length < 6) {
+        errors.password = [{message: 'Password is too short'}]
+    }
+
 
     return {
         errors
@@ -48,9 +56,7 @@ createUserWithEmailAndPassword(auth, states.email.value, states.password.value)
     router.replace('/list')
   })
   .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    throw error
+    errorMessage.value = getErrorString(error.code)
     // ..
   });
     
@@ -81,9 +87,10 @@ createUserWithEmailAndPassword(auth, states.email.value, states.password.value)
                     <div class="font-bold">Password</div>
                     <InputText name="password" type="text" fluid/>
                     <Message v-if="$form.password?.invalid" severity="error" size="small" variant="simple">{{ $form.password.error.message }}</Message>
+                    <Message severity="error" size="small" variant="simple">{{ errorMessage }}</Message>
                     <div class="flex items-center gap-[5px] mt-[10px]">
-        <Checkbox v-model="rememberMe" inputId="remember" name="remember" value="Remember" />
-        <label for="remember"> Remember Me </label>
+        <!-- <Checkbox v-model="rememberMe" inputId="remember" name="remember" value="Remember" /> -->
+        <!-- <label for="remember"> Remember Me </label> -->
     </div>
                     <Button class="mt-[10px]" type="submit" label="Create Account" fluid/>
                 </div>
