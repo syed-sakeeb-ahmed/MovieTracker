@@ -6,10 +6,10 @@
 <template>
     <div class='mt-auto w-full white'>
         <div class="flex flex-col items-center mt-[30px] mb-[30px]">
-            <div>
-                <img v-tooltip="'Resources used: TMDB\n\nLegal Notice: This product uses the TMDB API but is not endorsed or certified by TMDB.\n'"
+            <div class="h-[24px]">
+                <!-- <img v-tooltip="'Resources used: TMDB\n\nLegal Notice: This product uses the TMDB API but is not endorsed or certified by TMDB.\n'"
   src="/src/assets/tmdb_logo.svg"
-  alt="TMDB logo" width="24"/>
+  alt="TMDB logo" width="24"/> -->
             </div>
         </div>
     </div>
