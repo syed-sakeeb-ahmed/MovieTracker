@@ -9,7 +9,7 @@ import CastCard from '@/components/CastCard.vue'
 import CastGrid from '@/components/CastGrid.vue'
 import SimilarGrid from '@/components/SimilarGrid.vue'
 import { useRouter, useRoute } from 'vue-router'
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, computed } from 'vue'
 import { SECRET, checkIfInUserList, getMovieData } from '@/utilites/jsonUtilities'
 import AddToListButton from '/src/components/AddToListButton.vue'
 import { myUserStore } from '@/authStore'
@@ -18,7 +18,6 @@ import { useTitle } from '@vueuse/core';
 
 const items = [1, 2, 3, 4, 5]
 
-const tabTitle = useTitle('MyMovieIndex');
 
 const status = ref(null)
 const rating = ref(null)
@@ -60,7 +59,6 @@ const hasMovieDataRetreived = ref(false)
 const getUserListData = async (uid) => {
     listDataArr.value = await getMovieData(uid)
     hasMovieDataRetreived.value = true
-    tabTitle.value = `${queryResults.value.title} - MyMovieIndex`
 
 }
 
@@ -75,8 +73,13 @@ const handleRatingValue = (emittedRating) => {
 watch(() => route.query.id, async () => {
     movieID = (route.query.id) ? route.query.id : undefined
     await fetchMovieData(movieID)
-    tabTitle.value = `${queryResults.value.title} - MyMovieIndex`
 }, { immediate: true })
+
+const tabTitle = computed(() => {
+    return !queryResults.value ? "MyMovieIndex" : `${queryResults.value.title} - MyMovieIndex`
+})
+
+useTitle(tabTitle)
 
 // watch(queryResults, () => {
 // //     {
