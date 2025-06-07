@@ -60,6 +60,8 @@ const hasMovieDataRetreived = ref(false)
 const getUserListData = async (uid) => {
     listDataArr.value = await getMovieData(uid)
     hasMovieDataRetreived.value = true
+    tabTitle.value = `${queryResults.value.title} - MyMovieIndex`
+
 }
 
 getUserListData(uid);
